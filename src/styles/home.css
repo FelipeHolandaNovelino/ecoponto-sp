@@ -1,0 +1,580 @@
+/**
+ * Estilos específicos da Home.
+ *
+ * A Home tem um visual mais editorial e comercial do que as páginas internas.
+ * Por isso, os estilos ficam separados do global.css para evitar afetar
+ * formulários, CRUD e telas administrativas.
+ */
+
+.home-page {
+  display: grid;
+  gap: 1.25rem;
+}
+
+/**
+ * Hero principal.
+ *
+ * O hero foi compactado para manter impacto visual sem ocupar altura excessiva.
+ * A composição usa texto à esquerda, ilustração ao centro/direita e card de
+ * impacto como elemento complementar, sem esconder a imagem principal.
+ */
+.home-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(360px, 1.05fr);
+  min-height: 430px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 62% 24%, rgba(248, 207, 113, 0.2), transparent 11rem),
+    linear-gradient(135deg, #fffdf6 0%, #f4fbf5 48%, #e9f6ef 100%);
+  border: 1px solid var(--color-border);
+  border-radius: 30px;
+  box-shadow: var(--shadow-soft);
+}
+
+.home-hero-content {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  align-content: center;
+  padding: clamp(1.6rem, 4vw, 3rem);
+}
+
+.home-badge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  gap: 0.45rem;
+  margin-bottom: 1rem;
+  padding: 0.46rem 0.78rem;
+  color: var(--color-primary-dark);
+  background: rgba(232, 244, 237, 0.92);
+  border: 1px solid rgba(31, 122, 77, 0.12);
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+/**
+ * Título da Home.
+ *
+ * O título continua maior que os títulos internos, mas em uma escala mais
+ * controlada para não dominar toda a primeira dobra da página.
+ */
+.home-hero h1 {
+  max-width: 610px;
+  margin-bottom: 1rem;
+  color: #073b27;
+  font-size: clamp(2.25rem, 4.3vw, 3.85rem);
+  line-height: 1;
+  letter-spacing: -0.06em;
+}
+
+.home-hero p {
+  max-width: 570px;
+  margin-bottom: 0;
+  color: #53665b;
+  font-size: 1rem;
+}
+
+.home-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  margin-top: 1.55rem;
+}
+
+.home-context-line {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  gap: 0.45rem;
+  margin-top: 1rem;
+  color: var(--color-primary-dark);
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+/**
+ * Painel visual da Home.
+ *
+ * A ilustração fica atrás do card de impacto, mas agora com melhor distribuição:
+ * o card não cobre completamente o elemento principal da cena.
+ */
+.home-visual-panel {
+  position: relative;
+  min-height: 430px;
+  overflow: hidden;
+}
+
+/**
+ * Fundo urbano/ambiental.
+ *
+ * O shape foi trazido mais para dentro da área visual para aparecer melhor
+ * atrás do card e reforçar a sensação de cidade sustentável.
+ */
+.home-city-shape {
+  position: absolute;
+  inset: 1.6rem 0.8rem 1.6rem -0.5rem;
+  z-index: 1;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.72), transparent 24%),
+    radial-gradient(circle at 58% 28%, rgba(255, 255, 255, 0.92), transparent 7rem),
+    linear-gradient(135deg, rgba(31, 122, 77, 0.1), rgba(37, 111, 143, 0.16)),
+    url("data:image/svg+xml,%3Csvg width='760' height='520' viewBox='0 0 760 520' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23145c39' stroke-opacity='.22' stroke-width='3'%3E%3Cpath d='M430 460V140l70 320V120l80 340'/%3E%3Cpath d='M430 210h150M430 255h150M430 300h150M430 345h150M430 390h150'/%3E%3Cpath d='M80 445h600'/%3E%3Cpath d='M115 445V325h40v120M180 445V290h55v155M260 445V350h42v95M625 445V315h50v130'/%3E%3Cpath d='M0 470c110-58 210-58 320-10s220 42 440-24'/%3E%3C/g%3E%3Cg fill='%231f7a4d' fill-opacity='.18'%3E%3Ccircle cx='120' cy='390' r='46'/%3E%3Ccircle cx='690' cy='378' r='70'/%3E%3Ccircle cx='520' cy='410' r='54'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: cover;
+  background-position: center;
+  border-radius: 42% 0 0 42%;
+}
+
+/**
+ * Lixeira ilustrativa.
+ *
+ * Ela foi deslocada para o centro-esquerda do painel visual, deixando o card
+ * de impacto ocupar a direita sem esconder completamente a imagem.
+ */
+.home-bin {
+  position: absolute;
+  right: 43%;
+  bottom: 2.5rem;
+  z-index: 2;
+  display: grid;
+  width: 160px;
+  height: 138px;
+  place-items: center;
+  color: rgba(255, 255, 255, 0.92);
+  background: linear-gradient(135deg, #2e9b55, #17643f);
+  border: 6px solid rgba(255, 255, 255, 0.58);
+  border-radius: 20px 20px 30px 30px;
+  box-shadow: 0 24px 42px rgba(20, 92, 57, 0.22);
+}
+
+.home-bin::before {
+  content: "";
+  position: absolute;
+  top: -16px;
+  left: 16px;
+  width: 128px;
+  height: 30px;
+  background: linear-gradient(135deg, #64b96c, #2c8b4b);
+  border-radius: 16px;
+  box-shadow: 0 10px 24px rgba(20, 92, 57, 0.18);
+}
+
+.home-device {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  color: #1d2b24;
+  background: #dbe7e0;
+  border: 4px solid #26392f;
+  border-radius: 12px;
+  box-shadow: 0 14px 26px rgba(29, 43, 36, 0.16);
+}
+
+.home-device-phone {
+  top: -46px;
+  left: 28px;
+  width: 46px;
+  height: 74px;
+  transform: rotate(-13deg);
+}
+
+.home-device-monitor {
+  top: -58px;
+  right: 20px;
+  width: 74px;
+  height: 62px;
+  transform: rotate(9deg);
+}
+
+.home-device-battery {
+  top: -8px;
+  left: 70px;
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  transform: rotate(-8deg);
+}
+
+.home-leaf {
+  position: absolute;
+  z-index: 2;
+  background: #77b95f;
+  border-radius: 100% 0;
+  opacity: 0.88;
+}
+
+.home-leaf-one {
+  top: 6.5rem;
+  left: 6rem;
+  width: 36px;
+  height: 18px;
+  transform: rotate(-32deg);
+}
+
+.home-leaf-two {
+  right: 2.5rem;
+  top: 7.5rem;
+  width: 42px;
+  height: 20px;
+  transform: rotate(-16deg);
+}
+
+.home-leaf-three {
+  right: 7rem;
+  bottom: 3rem;
+  width: 50px;
+  height: 24px;
+  transform: rotate(28deg);
+}
+
+/**
+ * Card de impacto.
+ *
+ * O card foi reduzido e deslocado para a direita. A transparência também foi
+ * ajustada para permitir que a composição visual atrás continue aparecendo.
+ */
+.home-impact-card {
+  position: absolute;
+  right: clamp(0.8rem, 2.4vw, 2rem);
+  top: 2.4rem;
+  z-index: 3;
+  width: min(280px, calc(100% - 2rem));
+  padding: 0.82rem;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(215, 229, 220, 0.95);
+  border-radius: 22px;
+  box-shadow: 0 20px 46px rgba(30, 83, 57, 0.15);
+  backdrop-filter: blur(12px);
+}
+
+.home-impact-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.65rem;
+}
+
+.home-impact-header span,
+.home-impact-header strong {
+  display: block;
+}
+
+.home-impact-header span {
+  color: var(--color-text);
+  font-size: 0.92rem;
+  font-weight: 900;
+}
+
+.home-impact-header strong {
+  margin-top: 0.15rem;
+  color: var(--color-muted);
+  font-size: 0.72rem;
+}
+
+.home-impact-header svg {
+  color: var(--color-primary);
+}
+
+.home-impact-list {
+  display: grid;
+  gap: 0.48rem;
+}
+
+.home-impact-item {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.66rem;
+  background: rgba(247, 251, 248, 0.9);
+  border: 1px solid rgba(215, 229, 220, 0.9);
+  border-radius: 15px;
+}
+
+.home-impact-item > span {
+  display: grid;
+  flex: 0 0 auto;
+  width: 39px;
+  height: 39px;
+  place-items: center;
+  color: var(--color-primary-dark);
+  background: var(--color-success-bg);
+  border-radius: 50%;
+}
+
+.home-impact-item strong,
+.home-impact-item small {
+  display: block;
+}
+
+.home-impact-item strong {
+  color: #073b27;
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.home-impact-item small {
+  margin-top: 0.15rem;
+  color: var(--color-muted);
+  font-size: 0.73rem;
+  font-weight: 700;
+}
+
+.home-impact-card p {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  margin: 0.6rem 0 0;
+  padding: 0.54rem;
+  color: var(--color-primary-dark);
+  background: rgba(232, 244, 237, 0.88);
+  border-radius: 13px;
+  font-size: 0.73rem;
+  font-weight: 800;
+}
+
+/**
+ * Cards de benefícios.
+ */
+.home-features {
+  padding: 0.3rem 0 0;
+}
+
+.home-section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.home-section-heading span {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  color: var(--color-primary);
+  background: var(--color-surface-soft);
+  border-radius: 50%;
+}
+
+.home-section-heading h2 {
+  margin-bottom: 0;
+  color: #0b3b29;
+  font-size: clamp(1.25rem, 2.6vw, 1.7rem);
+}
+
+.home-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.home-feature-card {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 0.85rem;
+  min-height: 215px;
+  padding: 1.2rem;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--color-border);
+  border-radius: 24px;
+  box-shadow: var(--shadow-soft);
+}
+
+.home-feature-illustration {
+  display: grid;
+  width: 72px;
+  height: 72px;
+  place-items: center;
+  border-radius: 50%;
+}
+
+.home-feature-card h3 {
+  margin: 0 0 0.35rem;
+  color: #0b3b29;
+  font-size: 1.1rem;
+}
+
+.home-feature-card p {
+  margin-bottom: 0;
+  font-size: 0.96rem;
+}
+
+.home-feature-card a {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  gap: 0.45rem;
+  color: var(--color-primary-dark);
+  font-weight: 900;
+}
+
+.home-feature-green .home-feature-illustration {
+  color: #0f7a3d;
+  background: #e4f6e7;
+}
+
+.home-feature-blue .home-feature-illustration {
+  color: #1d65a6;
+  background: #e4f0fb;
+}
+
+.home-feature-purple .home-feature-illustration {
+  color: #6941b7;
+  background: #eee7fb;
+}
+
+.home-impact-strip {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.15rem;
+  background:
+    linear-gradient(90deg, rgba(232, 244, 237, 0.95), rgba(255, 255, 255, 0.9)),
+    var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 24px;
+  box-shadow: var(--shadow-soft);
+}
+
+.home-impact-strip-icon {
+  display: grid;
+  width: 54px;
+  height: 54px;
+  place-items: center;
+  color: var(--color-primary);
+  background: #ffffff;
+  border-radius: 50%;
+}
+
+.home-impact-strip h2 {
+  margin-bottom: 0.15rem;
+  color: #0b3b29;
+  font-size: 1.1rem;
+}
+
+.home-impact-strip p {
+  margin-bottom: 0;
+  font-size: 0.95rem;
+}
+
+/**
+ * Responsividade da Home.
+ */
+@media (max-width: 1080px) {
+  .home-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .home-visual-panel {
+    min-height: 390px;
+  }
+
+  .home-impact-card {
+    top: 1.5rem;
+  }
+
+  .home-bin {
+    right: 42%;
+  }
+
+  .home-feature-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .home-hero {
+    min-height: auto;
+    border-radius: 24px;
+  }
+
+  .home-hero-content {
+    padding: 1.4rem;
+  }
+
+  .home-hero h1 {
+    font-size: clamp(2rem, 10vw, 3rem);
+  }
+
+  .home-hero-actions {
+    flex-direction: column;
+  }
+
+  .home-visual-panel {
+    min-height: 470px;
+  }
+
+  .home-city-shape {
+    inset: 0.5rem;
+    border-radius: 32px;
+  }
+
+  .home-impact-card {
+    top: 1rem;
+    right: 1rem;
+    left: 1rem;
+    width: auto;
+  }
+
+  .home-bin {
+    right: 50%;
+    bottom: 2rem;
+    transform: translateX(50%);
+  }
+
+  .home-section-heading {
+    align-items: flex-start;
+  }
+
+  .home-section-heading span {
+    display: none;
+  }
+
+  .home-impact-strip {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .home-impact-strip-icon {
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-badge {
+    font-size: 0.74rem;
+  }
+
+  .home-hero-content {
+    padding: 1.1rem;
+  }
+
+  .home-visual-panel {
+    min-height: 510px;
+  }
+
+  .home-impact-card {
+    padding: 0.8rem;
+  }
+
+  .home-impact-item {
+    padding: 0.7rem;
+  }
+
+  .home-bin {
+    width: 150px;
+    height: 132px;
+  }
+
+  .home-feature-card {
+    padding: 1rem;
+    border-radius: 22px;
+  }
+}
