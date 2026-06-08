@@ -2,7 +2,7 @@
 
 EcoPonto SP é um protótipo funcional de uma plataforma GreenTech/GovTech criada para facilitar o descarte correto de resíduos eletrônicos em São Paulo.
 
-A aplicação conecta cidadãos a pontos de coleta, permite consultar locais por bairro, tipo de resíduo e status operacional, oferece orientações gerais de descarte por tipo de resíduo, possibilita registrar intenções de descarte e conta com uma área administrativa para gerenciar pontos, acompanhar solicitações e visualizar indicadores operacionais.
+A aplicação conecta cidadãos a pontos de coleta, permite consultar locais por bairro, tipo de resíduo e status operacional, oferece orientações gerais de descarte por tipo de resíduo, possibilita registrar intenções de descarte e conta com uma área administrativa protegida por login simulado para gerenciar pontos, acompanhar solicitações e visualizar indicadores operacionais.
 
 ---
 
@@ -20,7 +20,7 @@ O deploy foi realizado na Vercel.
 
 O objetivo do EcoPonto SP é criar uma solução digital acessível, responsiva e orientada a dados para apoiar o descarte correto de resíduos eletrônicos em centros urbanos.
 
-Este projeto faz parte do meu portfólio e foi desenvolvido com foco em praticar organização de projeto React, componentização, rotas, filtros, formulários, CRUD, persistência local, dashboard administrativo, gráficos com Recharts, responsividade, estados vazios, feedback visual, tratamento de rotas inexistentes e separação entre área pública e área administrativa.
+Este projeto faz parte do meu portfólio e foi desenvolvido com foco em praticar organização de projeto React, componentização, rotas, filtros, formulários, CRUD, persistência local, dashboard administrativo, gráficos com Recharts, login administrativo simulado, rotas protegidas, responsividade, estados vazios, feedback visual, tratamento de rotas inexistentes e separação entre área pública e área administrativa.
 
 ---
 
@@ -46,8 +46,9 @@ O EcoPonto SP propõe uma plataforma web responsiva onde o usuário pode:
 - acessar orientações gerais de descarte;
 - registrar uma intenção de descarte.
 
-A plataforma também conta com uma área administrativa onde é possível:
+A plataforma também conta com uma área administrativa protegida onde é possível:
 
+- acessar o painel por login simulado;
 - visualizar indicadores operacionais;
 - gerenciar pontos de coleta;
 - cadastrar novos pontos;
@@ -94,6 +95,11 @@ Usuários responsáveis por gerenciar pontos de coleta, acompanhar solicitaçõe
 
 ### Área administrativa
 
+- Login administrativo simulado.
+- Proteção das rotas administrativas.
+- Redirecionamento automático para `/admin/login` quando o usuário não está autenticado.
+- Sessão administrativa simulada com LocalStorage.
+- Botão de sair na navegação administrativa.
 - Dashboard operacional com indicadores dinâmicos.
 - Cards de resumo baseados nos dados salvos no LocalStorage.
 - Página administrativa de solicitações de descarte.
@@ -118,6 +124,16 @@ Usuários responsáveis por gerenciar pontos de coleta, acompanhar solicitaçõe
 ## Fluxo principal
 
 ```txt
+Admin acessa /admin
+  ↓
+Sistema verifica se existe sessão administrativa
+  ↓
+Se não houver sessão, redireciona para /admin/login
+  ↓
+Admin informa a senha de demonstração
+  ↓
+Sistema libera o dashboard administrativo
+  ↓
 Admin cadastra ou edita pontos de coleta
   ↓
 Área pública exibe os pontos atualizados
@@ -159,18 +175,42 @@ Orientações gerais de descarte por tipo de resíduo
 /registrar-descarte
 Formulário de registro de descarte
 
+/admin/login
+Login administrativo simulado
+
 /admin
-Dashboard administrativo
+Dashboard administrativo protegido
 
 /admin/pontos
-Gerenciamento administrativo de pontos de coleta
+Gerenciamento administrativo de pontos de coleta protegido
 
 /admin/solicitacoes
-Listagem administrativa das solicitações
+Listagem administrativa das solicitações protegida
 
 *
 Página 404 para rotas inexistentes
 ```
+
+---
+
+## Login administrativo simulado
+
+A área administrativa do EcoPonto SP possui uma camada de login simulada no front-end.
+
+O objetivo dessa funcionalidade é demonstrar o fluxo de acesso protegido para rotas administrativas, incluindo:
+
+- página de login;
+- validação de senha de demonstração;
+- sessão salva no LocalStorage;
+- proteção das rotas administrativas;
+- redirecionamento automático para login;
+- botão de sair na navegação administrativa.
+
+A senha de demonstração usada no projeto é:
+
+`ecoponto123`
+
+Essa autenticação é apenas uma simulação para fins de portfólio. Em uma versão de produção, essa camada deve ser substituída por autenticação real com backend, validação no servidor, sessão segura e controle de usuários.
 
 ---
 
@@ -226,6 +266,9 @@ src/
     routes.jsx
 
   components/
+    auth/
+      ProtectedAdminRoute.jsx
+
     layout/
       AppLayout.jsx
 
@@ -235,6 +278,10 @@ src/
       ToastMessage.jsx
 
   features/
+    auth/
+      utils/
+        authStorage.js
+
     collection-points/
       components/
         CollectionPointCard.jsx
@@ -265,6 +312,7 @@ src/
   pages/
     AdminCollectionPointsPage.jsx
     AdminDashboardPage.jsx
+    AdminLoginPage.jsx
     AdminRequestsPage.jsx
     CollectionPointDetailsPage.jsx
     CollectionPointsPage.jsx
@@ -275,6 +323,7 @@ src/
 
   styles/
     adminCollectionPoints.css
+    adminLogin.css
     confirmModal.css
     dashboard.css
     disposalGuidelines.css
@@ -301,13 +350,14 @@ Contém componentes compartilhados ou estruturais da interface.
 Atualmente inclui:
 
 - `AppLayout.jsx`, responsável pelo layout principal;
+- `ProtectedAdminRoute.jsx`, responsável por proteger rotas administrativas;
 - `EmptyState.jsx`, responsável por estados vazios reutilizáveis;
 - `ConfirmModal.jsx`, responsável por confirmações de ações sensíveis;
 - `ToastMessage.jsx`, responsável por feedbacks visuais não bloqueantes.
 
 ### `features/`
 
-Agrupa funcionalidades específicas do produto, como pontos de coleta, solicitações de descarte, orientações de descarte, dashboard e tipos de resíduos.
+Agrupa funcionalidades específicas do produto, como autenticação simulada, pontos de coleta, solicitações de descarte, orientações de descarte, dashboard e tipos de resíduos.
 
 Essa organização evita que todo o código fique concentrado apenas em uma pasta genérica de componentes. Cada domínio do sistema mantém seus dados, componentes e funções auxiliares mais próximos.
 
@@ -317,7 +367,7 @@ Contém as telas completas acessadas pelas rotas.
 
 ### `styles/`
 
-Contém os estilos globais e arquivos de estilo específicos de áreas mais complexas, como Home, dashboard, estados vazios, modal de confirmação, toast, orientações de descarte e gerenciamento administrativo.
+Contém os estilos globais e arquivos de estilo específicos de áreas mais complexas, como Home, login administrativo, dashboard, estados vazios, modal de confirmação, toast, orientações de descarte e gerenciamento administrativo.
 
 ---
 
@@ -325,15 +375,31 @@ Contém os estilos globais e arquivos de estilo específicos de áreas mais comp
 
 ### `src/app/App.jsx`
 
-Componente principal da aplicação. Ele configura o `BrowserRouter`, registra as rotas e aplica o layout base por meio do `AppLayout`.
+Componente principal da aplicação. Ele configura o `BrowserRouter`, registra as rotas, aplica o layout base por meio do `AppLayout` e envolve as rotas administrativas com proteção.
 
 ### `src/app/routes.jsx`
 
-Centraliza as rotas públicas, administrativas e a rota de fallback para página 404.
+Centraliza as rotas públicas, rotas de autenticação administrativa, rotas administrativas protegidas e a rota de fallback para página 404.
 
 ### `src/components/layout/AppLayout.jsx`
 
-Define a estrutura visual principal da aplicação, incluindo cabeçalho, navegação e área de conteúdo.
+Define a estrutura visual principal da aplicação, incluindo cabeçalho, navegação, área de conteúdo e botão de sair quando há sessão administrativa ativa.
+
+### `src/components/auth/ProtectedAdminRoute.jsx`
+
+Componente responsável por proteger as rotas administrativas. Quando não existe sessão ativa, redireciona o usuário para `/admin/login`.
+
+### `src/features/auth/utils/authStorage.js`
+
+Centraliza a autenticação administrativa simulada, incluindo validação da senha de demonstração, criação da sessão local, verificação de autenticação e encerramento da sessão.
+
+### `src/pages/AdminLoginPage.jsx`
+
+Página de login administrativo simulado. Permite acessar o painel usando uma senha de demonstração e prepara a estrutura para uma futura autenticação real com backend.
+
+### `src/styles/adminLogin.css`
+
+Arquivo responsável pelos estilos da tela de login administrativo.
 
 ### `src/components/ui/EmptyState.jsx`
 
@@ -489,10 +555,11 @@ O projeto utiliza LocalStorage para simular persistência de dados sem backend.
 
 Atualmente são persistidos:
 
+- sessão administrativa simulada;
 - pontos de coleta cadastrados ou editados pelo administrador;
 - solicitações de descarte registradas pelos usuários.
 
-Essa abordagem permite demonstrar fluxo de dados, CRUD e atualização do dashboard sem depender de banco de dados ou API externa nesta etapa do projeto.
+Essa abordagem permite demonstrar fluxo de dados, autenticação simulada, CRUD e atualização do dashboard sem depender de banco de dados ou API externa nesta etapa do projeto.
 
 ---
 
@@ -555,6 +622,7 @@ Como a aplicação usa React Router com `BrowserRouter`, foi adicionado um arqui
 
 Exemplos de rotas que funcionam no deploy:
 
+- `/admin/login`;
 - `/admin/pontos`;
 - `/admin/solicitacoes`;
 - `/pontos/1`;
@@ -570,6 +638,7 @@ O projeto passou por uma revisão de responsividade nas principais áreas:
 - layout global;
 - cabeçalho;
 - Home;
+- login administrativo;
 - filtros;
 - cards;
 - formulários;
@@ -604,6 +673,11 @@ Com este projeto, foram praticados:
 - validação simples;
 - CRUD no front-end;
 - criação, edição e remoção de registros;
+- criação de login administrativo simulado;
+- proteção de rotas com React Router;
+- redirecionamento de usuários não autenticados;
+- controle de sessão local com LocalStorage;
+- preparação da arquitetura para autenticação futura com backend;
 - criação de estado vazio;
 - criação de modal reutilizável;
 - criação de feedback visual com toast;
@@ -644,6 +718,9 @@ O EcoPonto SP foi planejado para mostrar habilidades diferentes de um sistema pu
 Entre os diferenciais estão:
 
 - fluxo público e administrativo;
+- login administrativo simulado;
+- rotas administrativas protegidas;
+- fluxo preparado para futura autenticação com backend;
 - filtros funcionais;
 - uso de dados estruturados;
 - página informativa baseada em dados;
@@ -687,6 +764,10 @@ Entre os diferenciais estão:
 - Implementar remoção de pontos.
 - Persistir pontos no LocalStorage.
 - Integrar pontos persistidos à área pública.
+- Criar login administrativo simulado.
+- Proteger rotas administrativas.
+- Adicionar sessão administrativa com LocalStorage.
+- Adicionar botão de sair da área administrativa.
 - Corrigir e consolidar estilos globais.
 - Criar dashboard com gráficos de barras.
 - Atualizar dashboard com métricas derivadas dos dados salvos.
@@ -714,11 +795,12 @@ Entre os diferenciais estão:
 - Adicionar prints ao README.
 - Criar uma seção de demonstração visual no README.
 - Evoluir o painel administrativo com histórico por ponto.
+- Substituir autenticação simulada por autenticação real com backend.
 
 ### Evoluções futuras
 
 - Adicionar mapa real com Leaflet.
-- Criar autenticação.
+- Criar autenticação real.
 - Integrar banco de dados real.
 - Criar API própria.
 - Adicionar perfis de usuário.
@@ -761,11 +843,24 @@ http://localhost:5173/
 
 ---
 
+## Acesso administrativo de demonstração
+
+Para acessar a área administrativa no ambiente local ou publicado, use:
+
+```txt
+Rota: /admin/login
+Senha: ecoponto123
+```
+
+A autenticação é simulada no front-end e salva a sessão no LocalStorage.
+
+---
+
 ## Status do projeto
 
 Projeto em desenvolvimento.
 
-A versão atual já possui um fluxo público de consulta e registro de descarte, página de orientações gerais, área administrativa com gerenciamento de pontos de coleta, listagem de solicitações, dashboard com indicadores e gráficos de barras, estados vazios, página 404, modal de confirmação, feedback visual, deploy publicado e uma Home redesenhada e responsiva.
+A versão atual já possui um fluxo público de consulta e registro de descarte, página de orientações gerais, área administrativa com login simulado, gerenciamento de pontos de coleta, listagem de solicitações, dashboard com indicadores e gráficos de barras, estados vazios, página 404, modal de confirmação, feedback visual, deploy publicado e uma Home redesenhada e responsiva.
 
 ---
 
