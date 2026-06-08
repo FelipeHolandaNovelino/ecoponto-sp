@@ -8,21 +8,22 @@
 
 .home-page {
   display: grid;
-  gap: 1.25rem;
+  gap: 1.15rem;
+  margin-top: -1.25rem;
 }
 
 /**
  * Hero principal.
  *
- * O hero foi compactado para manter impacto visual sem ocupar altura excessiva.
- * A composição usa texto à esquerda, ilustração ao centro/direita e card de
- * impacto como elemento complementar, sem esconder a imagem principal.
+ * O hero concentra a mensagem principal, a ilustração e um card de impacto
+ * compacto. O dashboard fica acessível pelo card inferior de gestão para evitar
+ * excesso de CTAs no topo.
  */
 .home-hero {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 0.95fr) minmax(360px, 1.05fr);
-  min-height: 430px;
+  grid-template-columns: minmax(0, 0.95fr) minmax(320px, 1.05fr);
+  min-height: 410px;
   overflow: hidden;
   background:
     radial-gradient(circle at 62% 24%, rgba(248, 207, 113, 0.2), transparent 11rem),
@@ -37,7 +38,7 @@
   z-index: 3;
   display: grid;
   align-content: center;
-  padding: clamp(1.6rem, 4vw, 3rem);
+  padding: clamp(1.45rem, 3.5vw, 2.6rem);
 }
 
 .home-badge {
@@ -45,7 +46,7 @@
   align-items: center;
   width: fit-content;
   gap: 0.45rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.95rem;
   padding: 0.46rem 0.78rem;
   color: var(--color-primary-dark);
   background: rgba(232, 244, 237, 0.92);
@@ -58,14 +59,14 @@
 /**
  * Título da Home.
  *
- * O título continua maior que os títulos internos, mas em uma escala mais
- * controlada para não dominar toda a primeira dobra da página.
+ * Mantém impacto visual, mas em uma escala controlada para que o conteúdo
+ * abaixo apareça mais cedo na primeira dobra.
  */
 .home-hero h1 {
   max-width: 610px;
-  margin-bottom: 1rem;
+  margin-bottom: 0.95rem;
   color: #073b27;
-  font-size: clamp(2.25rem, 4.3vw, 3.85rem);
+  font-size: clamp(2.15rem, 4vw, 3.55rem);
   line-height: 1;
   letter-spacing: -0.06em;
 }
@@ -74,14 +75,14 @@
   max-width: 570px;
   margin-bottom: 0;
   color: #53665b;
-  font-size: 1rem;
+  font-size: 0.98rem;
 }
 
 .home-hero-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 0.85rem;
-  margin-top: 1.55rem;
+  margin-top: 1.45rem;
 }
 
 .home-context-line {
@@ -89,33 +90,33 @@
   align-items: center;
   width: fit-content;
   gap: 0.45rem;
-  margin-top: 1rem;
+  margin-top: 0.95rem;
   color: var(--color-primary-dark);
-  font-size: 0.86rem;
+  font-size: 0.84rem;
   font-weight: 700;
 }
 
 /**
  * Painel visual da Home.
  *
- * A ilustração fica atrás do card de impacto, mas agora com melhor distribuição:
- * o card não cobre completamente o elemento principal da cena.
+ * A ilustração é feita com CSS e ícones para evitar dependência de imagens
+ * externas nesta etapa do projeto.
  */
 .home-visual-panel {
   position: relative;
-  min-height: 430px;
+  min-height: 410px;
   overflow: hidden;
 }
 
 /**
  * Fundo urbano/ambiental.
  *
- * O shape foi trazido mais para dentro da área visual para aparecer melhor
- * atrás do card e reforçar a sensação de cidade sustentável.
+ * O shape reforça o contexto de cidade sustentável sem depender de uma imagem
+ * externa ou asset pesado.
  */
 .home-city-shape {
   position: absolute;
-  inset: 1.6rem 0.8rem 1.6rem -0.5rem;
+  inset: 1.4rem 0.75rem 1.4rem -0.5rem;
   z-index: 1;
   background:
     linear-gradient(90deg, rgba(255, 255, 255, 0.72), transparent 24%),
@@ -130,17 +131,17 @@
 /**
  * Lixeira ilustrativa.
  *
- * Ela foi deslocada para o centro-esquerda do painel visual, deixando o card
- * de impacto ocupar a direita sem esconder completamente a imagem.
+ * Ela fica mais ao centro-esquerda do painel visual para abrir espaço ao card
+ * compacto de impacto no canto direito.
  */
 .home-bin {
   position: absolute;
-  right: 43%;
-  bottom: 2.5rem;
+  right: 39%;
+  bottom: 2.35rem;
   z-index: 2;
   display: grid;
-  width: 160px;
-  height: 138px;
+  width: 155px;
+  height: 134px;
   place-items: center;
   color: rgba(255, 255, 255, 0.92);
   background: linear-gradient(135deg, #2e9b55, #17643f);
@@ -153,8 +154,8 @@
   content: "";
   position: absolute;
   top: -16px;
-  left: 16px;
-  width: 128px;
+  left: 15px;
+  width: 125px;
   height: 30px;
   background: linear-gradient(135deg, #64b96c, #2c8b4b);
   border-radius: 16px;
@@ -230,22 +231,24 @@
 }
 
 /**
- * Card de impacto.
+ * Card de impacto compacto.
  *
- * O card foi reduzido e deslocado para a direita. A transparência também foi
- * ajustada para permitir que a composição visual atrás continue aparecendo.
+ * O card voltou para dentro do hero, mas menor e posicionado no canto direito.
+ * Ele informa métricas rápidas sem cobrir a ilustração principal.
  */
 .home-impact-card {
   position: absolute;
-  right: clamp(0.8rem, 2.4vw, 2rem);
-  top: 2.4rem;
+  right: 1rem;
+  top: 1.2rem;
   z-index: 3;
-  width: min(280px, calc(100% - 2rem));
-  padding: 0.82rem;
-  background: rgba(255, 255, 255, 0.82);
+  display: grid;
+  gap: 0.6rem;
+  width: min(230px, calc(100% - 2rem));
+  padding: 0.72rem;
+  background: rgba(255, 255, 255, 0.86);
   border: 1px solid rgba(215, 229, 220, 0.95);
-  border-radius: 22px;
-  box-shadow: 0 20px 46px rgba(30, 83, 57, 0.15);
+  border-radius: 20px;
+  box-shadow: 0 18px 38px rgba(30, 83, 57, 0.14);
   backdrop-filter: blur(12px);
 }
 
@@ -253,8 +256,7 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 0.65rem;
+  gap: 0.75rem;
 }
 
 .home-impact-header span,
@@ -264,40 +266,41 @@
 
 .home-impact-header span {
   color: var(--color-text);
-  font-size: 0.92rem;
+  font-size: 0.82rem;
   font-weight: 900;
 }
 
 .home-impact-header strong {
-  margin-top: 0.15rem;
+  margin-top: 0.12rem;
   color: var(--color-muted);
-  font-size: 0.72rem;
+  font-size: 0.68rem;
 }
 
 .home-impact-header svg {
+  flex: 0 0 auto;
   color: var(--color-primary);
 }
 
 .home-impact-list {
   display: grid;
-  gap: 0.48rem;
+  gap: 0.42rem;
 }
 
 .home-impact-item {
   display: flex;
   align-items: center;
-  gap: 0.65rem;
-  padding: 0.66rem;
-  background: rgba(247, 251, 248, 0.9);
+  gap: 0.55rem;
+  padding: 0.52rem;
+  background: rgba(247, 251, 248, 0.92);
   border: 1px solid rgba(215, 229, 220, 0.9);
-  border-radius: 15px;
+  border-radius: 13px;
 }
 
 .home-impact-item > span {
   display: grid;
   flex: 0 0 auto;
-  width: 39px;
-  height: 39px;
+  width: 32px;
+  height: 32px;
   place-items: center;
   color: var(--color-primary-dark);
   background: var(--color-success-bg);
@@ -311,66 +314,34 @@
 
 .home-impact-item strong {
   color: #073b27;
-  font-size: 1.25rem;
+  font-size: 1.02rem;
   line-height: 1;
 }
 
 .home-impact-item small {
-  margin-top: 0.15rem;
+  margin-top: 0.1rem;
   color: var(--color-muted);
-  font-size: 0.73rem;
+  font-size: 0.66rem;
   font-weight: 700;
-}
-
-.home-impact-card p {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
-  margin: 0.6rem 0 0;
-  padding: 0.54rem;
-  color: var(--color-primary-dark);
-  background: rgba(232, 244, 237, 0.88);
-  border-radius: 13px;
-  font-size: 0.73rem;
-  font-weight: 800;
 }
 
 /**
  * Cards de benefícios.
  */
 .home-features {
-  padding: 0.3rem 0 0;
+  padding: 0.15rem 0 0;
 }
 
-.home-section-heading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.8rem;
-  margin-bottom: 1rem;
-  text-align: center;
-}
-
-.home-section-heading span {
-  display: grid;
-  width: 32px;
-  height: 32px;
-  place-items: center;
-  color: var(--color-primary);
-  background: var(--color-surface-soft);
-  border-radius: 50%;
-}
-
-.home-section-heading h2 {
-  margin-bottom: 0;
-  color: #0b3b29;
-  font-size: clamp(1.25rem, 2.6vw, 1.7rem);
-}
-
+/**
+ * Grid de funcionalidades da Home.
+ *
+ * A Home mantém apenas os cards que complementam o hero. O acesso aos pontos
+ * de coleta já aparece no topo da página, então esta seção fica focada em
+ * orientação e gestão administrativa.
+ */
 .home-feature-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
 }
 
@@ -476,10 +447,6 @@
     min-height: 390px;
   }
 
-  .home-impact-card {
-    top: 1.5rem;
-  }
-
   .home-bin {
     right: 42%;
   }
@@ -490,6 +457,10 @@
 }
 
 @media (max-width: 760px) {
+  .home-page {
+    margin-top: -0.5rem;
+  }
+
   .home-hero {
     min-height: auto;
     border-radius: 24px;
@@ -508,7 +479,7 @@
   }
 
   .home-visual-panel {
-    min-height: 470px;
+    min-height: 500px;
   }
 
   .home-city-shape {
@@ -527,14 +498,6 @@
     right: 50%;
     bottom: 2rem;
     transform: translateX(50%);
-  }
-
-  .home-section-heading {
-    align-items: flex-start;
-  }
-
-  .home-section-heading span {
-    display: none;
   }
 
   .home-impact-strip {
@@ -557,15 +520,15 @@
   }
 
   .home-visual-panel {
-    min-height: 510px;
+    min-height: 520px;
   }
 
   .home-impact-card {
-    padding: 0.8rem;
+    padding: 0.7rem;
   }
 
   .home-impact-item {
-    padding: 0.7rem;
+    padding: 0.5rem;
   }
 
   .home-bin {

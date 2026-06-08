@@ -18,8 +18,9 @@ export function HomePage() {
   /**
    * A Home funciona como vitrine do produto.
    *
-   * Ela apresenta a proposta do EcoPonto SP, direciona o usuário para a busca
-   * de pontos, para as orientações de descarte e para o dashboard administrativo.
+   * O hero concentra a mensagem principal, o acesso aos pontos de coleta e uma
+   * prévia compacta de impacto. Os demais acessos ficam nos cards inferiores
+   * para evitar excesso de botões no topo da página.
    */
   return (
     <section className="home-page">
@@ -42,11 +43,6 @@ export function HomePage() {
             <Link to="/pontos" className="primary-button">
               <MapPin size={18} />
               Ver pontos de coleta
-            </Link>
-
-            <Link to="/admin" className="secondary-button">
-              <BarChart3 size={18} />
-              Ver dashboard
             </Link>
           </div>
 
@@ -79,93 +75,56 @@ export function HomePage() {
           <div className="home-leaf home-leaf-two" />
           <div className="home-leaf home-leaf-three" />
 
-          <aside className="home-impact-card">
+          <aside className="home-impact-card" aria-label="Impacto simulado">
             <div className="home-impact-header">
               <div>
                 <span>Impacto em São Paulo</span>
-                <strong>Dados simulados do projeto</strong>
+                <strong>Dados simulados</strong>
               </div>
 
-              <Leaf size={20} />
+              <Leaf size={18} />
             </div>
 
             <div className="home-impact-list">
               <div className="home-impact-item">
                 <span>
-                  <MapPin size={22} />
+                  <MapPin size={18} />
                 </span>
 
                 <div>
                   <strong>24</strong>
-                  <small>Pontos cadastrados</small>
+                  <small>Pontos</small>
                 </div>
               </div>
 
               <div className="home-impact-item">
                 <span>
-                  <Recycle size={22} />
+                  <Recycle size={18} />
                 </span>
 
                 <div>
                   <strong>186 kg</strong>
-                  <small>Volume estimado</small>
+                  <small>Volume</small>
                 </div>
               </div>
 
               <div className="home-impact-item">
                 <span>
-                  <ClipboardList size={22} />
+                  <ClipboardList size={18} />
                 </span>
 
                 <div>
                   <strong>12</strong>
-                  <small>Solicitações registradas</small>
+                  <small>Solicitações</small>
                 </div>
               </div>
             </div>
-
-            <p>
-              <Leaf size={14} />
-              Métricas usadas para demonstrar o fluxo do MVP.
-            </p>
           </aside>
         </div>
       </section>
 
-      <section className="home-features" aria-labelledby="home-features-title">
-        <div className="home-section-heading">
-          <span>
-            <Leaf size={16} />
-          </span>
-
-          <h2 id="home-features-title">Como o EcoPonto SP ajuda você</h2>
-
-          <span>
-            <Leaf size={16} />
-          </span>
-        </div>
-
+      <section className="home-features">
         <div className="home-feature-grid">
-          <article className="home-feature-card home-feature-green">
-            <div className="home-feature-illustration">
-              <MapPin size={44} />
-            </div>
-
-            <div>
-              <h3>Pontos de coleta</h3>
-
-              <p>
-                Encontre locais de coleta perto de você, filtre por bairro, tipo
-                de resíduo e status operacional.
-              </p>
-            </div>
-
-            <Link to="/pontos">
-              Buscar pontos
-              <ArrowRight size={17} />
-            </Link>
-          </article>
-
           <article className="home-feature-card home-feature-blue">
             <div className="home-feature-illustration">
               <Recycle size={44} />
