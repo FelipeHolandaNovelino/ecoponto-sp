@@ -1,4 +1,5 @@
 import { AdminDashboardPage } from "../pages/AdminDashboardPage.jsx";
+import { AdminRequestsPage } from "../pages/AdminRequestsPage.jsx";
 import { CollectionPointDetailsPage } from "../pages/CollectionPointDetailsPage.jsx";
 import { CollectionPointsPage } from "../pages/CollectionPointsPage.jsx";
 import { DisposalRequestPage } from "../pages/DisposalRequestPage.jsx";
@@ -27,5 +28,9 @@ export const adminRoutes = [
   {
     path: "/admin",
     element: <AdminDashboardPage />,
+  },
+  {
+    path: "/admin/solicitacoes",
+    element: <AdminRequestsPage />,
   },
 ];

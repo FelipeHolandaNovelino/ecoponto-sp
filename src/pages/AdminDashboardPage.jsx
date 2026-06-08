@@ -1,4 +1,11 @@
-import { BarChart3, ClipboardList, MapPin, Recycle } from "lucide-react";
+import {
+  BarChart3,
+  ClipboardList,
+  MapPin,
+  Recycle,
+  ArrowRight,
+} from "lucide-react";
+import { Link } from "react-router-dom";
 
 export function AdminDashboardPage() {
   return (
@@ -38,12 +45,29 @@ export function AdminDashboardPage() {
         </article>
       </div>
 
-      <div className="admin-panel-placeholder">
-        <h2>Próximos módulos administrativos</h2>
-        <p>
-          Nas próximas etapas, vamos criar o gerenciamento de pontos de coleta,
-          solicitações de descarte e gráficos com dados simulados.
-        </p>
+      <div className="content-grid">
+        <article className="collection-card">
+          <h2>Solicitações de descarte</h2>
+          <p>
+            Visualize os registros criados pelos usuários na área pública. Nesta
+            versão, os dados são lidos do LocalStorage do navegador.
+          </p>
+
+          <Link to="/admin/solicitacoes" className="primary-button">
+            Ver solicitações
+            <ArrowRight size={18} />
+          </Link>
+        </article>
+
+        <article className="collection-card">
+          <h2>Gerenciamento de pontos</h2>
+          <p>
+            Em uma próxima etapa, vamos criar o CRUD administrativo para
+            cadastrar, editar e remover pontos de coleta.
+          </p>
+
+          <span className="status-pill status-warning">Em breve</span>
+        </article>
       </div>
     </section>
   );
