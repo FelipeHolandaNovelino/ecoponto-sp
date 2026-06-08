@@ -5,6 +5,7 @@ import { CollectionPointDetailsPage } from "../pages/CollectionPointDetailsPage.
 import { CollectionPointsPage } from "../pages/CollectionPointsPage.jsx";
 import { DisposalRequestPage } from "../pages/DisposalRequestPage.jsx";
 import { HomePage } from "../pages/HomePage.jsx";
+import { NotFoundPage } from "../pages/NotFoundPage.jsx";
 
 /**
  * Rotas públicas da aplicação.
@@ -49,5 +50,18 @@ export const adminRoutes = [
   {
     path: "/admin/solicitacoes",
     element: <AdminRequestsPage />,
+  },
+];
+
+/**
+ * Rota de fallback.
+ *
+ * O React Router usa "*" para capturar qualquer caminho que não corresponda
+ * às rotas públicas ou administrativas registradas acima.
+ */
+export const fallbackRoutes = [
+  {
+    path: "*",
+    element: <NotFoundPage />,
   },
 ];

@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { AppLayout } from "../components/layout/AppLayout.jsx";
-import { adminRoutes, publicRoutes } from "./routes.jsx";
+import { adminRoutes, fallbackRoutes, publicRoutes } from "./routes.jsx";
 
 export default function App() {
   return (
@@ -13,6 +13,10 @@ export default function App() {
           ))}
 
           {adminRoutes.map((route) => (
+            <Route key={route.path} path={route.path} element={route.element} />
+          ))}
+
+          {fallbackRoutes.map((route) => (
             <Route key={route.path} path={route.path} element={route.element} />
           ))}
         </Route>

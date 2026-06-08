@@ -5,9 +5,10 @@ import "../../styles/emptyState.css";
 /**
  * Estado vazio reutilizável da aplicação.
  *
- * Este componente centraliza mensagens de ausência de dados, erros de busca
- * e fluxos ainda não preenchidos. Assim evitamos repetir estruturas parecidas
- * em várias páginas e mantemos a experiência visual mais consistente.
+ * Este componente centraliza mensagens de ausência de dados, erros de busca,
+ * rotas inexistentes e fluxos ainda não preenchidos. Assim evitamos repetir
+ * estruturas parecidas em várias páginas e mantemos a experiência visual mais
+ * consistente.
  */
 export function EmptyState({
   icon: Icon,
