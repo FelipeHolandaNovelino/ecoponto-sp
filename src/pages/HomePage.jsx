@@ -7,7 +7,6 @@ import {
   MapPin,
   Monitor,
   Recycle,
-  Search,
   Smartphone,
 } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -167,23 +166,7 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="home-impact-strip">
-        <div className="home-impact-strip-icon">
-          <Leaf size={30} />
-        </div>
-
-        <div>
-          <h2>Pequenas atitudes, grande impacto.</h2>
-          <p>
-            Descarte eletrônico correto hoje, uma cidade mais sustentável amanhã.
-          </p>
-        </div>
-
-        <Link to="/pontos" className="secondary-button">
-          <Search size={17} />
-          Encontrar ponto
-        </Link>
-      </section>
+     
     </section>
   );
 }
