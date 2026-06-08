@@ -18,8 +18,9 @@ function formatNumber(value) {
 /**
  * Componente reutilizável para gráficos de barras do dashboard.
  *
- * O projeto evita gráfico de pizza por decisão visual e usa barras porque elas
- * facilitam comparação direta entre categorias, status e bairros.
+ * Mantemos Recharts para demonstrar integração com biblioteca de gráficos.
+ * O ResponsiveContainer recebe altura numérica e limites mínimos para evitar
+ * erro de dimensão inválida no deploy da Vercel.
  */
 export function DashboardBarChart({
   title,
@@ -34,6 +35,14 @@ export function DashboardBarChart({
   const hasData = data.some((item) => Number(item[dataKey]) > 0);
   const isHorizontalBar = layout === "vertical";
 
+  /**
+   * Altura fixa e controlada por tipo de gráfico.
+   *
+   * Isso evita que o Recharts dependa de um container com height: 100% ainda
+   * não calculado pelo navegador durante a primeira renderização em produção.
+   */
+  const chartHeight = isHorizontalBar ? 290 : 260;
+
   return (
     <article className="dashboard-chart-card">
       <div className="dashboard-chart-header">
@@ -43,7 +52,13 @@ export function DashboardBarChart({
 
       {hasData ? (
         <div className="dashboard-chart-wrapper">
-          <ResponsiveContainer width="100%" height="100%">
+          <ResponsiveContainer
+            width="100%"
+            height={chartHeight}
+            minWidth={0}
+            minHeight={220}
+            debounce={80}
+          >
             <BarChart
               data={data}
               layout={isHorizontalBar ? "vertical" : "horizontal"}
@@ -51,7 +66,7 @@ export function DashboardBarChart({
                 top: 8,
                 right: 12,
                 bottom: 8,
-                left: isHorizontalBar ? 20 : 0,
+                left: isHorizontalBar ? 24 : 0,
               }}
             >
               <CartesianGrid strokeDasharray="3 3" vertical={false} />
@@ -70,7 +85,11 @@ export function DashboardBarChart({
               ) : (
                 <>
                   <XAxis dataKey={labelKey} tickLine={false} axisLine={false} />
-                  <YAxis allowDecimals={false} tickLine={false} axisLine={false} />
+                  <YAxis
+                    allowDecimals={false}
+                    tickLine={false}
+                    axisLine={false}
+                  />
                 </>
               )}
 

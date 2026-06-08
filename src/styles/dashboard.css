@@ -1,185 +1,155 @@
 /**
- * Estilos específicos do gerenciamento administrativo de pontos.
+ * Estilos específicos dos gráficos do dashboard.
  *
- * Este arquivo complementa o global.css com regras focadas no CRUD:
- * cabeçalhos de cards, ações administrativas, checkboxes e botões destrutivos.
+ * O dashboard usa gráficos de barras em vez de pizza para favorecer comparação
+ * direta entre categorias, status e bairros.
  */
 
-.admin-card-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  min-width: 0;
+.dashboard-chart-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
+  align-items: stretch;
 }
 
-.admin-card-header > div {
+/**
+ * Como o dashboard possui três gráficos, o último ocupa a largura total no
+ * desktop. Isso evita um card isolado pequeno e melhora a leitura.
+ */
+.dashboard-chart-grid > .dashboard-chart-card:last-child {
+  grid-column: 1 / -1;
+}
+
+.dashboard-chart-card {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+  min-height: 360px;
+  overflow: hidden;
+  padding: 1.3rem;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+}
+
+.dashboard-chart-header {
   min-width: 0;
 }
 
-.admin-card-header h2 {
+.dashboard-chart-header h2 {
+  margin-bottom: 0.35rem;
   overflow-wrap: anywhere;
 }
 
-.admin-card-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.7rem;
+.dashboard-chart-header p {
+  margin-bottom: 0;
 }
 
 /**
- * Grid dos resíduos aceitos.
+ * Área do gráfico.
  *
- * Usamos auto-fit para deixar os itens se reorganizarem melhor conforme
- * o espaço disponível, sem forçar duas colunas apertadas em larguras menores.
+ * O wrapper possui largura e altura explícitas para que o ResponsiveContainer
+ * consiga calcular dimensões válidas também no build publicado.
  */
-.admin-checkbox-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-  gap: 0.7rem;
-}
-
-/**
- * Item individual de seleção.
- *
- * Cada opção funciona como um pequeno card clicável, melhorando a área de toque
- * e deixando a seleção mais confortável no desktop e no mobile.
- */
-.admin-checkbox-item {
-  display: flex;
-  align-items: center;
+.dashboard-chart-wrapper {
+  display: block;
+  width: 100%;
   min-width: 0;
-  gap: 0.65rem;
-  padding: 0.85rem;
-  color: var(--color-text);
+  height: 300px;
+  overflow: hidden;
+}
+
+/**
+ * Estado vazio do gráfico.
+ *
+ * Mantém o card útil mesmo quando ainda não existem solicitações ou registros
+ * suficientes para montar uma visualização.
+ */
+.dashboard-chart-empty {
+  display: grid;
+  min-height: 230px;
+  place-items: center;
+  align-content: center;
+  gap: 0.4rem;
+  padding: 1.5rem;
+  text-align: center;
   background: #f7fbf8;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  font-size: 0.92rem;
-  font-weight: 700;
-  line-height: 1.35;
-  cursor: pointer;
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.dashboard-chart-empty strong {
+  color: var(--color-text);
+}
+
+.dashboard-chart-empty p {
+  max-width: 420px;
+  margin-bottom: 0;
 }
 
 /**
- * Correção importante do checkbox.
+ * Ajustes visuais internos do Recharts.
  *
- * O global.css estiliza inputs de formulário de forma ampla.
- * Como checkbox também é input, precisamos neutralizar aqui os estilos de
- * campo de texto para que ele volte a se comportar como checkbox nativo.
+ * Esses seletores suavizam textos e linhas gerados pelo SVG da biblioteca.
  */
-.form-field .admin-checkbox-item input[type="checkbox"] {
-  flex: 0 0 auto;
-  width: 18px;
-  min-width: 18px;
-  height: 18px;
-  margin: 0;
-  padding: 0;
-  background: initial;
-  border: initial;
-  border-radius: initial;
-  box-shadow: none;
-  accent-color: var(--color-primary);
-  cursor: pointer;
+.dashboard-chart-card .recharts-cartesian-grid line {
+  stroke: rgba(101, 117, 109, 0.18);
 }
 
-.form-field .admin-checkbox-item input[type="checkbox"]:focus {
-  box-shadow: 0 0 0 3px rgba(31, 122, 77, 0.14);
+.dashboard-chart-card .recharts-text {
+  fill: var(--color-muted);
+  font-size: 0.78rem;
+}
+
+.dashboard-chart-card .recharts-tooltip-wrapper {
+  outline: none;
 }
 
 /**
- * Botão de ação destrutiva.
+ * Tablet.
  *
- * Mantemos uma classe própria para remoção porque ela comunica uma ação
- * diferente das ações principais e secundárias do sistema.
+ * Os gráficos passam para uma coluna para preservar legibilidade dos eixos.
  */
-.danger-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.55rem;
-  min-height: 46px;
-  width: fit-content;
-  padding: 0.8rem 1.1rem;
-  color: #ffffff;
-  background: var(--color-danger);
-  border-radius: 999px;
-  font-weight: 700;
-  line-height: 1.2;
-  transition:
-    background-color 0.2s ease,
-    transform 0.2s ease;
-}
-
-.danger-button:hover {
-  background: #843232;
-  transform: translateY(-1px);
-}
-
-/**
- * Ajuste intermediário para tablets.
- *
- * Os botões continuam lado a lado quando há espaço, mas sem forçar largura
- * mínima que possa quebrar o layout.
- */
-@media (max-width: 920px) {
-  .admin-card-actions {
-    align-items: stretch;
-  }
-
-  .admin-card-actions .primary-button,
-  .admin-card-actions .secondary-button,
-  .admin-card-actions .danger-button {
-    flex: 1 1 180px;
-  }
-}
-
-/**
- * Ajustes mobile.
- *
- * Em telas pequenas, cabeçalho e ações viram coluna para evitar cards apertados
- * e botões pequenos demais para toque.
- */
-@media (max-width: 640px) {
-  .admin-card-header {
-    flex-direction: column;
-  }
-
-  .admin-checkbox-grid {
+@media (max-width: 1080px) {
+  .dashboard-chart-grid {
     grid-template-columns: 1fr;
   }
 
-  .admin-card-actions {
-    width: 100%;
-    flex-direction: column;
-  }
-
-  .admin-card-actions .primary-button,
-  .admin-card-actions .secondary-button,
-  .admin-card-actions .danger-button,
-  .danger-button {
-    width: 100%;
-  }
-
-  .admin-checkbox-item {
-    padding: 0.85rem;
+  .dashboard-chart-grid > .dashboard-chart-card:last-child {
+    grid-column: auto;
   }
 }
 
 /**
- * Ajuste extra para celulares estreitos.
+ * Mobile.
  *
- * Reduzimos levemente o peso visual dos itens selecionáveis sem prejudicar
- * a área de toque.
+ * Reduzimos a altura para evitar rolagem excessiva, mantendo espaço suficiente
+ * para o Recharts calcular e exibir os eixos corretamente.
  */
-@media (max-width: 420px) {
-  .admin-checkbox-item {
-    font-size: 0.9rem;
+@media (max-width: 640px) {
+  .dashboard-chart-card {
+    min-height: auto;
+    padding: 1rem;
+    border-radius: 22px;
   }
 
-  .form-field .admin-checkbox-item input[type="checkbox"] {
-    width: 17px;
-    min-width: 17px;
-    height: 17px;
+  .dashboard-chart-wrapper {
+    height: 270px;
+  }
+
+  .dashboard-chart-empty {
+    min-height: 200px;
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .dashboard-chart-wrapper {
+    height: 250px;
+  }
+
+  .dashboard-chart-header p {
+    font-size: 0.95rem;
   }
 }
