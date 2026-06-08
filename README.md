@@ -2,7 +2,7 @@
 
 EcoPonto SP é um protótipo funcional de uma plataforma GreenTech/GovTech criada para facilitar o descarte correto de resíduos eletrônicos em São Paulo.
 
-A aplicação conecta cidadãos a pontos de coleta, permite consultar locais por bairro, tipo de resíduo e status operacional, possibilita registrar intenções de descarte e oferece uma área administrativa para gerenciar pontos, acompanhar solicitações e visualizar indicadores operacionais.
+A aplicação conecta cidadãos a pontos de coleta, permite consultar locais por bairro, tipo de resíduo e status operacional, oferece orientações gerais de descarte por tipo de resíduo, possibilita registrar intenções de descarte e conta com uma área administrativa para gerenciar pontos, acompanhar solicitações e visualizar indicadores operacionais.
 
 ---
 
@@ -13,13 +13,14 @@ Acesse a versão publicada do EcoPonto SP:
 [Ver projeto online](https://ecoponto-sp.vercel.app/)
 
 O deploy foi realizado na Vercel.
+
 ---
 
 ## Objetivo do projeto
 
 O objetivo do EcoPonto SP é criar uma solução digital acessível, responsiva e orientada a dados para apoiar o descarte correto de resíduos eletrônicos em centros urbanos.
 
-Este projeto faz parte do meu portfólio e foi desenvolvido com foco em praticar organização de projeto React, componentização, rotas, filtros, formulários, CRUD, persistência local, dashboard administrativo, responsividade, estados vazios, feedback visual, tratamento de rotas inexistentes e separação entre área pública e área administrativa.
+Este projeto faz parte do meu portfólio e foi desenvolvido com foco em praticar organização de projeto React, componentização, rotas, filtros, formulários, CRUD, persistência local, dashboard administrativo, gráficos com Recharts, responsividade, estados vazios, feedback visual, tratamento de rotas inexistentes e separação entre área pública e área administrativa.
 
 ---
 
@@ -42,6 +43,7 @@ O EcoPonto SP propõe uma plataforma web responsiva onde o usuário pode:
 - filtrar pontos por tipo de resíduo eletrônico;
 - consultar status operacional;
 - visualizar detalhes de um ponto de coleta;
+- acessar orientações gerais de descarte;
 - registrar uma intenção de descarte.
 
 A plataforma também conta com uma área administrativa onde é possível:
@@ -73,8 +75,8 @@ Usuários responsáveis por gerenciar pontos de coleta, acompanhar solicitaçõe
 
 ### Área pública
 
-- Home com identidade visual redesenhada.
-- Hero visual com chamada principal, CTAs, ilustração em CSS e card de impacto.
+- Home com identidade visual redesenhada e mais enxuta.
+- Hero visual com chamada principal, CTA para pontos de coleta, ilustração em CSS e card compacto de impacto.
 - Página de pontos de coleta.
 - Filtro por busca textual.
 - Filtro por bairro.
@@ -82,6 +84,7 @@ Usuários responsáveis por gerenciar pontos de coleta, acompanhar solicitaçõe
 - Filtro por status do ponto.
 - Cards dinâmicos gerados a partir de dados persistidos.
 - Página de detalhes do ponto de coleta.
+- Página de orientações gerais de descarte por tipo de resíduo.
 - Registro de descarte com formulário.
 - Seleção automática do ponto ao registrar descarte a partir da página de detalhes.
 - Salvamento das solicitações no LocalStorage.
@@ -125,6 +128,8 @@ Usuário filtra por bairro, resíduo ou status
   ↓
 Usuário abre os detalhes de um ponto
   ↓
+Usuário consulta orientações gerais de descarte, se necessário
+  ↓
 Usuário registra uma intenção de descarte
   ↓
 A solicitação é salva no LocalStorage
@@ -147,6 +152,9 @@ Listagem de pontos de coleta
 
 /pontos/:id
 Detalhes de um ponto de coleta
+
+/orientacoes-descarte
+Orientações gerais de descarte por tipo de resíduo
 
 /registrar-descarte
 Formulário de registro de descarte
@@ -242,6 +250,10 @@ src/
       utils/
         dashboardMetrics.js
 
+    disposal-guidelines/
+      data/
+        disposalGuidelines.js
+
     disposal-requests/
       utils/
         disposalRequestsStorage.js
@@ -256,6 +268,7 @@ src/
     AdminRequestsPage.jsx
     CollectionPointDetailsPage.jsx
     CollectionPointsPage.jsx
+    DisposalGuidelinesPage.jsx
     DisposalRequestPage.jsx
     HomePage.jsx
     NotFoundPage.jsx
@@ -264,6 +277,7 @@ src/
     adminCollectionPoints.css
     confirmModal.css
     dashboard.css
+    disposalGuidelines.css
     emptyState.css
     global.css
     home.css
@@ -293,7 +307,7 @@ Atualmente inclui:
 
 ### `features/`
 
-Agrupa funcionalidades específicas do produto, como pontos de coleta, solicitações de descarte, dashboard e tipos de resíduos.
+Agrupa funcionalidades específicas do produto, como pontos de coleta, solicitações de descarte, orientações de descarte, dashboard e tipos de resíduos.
 
 Essa organização evita que todo o código fique concentrado apenas em uma pasta genérica de componentes. Cada domínio do sistema mantém seus dados, componentes e funções auxiliares mais próximos.
 
@@ -303,7 +317,7 @@ Contém as telas completas acessadas pelas rotas.
 
 ### `styles/`
 
-Contém os estilos globais e arquivos de estilo específicos de áreas mais complexas, como Home, dashboard, estados vazios, modal de confirmação, toast e gerenciamento administrativo.
+Contém os estilos globais e arquivos de estilo específicos de áreas mais complexas, como Home, dashboard, estados vazios, modal de confirmação, toast, orientações de descarte e gerenciamento administrativo.
 
 ---
 
@@ -335,7 +349,7 @@ Componente reutilizável para exibir feedbacks visuais após ações importantes
 
 ### `src/pages/HomePage.jsx`
 
-Tela inicial do projeto, com apresentação da solução, CTAs principais, card de impacto e cards de funcionalidades.
+Tela inicial do projeto, com apresentação da solução, CTA principal para pontos de coleta, card compacto de impacto e cards de funcionalidades complementares.
 
 ### `src/styles/home.css`
 
@@ -353,6 +367,16 @@ Contém as funções responsáveis por filtrar pontos de coleta por busca textua
 
 Centraliza a leitura, criação, edição, remoção e persistência dos pontos de coleta no LocalStorage.
 
+Também normaliza os dados dos pontos para manter apenas informações operacionais, já que as instruções gerais de descarte foram movidas para uma página própria.
+
+### `src/features/disposal-guidelines/data/disposalGuidelines.js`
+
+Contém as orientações gerais de preparo e descarte para cada tipo de resíduo eletrônico considerado pelo sistema.
+
+### `src/pages/DisposalGuidelinesPage.jsx`
+
+Página pública responsável por centralizar as regras gerais de descarte. Ela substitui instruções individuais dentro dos pontos de coleta e organiza as orientações por tipo de resíduo.
+
 ### `src/features/disposal-requests/utils/disposalRequestsStorage.js`
 
 Centraliza a leitura e escrita das solicitações de descarte no LocalStorage.
@@ -363,7 +387,7 @@ Contém funções responsáveis por calcular indicadores e montar dados para os 
 
 ### `src/features/dashboard/components/DashboardBarChart.jsx`
 
-Componente reutilizável para exibir gráficos de barras no dashboard administrativo.
+Componente reutilizável para exibir gráficos de barras no dashboard administrativo usando Recharts.
 
 ### `src/pages/CollectionPointsPage.jsx`
 
@@ -402,13 +426,34 @@ A Home foi redesenhada para funcionar como vitrine do produto.
 Ela apresenta:
 
 - proposta principal do EcoPonto SP;
-- botões de acesso para pontos de coleta e dashboard;
+- botão de acesso para pontos de coleta;
 - ilustração visual criada com CSS e ícones;
-- card de impacto com métricas simuladas;
-- cards de funcionalidades;
-- chamada final para incentivar o descarte correto.
+- card compacto de impacto com métricas simuladas;
+- card de orientação de descarte;
+- card de gestão administrativa.
 
-A identidade visual foi refinada para transmitir uma sensação mais moderna, sustentável e próxima de um produto real de portfólio.
+A interface foi simplificada para evitar links repetidos para a mesma área. O acesso principal aos pontos de coleta fica no hero, enquanto a seção inferior destaca funcionalidades complementares.
+
+---
+
+## Orientações de descarte
+
+O projeto possui uma página pública dedicada às orientações gerais de descarte.
+
+Essa página organiza regras por tipo de resíduo eletrônico, como:
+
+- celulares;
+- notebooks;
+- tablets;
+- pilhas;
+- baterias;
+- carregadores;
+- cabos;
+- monitores;
+- pequenos eletrônicos;
+- periféricos.
+
+As instruções foram centralizadas nessa página para evitar repetição em cada ponto de coleta. Com isso, os pontos ficam responsáveis por informações operacionais, como endereço, bairro, horário, status e resíduos aceitos.
 
 ---
 
@@ -427,6 +472,14 @@ Ele exibe:
 - gráfico de barras com pontos cadastrados por bairro.
 
 Por preferência visual e clareza de leitura, o projeto não utiliza gráfico de pizza. As informações categóricas são apresentadas com gráficos de barras, facilitando comparação direta entre valores.
+
+---
+
+## Recharts no deploy
+
+O dashboard utiliza Recharts para renderização dos gráficos administrativos.
+
+Durante o deploy, foi necessário ajustar as dimensões dos containers dos gráficos para evitar erro de largura e altura inválidas no ambiente publicado. A correção manteve o uso de Recharts e tornou os gráficos estáveis tanto localmente quanto na Vercel.
 
 ---
 
@@ -494,6 +547,22 @@ Ela evita tela em branco e oferece caminhos seguros para o usuário retornar par
 
 ---
 
+## Deploy
+
+O projeto foi publicado na Vercel.
+
+Como a aplicação usa React Router com `BrowserRouter`, foi adicionado um arquivo `vercel.json` para garantir que rotas internas continuem funcionando ao atualizar a página diretamente no navegador.
+
+Exemplos de rotas que funcionam no deploy:
+
+- `/admin/pontos`;
+- `/admin/solicitacoes`;
+- `/pontos/1`;
+- `/orientacoes-descarte`;
+- `/registrar-descarte`.
+
+---
+
 ## Responsividade
 
 O projeto passou por uma revisão de responsividade nas principais áreas:
@@ -504,6 +573,7 @@ O projeto passou por uma revisão de responsividade nas principais áreas:
 - filtros;
 - cards;
 - formulários;
+- página de orientações;
 - dashboard;
 - gerenciamento administrativo de pontos;
 - gráficos;
@@ -537,13 +607,18 @@ Com este projeto, foram praticados:
 - criação de estado vazio;
 - criação de modal reutilizável;
 - criação de feedback visual com toast;
+- criação de página informativa baseada em dados estruturados;
+- centralização de regras de orientação em uma fonte única;
+- separação entre dados operacionais do ponto e conteúdo educativo do produto;
 - separação entre área pública e área administrativa;
 - criação de dashboard;
 - cálculo de métricas derivadas;
 - gráficos de barras com Recharts;
+- correção de comportamento de gráficos em ambiente publicado;
 - responsividade com CSS;
 - criação de identidade visual para Home;
 - tratamento de rotas inexistentes;
+- configuração de deploy na Vercel;
 - uso de Git e GitHub para versionamento.
 
 ---
@@ -558,6 +633,7 @@ Com este projeto, foram praticados:
 - LocalStorage
 - Recharts
 - Lucide React
+- Vercel
 
 ---
 
@@ -570,16 +646,18 @@ Entre os diferenciais estão:
 - fluxo público e administrativo;
 - filtros funcionais;
 - uso de dados estruturados;
+- página informativa baseada em dados;
 - registro de solicitações;
 - CRUD administrativo;
 - persistência local;
 - dashboard com indicadores dinâmicos;
-- gráficos de barras;
+- gráficos de barras com Recharts;
 - navegação por rotas;
 - estados vazios reutilizáveis;
 - modal customizado de confirmação;
 - feedback visual com toast;
 - página 404;
+- deploy publicado;
 - visual responsivo;
 - Home com identidade visual própria;
 - tema voltado a sustentabilidade;
@@ -612,21 +690,30 @@ Entre os diferenciais estão:
 - Corrigir e consolidar estilos globais.
 - Criar dashboard com gráficos de barras.
 - Atualizar dashboard com métricas derivadas dos dados salvos.
+- Manter gráficos com Recharts e corrigir renderização no deploy.
 - Refinar responsividade global.
 - Refinar responsividade do dashboard.
 - Refinar responsividade do gerenciamento administrativo.
 - Redesenhar a Home.
 - Compactar e ajustar composição visual do hero da Home.
+- Criar página de orientações gerais de descarte.
+- Centralizar regras de descarte por tipo de resíduo.
+- Remover instruções individuais dos pontos de coleta.
+- Simplificar links repetidos na Home.
+- Compactar card de impacto da Home.
 - Criar estados vazios reutilizáveis.
 - Criar página 404.
 - Criar modal customizado de confirmação.
 - Criar feedback visual com toast para o CRUD de pontos.
+- Configurar deploy na Vercel.
+- Corrigir fallback de rotas internas no deploy.
 
 ### Próximas etapas
 
 - Permitir alteração de status das solicitações.
 - Adicionar prints ao README.
-- Publicar deploy.
+- Criar uma seção de demonstração visual no README.
+- Evoluir o painel administrativo com histórico por ponto.
 
 ### Evoluções futuras
 
@@ -678,7 +765,7 @@ http://localhost:5173/
 
 Projeto em desenvolvimento.
 
-A versão atual já possui um fluxo público de consulta e registro de descarte, uma área administrativa com gerenciamento de pontos de coleta, listagem de solicitações, dashboard com indicadores e gráficos de barras, estados vazios, página 404, modal de confirmação, feedback visual e uma Home redesenhada e responsiva.
+A versão atual já possui um fluxo público de consulta e registro de descarte, página de orientações gerais, área administrativa com gerenciamento de pontos de coleta, listagem de solicitações, dashboard com indicadores e gráficos de barras, estados vazios, página 404, modal de confirmação, feedback visual, deploy publicado e uma Home redesenhada e responsiva.
 
 ---
 
