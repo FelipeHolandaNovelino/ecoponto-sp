@@ -6,6 +6,15 @@ A aplicação conecta cidadãos a pontos de coleta, permite consultar locais por
 
 ---
 
+## Projeto online
+
+Acesse a versão publicada do EcoPonto SP:
+
+[Ver projeto online](https://ecoponto-sp.vercel.app/)
+
+O deploy foi realizado na Vercel.
+---
+
 ## Objetivo do projeto
 
 O objetivo do EcoPonto SP é criar uma solução digital acessível, responsiva e orientada a dados para apoiar o descarte correto de resíduos eletrônicos em centros urbanos.
