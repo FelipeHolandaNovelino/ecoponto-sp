@@ -10,7 +10,7 @@ A aplicação conecta cidadãos a pontos de coleta, permite consultar locais por
 
 O objetivo do EcoPonto SP é criar uma solução digital acessível, responsiva e orientada a dados para apoiar o descarte correto de resíduos eletrônicos em centros urbanos.
 
-Este projeto faz parte do meu portfólio e foi desenvolvido com foco em praticar organização de projeto React, componentização, rotas, filtros, formulários, CRUD, persistência local, dashboard administrativo e separação entre área pública e área administrativa.
+Este projeto faz parte do meu portfólio e foi desenvolvido com foco em praticar organização de projeto React, componentização, rotas, filtros, formulários, CRUD, persistência local, dashboard administrativo, responsividade e separação entre área pública e área administrativa.
 
 ---
 
@@ -63,7 +63,8 @@ Usuários responsáveis por gerenciar pontos de coleta, acompanhar solicitaçõe
 
 ### Área pública
 
-- Home com apresentação do projeto.
+- Home com identidade visual redesenhada.
+- Hero visual com chamada principal, CTAs, ilustração em CSS e card de impacto.
 - Página de pontos de coleta.
 - Filtro por busca textual.
 - Filtro por bairro.
@@ -240,6 +241,7 @@ src/
     adminCollectionPoints.css
     dashboard.css
     global.css
+    home.css
 ```
 
 ---
@@ -268,7 +270,7 @@ Contém as telas completas acessadas pelas rotas.
 
 ### `styles/`
 
-Contém os estilos globais e arquivos de estilo específicos de áreas mais complexas, como dashboard e gerenciamento administrativo.
+Contém os estilos globais e arquivos de estilo específicos de áreas mais complexas, como Home, dashboard e gerenciamento administrativo.
 
 ---
 
@@ -285,6 +287,14 @@ Centraliza as rotas públicas e administrativas do projeto.
 ### `src/components/layout/AppLayout.jsx`
 
 Define a estrutura visual principal da aplicação, incluindo cabeçalho, navegação e área de conteúdo.
+
+### `src/pages/HomePage.jsx`
+
+Tela inicial do projeto, com apresentação da solução, CTAs principais, card de impacto e cards de funcionalidades.
+
+### `src/styles/home.css`
+
+Arquivo responsável pela identidade visual específica da Home, incluindo hero, ilustração em CSS, card de impacto e responsividade da página inicial.
 
 ### `src/features/collection-points/data/collectionPoints.js`
 
@@ -336,6 +346,23 @@ Tela administrativa que lê e exibe as solicitações salvas pelo usuário.
 
 ---
 
+## Home
+
+A Home foi redesenhada para funcionar como vitrine do produto.
+
+Ela apresenta:
+
+- proposta principal do EcoPonto SP;
+- botões de acesso para pontos de coleta e dashboard;
+- ilustração visual criada com CSS e ícones;
+- card de impacto com métricas simuladas;
+- cards de funcionalidades;
+- chamada final para incentivar o descarte correto.
+
+A identidade visual foi refinada para transmitir uma sensação mais moderna, sustentável e próxima de um produto real de portfólio.
+
+---
+
 ## Dashboard administrativo
 
 O dashboard administrativo foi desenvolvido para oferecer uma visão geral da operação simulada da plataforma.
@@ -367,6 +394,25 @@ Essa abordagem permite demonstrar fluxo de dados, CRUD e atualização do dashbo
 
 ---
 
+## Responsividade
+
+O projeto passou por uma revisão de responsividade nas principais áreas:
+
+- layout global;
+- cabeçalho;
+- Home;
+- filtros;
+- cards;
+- formulários;
+- dashboard;
+- gerenciamento administrativo de pontos;
+- gráficos;
+- botões de ação.
+
+A aplicação foi ajustada para funcionar melhor em desktop, tablet e telas menores, com grids adaptáveis, botões mais confortáveis para toque e redução de riscos de vazamento visual em cards e formulários.
+
+---
+
 ## Principais aprendizados praticados
 
 Com este projeto, foram praticados:
@@ -391,6 +437,7 @@ Com este projeto, foram praticados:
 - cálculo de métricas derivadas;
 - gráficos de barras com Recharts;
 - responsividade com CSS;
+- criação de identidade visual para Home;
 - uso de Git e GitHub para versionamento.
 
 ---
@@ -424,6 +471,7 @@ Entre os diferenciais estão:
 - gráficos de barras;
 - navegação por rotas;
 - visual responsivo;
+- Home com identidade visual própria;
 - tema voltado a sustentabilidade;
 - proposta de impacto social e ambiental;
 - organização por domínios de funcionalidade.
@@ -454,10 +502,14 @@ Entre os diferenciais estão:
 - Corrigir e consolidar estilos globais.
 - Criar dashboard com gráficos de barras.
 - Atualizar dashboard com métricas derivadas dos dados salvos.
+- Refinar responsividade global.
+- Refinar responsividade do dashboard.
+- Refinar responsividade do gerenciamento administrativo.
+- Redesenhar a Home.
+- Compactar e ajustar composição visual do hero da Home.
 
 ### Próximas etapas
 
-- Refinar responsividade geral.
 - Melhorar estados vazios.
 - Criar página 404.
 - Melhorar feedback visual após criar, editar ou remover pontos.
@@ -516,7 +568,7 @@ http://localhost:5173/
 
 Projeto em desenvolvimento.
 
-A versão atual já possui um fluxo público de consulta e registro de descarte, uma área administrativa com gerenciamento de pontos de coleta, listagem de solicitações e dashboard com indicadores e gráficos de barras.
+A versão atual já possui um fluxo público de consulta e registro de descarte, uma área administrativa com gerenciamento de pontos de coleta, listagem de solicitações, dashboard com indicadores e gráficos de barras, além de uma Home redesenhada e responsiva.
 
 ---
 
