@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { MapPin, Search } from "lucide-react";
 
 import { CollectionPointCard } from "../features/collection-points/components/CollectionPointCard.jsx";
-import { collectionPoints } from "../features/collection-points/data/collectionPoints.js";
+import { getStoredCollectionPoints } from "../features/collection-points/utils/collectionPointsStorage.js";
 import {
   filterCollectionPoints,
   getUniqueDistricts,
@@ -10,22 +10,28 @@ import {
 import { wasteTypes } from "../features/waste-types/data/wasteTypes.js";
 
 export function CollectionPointsPage() {
+  /**
+   * A página pública lê os pontos persistidos para refletir alterações feitas
+   * na área administrativa.
+   */
+  const points = useMemo(() => getStoredCollectionPoints(), []);
+
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedDistrict, setSelectedDistrict] = useState("Todos os bairros");
   const [selectedWasteType, setSelectedWasteType] =
     useState("Todos os resíduos");
   const [selectedStatus, setSelectedStatus] = useState("Todos os status");
 
-  const districts = useMemo(() => getUniqueDistricts(collectionPoints), []);
+  const districts = useMemo(() => getUniqueDistricts(points), [points]);
 
   const filteredCollectionPoints = useMemo(() => {
-    return filterCollectionPoints(collectionPoints, {
+    return filterCollectionPoints(points, {
       searchTerm,
       selectedDistrict,
       selectedWasteType,
       selectedStatus,
     });
-  }, [searchTerm, selectedDistrict, selectedWasteType, selectedStatus]);
+  }, [points, searchTerm, selectedDistrict, selectedWasteType, selectedStatus]);
 
   return (
     <section className="page-section">

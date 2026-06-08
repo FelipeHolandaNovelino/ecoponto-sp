@@ -9,14 +9,12 @@ import {
 } from "lucide-react";
 import { Link, useSearchParams } from "react-router-dom";
 
-import { collectionPoints } from "../features/collection-points/data/collectionPoints.js";
+import { getStoredCollectionPoints } from "../features/collection-points/utils/collectionPointsStorage.js";
 import { createDisposalRequest } from "../features/disposal-requests/utils/disposalRequestsStorage.js";
 import { wasteTypes } from "../features/waste-types/data/wasteTypes.js";
 
-function getInitialFormData(pointIdFromUrl) {
-  const pointExists = collectionPoints.some(
-    (point) => point.id === Number(pointIdFromUrl)
-  );
+function getInitialFormData(pointIdFromUrl, points) {
+  const pointExists = points.some((point) => point.id === Number(pointIdFromUrl));
 
   return {
     userName: "",
@@ -49,17 +47,23 @@ export function DisposalRequestPage() {
   const [searchParams] = useSearchParams();
   const pointIdFromUrl = searchParams.get("pointId");
 
+  /**
+   * O formulário usa os pontos persistidos para permitir descarte em pontos
+   * criados ou editados pelo administrador.
+   */
+  const points = useMemo(() => getStoredCollectionPoints(), []);
+
   const [formData, setFormData] = useState(() =>
-    getInitialFormData(pointIdFromUrl)
+    getInitialFormData(pointIdFromUrl, points)
   );
   const [formErrors, setFormErrors] = useState({});
   const [createdRequest, setCreatedRequest] = useState(null);
 
   const selectedPoint = useMemo(() => {
-    return collectionPoints.find(
+    return points.find(
       (point) => point.id === Number(formData.collectionPointId)
     );
-  }, [formData.collectionPointId]);
+  }, [points, formData.collectionPointId]);
 
   function updateField(fieldName, value) {
     setFormData((currentData) => ({
@@ -167,7 +171,7 @@ export function DisposalRequestPage() {
             >
               <option value="">Selecione um ponto</option>
 
-              {collectionPoints.map((point) => (
+              {points.map((point) => (
                 <option key={point.id} value={point.id}>
                   {point.name} — {point.district}
                 </option>

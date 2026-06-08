@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 
-import { collectionPoints } from "../features/collection-points/data/collectionPoints.js";
+import { getStoredCollectionPoints } from "../features/collection-points/utils/collectionPointsStorage.js";
 
 function getStatusClassName(status) {
   const statusClasses = {
@@ -23,7 +23,13 @@ function getStatusClassName(status) {
 export function CollectionPointDetailsPage() {
   const { id } = useParams();
 
-  const point = collectionPoints.find(
+  /**
+   * A tela de detalhes usa os pontos persistidos para manter consistência
+   * com o CRUD administrativo.
+   */
+  const points = getStoredCollectionPoints();
+
+  const point = points.find(
     (collectionPoint) => collectionPoint.id === Number(id)
   );
 
@@ -34,8 +40,8 @@ export function CollectionPointDetailsPage() {
           <span className="eyebrow">Ponto não encontrado</span>
           <h1>Não encontramos esse ponto de coleta.</h1>
           <p>
-            O ponto solicitado não existe na base simulada do EcoPonto SP.
-            Volte para a listagem e escolha outro local.
+            O ponto solicitado não existe na base atual do EcoPonto SP. Volte
+            para a listagem e escolha outro local.
           </p>
 
           <Link to="/pontos" className="secondary-button">
