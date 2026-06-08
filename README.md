@@ -2,7 +2,7 @@
 
 EcoPonto SP é um protótipo funcional de uma plataforma GreenTech/GovTech criada para facilitar o descarte correto de resíduos eletrônicos em São Paulo.
 
-A aplicação conecta cidadãos a pontos de coleta, permite consultar locais por bairro, tipo de resíduo e status operacional, além de oferecer uma área administrativa para visualizar solicitações de descarte registradas pelos usuários.
+A aplicação conecta cidadãos a pontos de coleta, permite consultar locais por bairro, tipo de resíduo e status operacional, possibilita registrar intenções de descarte e oferece uma área administrativa para gerenciar pontos, acompanhar solicitações e visualizar indicadores operacionais.
 
 ---
 
@@ -10,7 +10,7 @@ A aplicação conecta cidadãos a pontos de coleta, permite consultar locais por
 
 O objetivo do EcoPonto SP é criar uma solução digital acessível, responsiva e orientada a dados para apoiar o descarte correto de resíduos eletrônicos em centros urbanos.
 
-Este projeto faz parte do meu portfólio e foi desenvolvido com foco em praticar organização de projeto React, componentização, rotas, filtros, formulários, persistência local e separação entre área pública e área administrativa.
+Este projeto faz parte do meu portfólio e foi desenvolvido com foco em praticar organização de projeto React, componentização, rotas, filtros, formulários, CRUD, persistência local, dashboard administrativo e separação entre área pública e área administrativa.
 
 ---
 
@@ -35,7 +35,15 @@ O EcoPonto SP propõe uma plataforma web responsiva onde o usuário pode:
 - visualizar detalhes de um ponto de coleta;
 - registrar uma intenção de descarte.
 
-A plataforma também conta com uma área administrativa onde é possível visualizar solicitações registradas pelos usuários.
+A plataforma também conta com uma área administrativa onde é possível:
+
+- visualizar indicadores operacionais;
+- gerenciar pontos de coleta;
+- cadastrar novos pontos;
+- editar pontos existentes;
+- remover pontos;
+- visualizar solicitações de descarte;
+- acompanhar dados em gráficos de barras.
 
 ---
 
@@ -47,7 +55,7 @@ Pessoas que precisam descartar resíduos eletrônicos de forma correta, mas não
 
 ### Administradores
 
-Usuários responsáveis por acompanhar solicitações de descarte e visualizar informações operacionais da plataforma.
+Usuários responsáveis por gerenciar pontos de coleta, acompanhar solicitações de descarte e visualizar informações operacionais da plataforma.
 
 ---
 
@@ -61,7 +69,7 @@ Usuários responsáveis por acompanhar solicitações de descarte e visualizar i
 - Filtro por bairro.
 - Filtro por tipo de resíduo.
 - Filtro por status do ponto.
-- Cards dinâmicos gerados a partir de dados mockados.
+- Cards dinâmicos gerados a partir de dados persistidos.
 - Página de detalhes do ponto de coleta.
 - Registro de descarte com formulário.
 - Seleção automática do ponto ao registrar descarte a partir da página de detalhes.
@@ -70,30 +78,45 @@ Usuários responsáveis por acompanhar solicitações de descarte e visualizar i
 
 ### Área administrativa
 
-- Dashboard operacional inicial.
-- Página de solicitações de descarte.
+- Dashboard operacional com indicadores dinâmicos.
+- Cards de resumo baseados nos dados salvos no LocalStorage.
+- Página administrativa de solicitações de descarte.
 - Leitura das solicitações salvas no LocalStorage.
 - Estado vazio quando não há solicitações.
 - Cards administrativos com status, tipo de resíduo, quantidade, ponto escolhido e data de registro.
+- Página de gerenciamento de pontos de coleta.
+- Cadastro de novos pontos.
+- Edição de pontos existentes.
+- Remoção de pontos.
+- Alteração de status operacional.
+- Persistência dos pontos no LocalStorage.
+- Dashboard com gráficos de barras usando Recharts.
+- Gráfico de pontos por status.
+- Gráfico de resíduos registrados por tipo.
+- Gráfico de pontos cadastrados por bairro.
 
 ---
 
 ## Fluxo principal
 
 ```txt
-Usuário acessa a Home
+Admin cadastra ou edita pontos de coleta
   ↓
-Consulta pontos de coleta
+Área pública exibe os pontos atualizados
   ↓
-Filtra por bairro, resíduo ou status
+Usuário consulta pontos de coleta
   ↓
-Abre os detalhes de um ponto
+Usuário filtra por bairro, resíduo ou status
   ↓
-Registra uma intenção de descarte
+Usuário abre os detalhes de um ponto
+  ↓
+Usuário registra uma intenção de descarte
   ↓
 A solicitação é salva no LocalStorage
   ↓
 Admin visualiza a solicitação na área administrativa
+  ↓
+Dashboard atualiza indicadores e gráficos com base nos dados salvos
 ```
 
 ---
@@ -115,6 +138,9 @@ Formulário de registro de descarte
 
 /admin
 Dashboard administrativo
+
+/admin/pontos
+Gerenciamento administrativo de pontos de coleta
 
 /admin/solicitacoes
 Listagem administrativa das solicitações
@@ -185,6 +211,13 @@ src/
         collectionPoints.js
       utils/
         collectionPointFilters.js
+        collectionPointsStorage.js
+
+    dashboard/
+      components/
+        DashboardBarChart.jsx
+      utils/
+        dashboardMetrics.js
 
     disposal-requests/
       utils/
@@ -195,6 +228,7 @@ src/
         wasteTypes.js
 
   pages/
+    AdminCollectionPointsPage.jsx
     AdminDashboardPage.jsx
     AdminRequestsPage.jsx
     CollectionPointDetailsPage.jsx
@@ -203,6 +237,8 @@ src/
     HomePage.jsx
 
   styles/
+    adminCollectionPoints.css
+    dashboard.css
     global.css
 ```
 
@@ -222,7 +258,7 @@ Contém componentes compartilhados ou estruturais da interface, como o layout pr
 
 ### `features/`
 
-Agrupa funcionalidades específicas do produto, como pontos de coleta, solicitações de descarte e tipos de resíduos.
+Agrupa funcionalidades específicas do produto, como pontos de coleta, solicitações de descarte, dashboard e tipos de resíduos.
 
 Essa organização evita que todo o código fique concentrado apenas em uma pasta genérica de componentes. Cada domínio do sistema mantém seus dados, componentes e funções auxiliares mais próximos.
 
@@ -232,7 +268,7 @@ Contém as telas completas acessadas pelas rotas.
 
 ### `styles/`
 
-Contém os estilos globais da aplicação.
+Contém os estilos globais e arquivos de estilo específicos de áreas mais complexas, como dashboard e gerenciamento administrativo.
 
 ---
 
@@ -252,15 +288,27 @@ Define a estrutura visual principal da aplicação, incluindo cabeçalho, navega
 
 ### `src/features/collection-points/data/collectionPoints.js`
 
-Contém os dados simulados dos pontos de coleta.
+Contém os dados simulados iniciais dos pontos de coleta.
 
 ### `src/features/collection-points/utils/collectionPointFilters.js`
 
 Contém as funções responsáveis por filtrar pontos de coleta por busca textual, bairro, tipo de resíduo e status.
 
+### `src/features/collection-points/utils/collectionPointsStorage.js`
+
+Centraliza a leitura, criação, edição, remoção e persistência dos pontos de coleta no LocalStorage.
+
 ### `src/features/disposal-requests/utils/disposalRequestsStorage.js`
 
 Centraliza a leitura e escrita das solicitações de descarte no LocalStorage.
+
+### `src/features/dashboard/utils/dashboardMetrics.js`
+
+Contém funções responsáveis por calcular indicadores e montar dados para os gráficos do dashboard.
+
+### `src/features/dashboard/components/DashboardBarChart.jsx`
+
+Componente reutilizável para exibir gráficos de barras no dashboard administrativo.
 
 ### `src/pages/CollectionPointsPage.jsx`
 
@@ -274,9 +322,48 @@ Tela de detalhes de um ponto de coleta, usando parâmetro dinâmico da URL.
 
 Tela de registro de descarte, com formulário controlado, validação simples e persistência no LocalStorage.
 
+### `src/pages/AdminDashboardPage.jsx`
+
+Tela administrativa principal, com indicadores dinâmicos e gráficos de barras baseados nos pontos e solicitações salvos.
+
+### `src/pages/AdminCollectionPointsPage.jsx`
+
+Tela administrativa de gerenciamento de pontos de coleta, com cadastro, edição, remoção e persistência local.
+
 ### `src/pages/AdminRequestsPage.jsx`
 
 Tela administrativa que lê e exibe as solicitações salvas pelo usuário.
+
+---
+
+## Dashboard administrativo
+
+O dashboard administrativo foi desenvolvido para oferecer uma visão geral da operação simulada da plataforma.
+
+Ele exibe:
+
+- quantidade de pontos ativos;
+- quantidade de solicitações pendentes;
+- volume estimado registrado em kg;
+- quantidade de bairros atendidos;
+- gráfico de barras com pontos por status;
+- gráfico de barras com resíduos registrados por tipo;
+- gráfico de barras com pontos cadastrados por bairro.
+
+Por preferência visual e clareza de leitura, o projeto não utiliza gráfico de pizza. As informações categóricas são apresentadas com gráficos de barras, facilitando comparação direta entre valores.
+
+---
+
+## Persistência local
+
+O projeto utiliza LocalStorage para simular persistência de dados sem backend.
+
+Atualmente são persistidos:
+
+- pontos de coleta cadastrados ou editados pelo administrador;
+- solicitações de descarte registradas pelos usuários.
+
+Essa abordagem permite demonstrar fluxo de dados, CRUD e atualização do dashboard sem depender de banco de dados ou API externa nesta etapa do projeto.
 
 ---
 
@@ -289,16 +376,21 @@ Com este projeto, foram praticados:
 - componentização;
 - organização por domínio de funcionalidade;
 - uso de dados mockados;
+- persistência com LocalStorage;
 - filtros combinados;
 - renderização dinâmica com `map`;
 - rotas dinâmicas com `useParams`;
 - leitura de parâmetros de URL com `useSearchParams`;
 - formulários controlados;
 - validação simples;
-- persistência com LocalStorage;
+- CRUD no front-end;
+- criação, edição e remoção de registros;
 - criação de estado vazio;
 - separação entre área pública e área administrativa;
-- responsividade com CSS global;
+- criação de dashboard;
+- cálculo de métricas derivadas;
+- gráficos de barras com Recharts;
+- responsividade com CSS;
 - uso de Git e GitHub para versionamento.
 
 ---
@@ -311,6 +403,7 @@ Com este projeto, foram praticados:
 - JavaScript
 - CSS
 - LocalStorage
+- Recharts
 - Lucide React
 
 ---
@@ -325,7 +418,10 @@ Entre os diferenciais estão:
 - filtros funcionais;
 - uso de dados estruturados;
 - registro de solicitações;
+- CRUD administrativo;
 - persistência local;
+- dashboard com indicadores dinâmicos;
+- gráficos de barras;
 - navegação por rotas;
 - visual responsivo;
 - tema voltado a sustentabilidade;
@@ -349,16 +445,23 @@ Entre os diferenciais estão:
 - Salvar solicitações no LocalStorage.
 - Criar dashboard administrativo inicial.
 - Criar página administrativa de solicitações.
+- Criar gerenciamento administrativo de pontos.
+- Implementar cadastro de pontos.
+- Implementar edição de pontos.
+- Implementar remoção de pontos.
+- Persistir pontos no LocalStorage.
+- Integrar pontos persistidos à área pública.
 - Corrigir e consolidar estilos globais.
+- Criar dashboard com gráficos de barras.
+- Atualizar dashboard com métricas derivadas dos dados salvos.
 
 ### Próximas etapas
 
-- Criar gerenciamento administrativo de pontos de coleta.
-- Implementar criação, edição e remoção de pontos.
-- Criar dashboard com gráficos.
-- Melhorar indicadores administrativos.
-- Adicionar persistência dos pontos no LocalStorage.
-- Refinar responsividade.
+- Refinar responsividade geral.
+- Melhorar estados vazios.
+- Criar página 404.
+- Melhorar feedback visual após criar, editar ou remover pontos.
+- Criar confirmação visual customizada no lugar de `window.confirm`.
 - Adicionar prints ao README.
 - Publicar deploy.
 
@@ -370,6 +473,8 @@ Entre os diferenciais estão:
 - Criar API própria.
 - Adicionar perfis de usuário.
 - Adicionar painel de métricas ambientais mais completo.
+- Permitir alteração de status das solicitações.
+- Criar histórico de descarte por ponto de coleta.
 
 ---
 
@@ -411,7 +516,7 @@ http://localhost:5173/
 
 Projeto em desenvolvimento.
 
-A versão atual já possui o fluxo público de consulta e registro de descarte, além de uma área administrativa inicial para visualização das solicitações.
+A versão atual já possui um fluxo público de consulta e registro de descarte, uma área administrativa com gerenciamento de pontos de coleta, listagem de solicitações e dashboard com indicadores e gráficos de barras.
 
 ---
 
