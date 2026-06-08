@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 
 import { ConfirmModal } from "../components/ui/ConfirmModal.jsx";
 import { EmptyState } from "../components/ui/EmptyState.jsx";
+import { ToastMessage } from "../components/ui/ToastMessage.jsx";
 import {
   createCollectionPoint,
   deleteCollectionPoint,
@@ -95,12 +96,30 @@ export function AdminCollectionPointsPage() {
   const [formErrors, setFormErrors] = useState({});
   const [editingPointId, setEditingPointId] = useState(null);
   const [pointPendingDeletion, setPointPendingDeletion] = useState(null);
+  const [feedback, setFeedback] = useState(null);
 
   const isEditing = editingPointId !== null;
 
   const activePointsCount = useMemo(() => {
     return points.filter((point) => point.status === "Ativo").length;
   }, [points]);
+
+  /**
+   * Exibe uma mensagem curta de feedback para o usuário.
+   *
+   * O feedback fica centralizado nesta função para manter o componente
+   * preparado para novos tipos de mensagem no futuro.
+   */
+  function showFeedback(message, tone = "success") {
+    setFeedback({
+      message,
+      tone,
+    });
+  }
+
+  function closeFeedback() {
+    setFeedback(null);
+  }
 
   /**
    * Atualiza um campo do formulário e limpa o erro daquele campo.
@@ -168,6 +187,7 @@ export function AdminCollectionPointsPage() {
     setFormErrors(errors);
 
     if (Object.keys(errors).length > 0) {
+      showFeedback("Revise os campos obrigatórios antes de salvar.", "info");
       return;
     }
 
@@ -176,6 +196,13 @@ export function AdminCollectionPointsPage() {
       : createCollectionPoint(formData);
 
     setPoints(updatedPoints);
+
+    showFeedback(
+      isEditing
+        ? "Alterações salvas com sucesso."
+        : "Ponto cadastrado com sucesso."
+    );
+
     resetForm();
   }
 
@@ -200,6 +227,7 @@ export function AdminCollectionPointsPage() {
     });
 
     setFormErrors({});
+    showFeedback(`Editando "${point.name}".`, "info");
   }
 
   /**
@@ -227,6 +255,7 @@ export function AdminCollectionPointsPage() {
       return;
     }
 
+    const deletedPointName = pointPendingDeletion.name;
     const updatedPoints = deleteCollectionPoint(pointPendingDeletion.id);
 
     setPoints(updatedPoints);
@@ -236,6 +265,7 @@ export function AdminCollectionPointsPage() {
     }
 
     setPointPendingDeletion(null);
+    showFeedback(`"${deletedPointName}" foi removido com sucesso.`);
   }
 
   const deletionDescription = pointPendingDeletion
@@ -244,6 +274,12 @@ export function AdminCollectionPointsPage() {
 
   return (
     <>
+      <ToastMessage
+        message={feedback?.message}
+        tone={feedback?.tone}
+        onClose={closeFeedback}
+      />
+
       <section className="page-section">
         <div className="page-header">
           <span className="eyebrow">Área administrativa</span>

@@ -1,0 +1,78 @@
+/**
+ * Estilos da mensagem flutuante.
+ *
+ * O toast foi pensado para feedbacks rápidos e não bloqueantes. Ele aparece
+ * no canto superior direito sem interromper o fluxo do usuário.
+ */
+
+.toast-message {
+  position: fixed;
+  top: 5.25rem;
+  right: max(1rem, calc((100vw - var(--max-width)) / 2));
+  z-index: 60;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  width: min(100% - 2rem, 420px);
+  gap: 0.75rem;
+  padding: 0.9rem;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid var(--color-border);
+  border-radius: 18px;
+  box-shadow: 0 22px 54px rgba(13, 32, 23, 0.18);
+  backdrop-filter: blur(12px);
+}
+
+.toast-message-success {
+  border-color: rgba(31, 122, 77, 0.22);
+}
+
+.toast-message-info {
+  border-color: rgba(37, 111, 143, 0.22);
+}
+
+.toast-message-icon {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  color: var(--color-primary);
+  background: var(--color-success-bg);
+  border-radius: 14px;
+}
+
+.toast-message-info .toast-message-icon {
+  color: var(--color-secondary);
+  background: #e4f0fb;
+}
+
+.toast-message p {
+  margin: 0;
+  color: var(--color-text);
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.toast-message-close {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  color: var(--color-muted);
+  background: var(--color-surface-soft);
+  border-radius: 50%;
+}
+
+.toast-message-close:hover {
+  color: var(--color-text);
+  background: #d9ede2;
+}
+
+@media (max-width: 640px) {
+  .toast-message {
+    top: auto;
+    right: 1rem;
+    bottom: 1rem;
+    width: calc(100% - 2rem);
+  }
+}
