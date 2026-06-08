@@ -10,7 +10,7 @@ A aplicação conecta cidadãos a pontos de coleta, permite consultar locais por
 
 O objetivo do EcoPonto SP é criar uma solução digital acessível, responsiva e orientada a dados para apoiar o descarte correto de resíduos eletrônicos em centros urbanos.
 
-Este projeto faz parte do meu portfólio e foi desenvolvido com foco em praticar organização de projeto React, componentização, rotas, filtros, formulários, CRUD, persistência local, dashboard administrativo, responsividade e separação entre área pública e área administrativa.
+Este projeto faz parte do meu portfólio e foi desenvolvido com foco em praticar organização de projeto React, componentização, rotas, filtros, formulários, CRUD, persistência local, dashboard administrativo, responsividade, estados vazios, tratamento de rotas inexistentes e separação entre área pública e área administrativa.
 
 ---
 
@@ -28,22 +28,22 @@ Esse cenário dificulta o descarte responsável e pode contribuir para o descart
 
 O EcoPonto SP propõe uma plataforma web responsiva onde o usuário pode:
 
-- encontrar pontos de coleta;
-- filtrar locais por bairro;
-- filtrar pontos por tipo de resíduo eletrônico;
-- consultar status operacional;
-- visualizar detalhes de um ponto de coleta;
-- registrar uma intenção de descarte.
+* encontrar pontos de coleta;
+* filtrar locais por bairro;
+* filtrar pontos por tipo de resíduo eletrônico;
+* consultar status operacional;
+* visualizar detalhes de um ponto de coleta;
+* registrar uma intenção de descarte.
 
 A plataforma também conta com uma área administrativa onde é possível:
 
-- visualizar indicadores operacionais;
-- gerenciar pontos de coleta;
-- cadastrar novos pontos;
-- editar pontos existentes;
-- remover pontos;
-- visualizar solicitações de descarte;
-- acompanhar dados em gráficos de barras.
+* visualizar indicadores operacionais;
+* gerenciar pontos de coleta;
+* cadastrar novos pontos;
+* editar pontos existentes;
+* remover pontos com modal de confirmação;
+* visualizar solicitações de descarte;
+* acompanhar dados em gráficos de barras.
 
 ---
 
@@ -63,38 +63,41 @@ Usuários responsáveis por gerenciar pontos de coleta, acompanhar solicitaçõe
 
 ### Área pública
 
-- Home com identidade visual redesenhada.
-- Hero visual com chamada principal, CTAs, ilustração em CSS e card de impacto.
-- Página de pontos de coleta.
-- Filtro por busca textual.
-- Filtro por bairro.
-- Filtro por tipo de resíduo.
-- Filtro por status do ponto.
-- Cards dinâmicos gerados a partir de dados persistidos.
-- Página de detalhes do ponto de coleta.
-- Registro de descarte com formulário.
-- Seleção automática do ponto ao registrar descarte a partir da página de detalhes.
-- Salvamento das solicitações no LocalStorage.
-- Estado de sucesso após envio do formulário.
+* Home com identidade visual redesenhada.
+* Hero visual com chamada principal, CTAs, ilustração em CSS e card de impacto.
+* Página de pontos de coleta.
+* Filtro por busca textual.
+* Filtro por bairro.
+* Filtro por tipo de resíduo.
+* Filtro por status do ponto.
+* Cards dinâmicos gerados a partir de dados persistidos.
+* Página de detalhes do ponto de coleta.
+* Registro de descarte com formulário.
+* Seleção automática do ponto ao registrar descarte a partir da página de detalhes.
+* Salvamento das solicitações no LocalStorage.
+* Estado de sucesso após envio do formulário.
+* Estados vazios para buscas sem resultado.
+* Página 404 para rotas inexistentes.
 
 ### Área administrativa
 
-- Dashboard operacional com indicadores dinâmicos.
-- Cards de resumo baseados nos dados salvos no LocalStorage.
-- Página administrativa de solicitações de descarte.
-- Leitura das solicitações salvas no LocalStorage.
-- Estado vazio quando não há solicitações.
-- Cards administrativos com status, tipo de resíduo, quantidade, ponto escolhido e data de registro.
-- Página de gerenciamento de pontos de coleta.
-- Cadastro de novos pontos.
-- Edição de pontos existentes.
-- Remoção de pontos.
-- Alteração de status operacional.
-- Persistência dos pontos no LocalStorage.
-- Dashboard com gráficos de barras usando Recharts.
-- Gráfico de pontos por status.
-- Gráfico de resíduos registrados por tipo.
-- Gráfico de pontos cadastrados por bairro.
+* Dashboard operacional com indicadores dinâmicos.
+* Cards de resumo baseados nos dados salvos no LocalStorage.
+* Página administrativa de solicitações de descarte.
+* Leitura das solicitações salvas no LocalStorage.
+* Estado vazio quando não há solicitações.
+* Cards administrativos com status, tipo de resíduo, quantidade, ponto escolhido e data de registro.
+* Página de gerenciamento de pontos de coleta.
+* Cadastro de novos pontos.
+* Edição de pontos existentes.
+* Remoção de pontos.
+* Modal customizado para confirmação de exclusão.
+* Alteração de status operacional.
+* Persistência dos pontos no LocalStorage.
+* Dashboard com gráficos de barras usando Recharts.
+* Gráfico de pontos por status.
+* Gráfico de resíduos registrados por tipo.
+* Gráfico de pontos cadastrados por bairro.
 
 ---
 
@@ -145,6 +148,9 @@ Gerenciamento administrativo de pontos de coleta
 
 /admin/solicitacoes
 Listagem administrativa das solicitações
+
+*
+Página 404 para rotas inexistentes
 ```
 
 ---
@@ -153,16 +159,16 @@ Listagem administrativa das solicitações
 
 O sistema trabalha inicialmente com os seguintes tipos de resíduos eletrônicos:
 
-- Celulares
-- Notebooks
-- Tablets
-- Pilhas
-- Baterias
-- Carregadores
-- Cabos
-- Monitores
-- Pequenos eletrônicos
-- Periféricos
+* Celulares
+* Notebooks
+* Tablets
+* Pilhas
+* Baterias
+* Carregadores
+* Cabos
+* Monitores
+* Pequenos eletrônicos
+* Periféricos
 
 ---
 
@@ -170,9 +176,9 @@ O sistema trabalha inicialmente com os seguintes tipos de resíduos eletrônicos
 
 Cada ponto de coleta pode possuir um dos seguintes status:
 
-- Ativo
-- Cheio
-- Em manutenção
+* Ativo
+* Cheio
+* Em manutenção
 
 Esses status ajudam o usuário a entender se o ponto está disponível para receber novos descartes.
 
@@ -182,13 +188,13 @@ Esses status ajudam o usuário a entender se o ponto está disponível para rece
 
 As solicitações de descarte são criadas inicialmente com o status:
 
-- Pendente
+* Pendente
 
 Em evoluções futuras, o fluxo poderá incluir:
 
-- Recebido
-- Processado
-- Cancelado
+* Recebido
+* Processado
+* Cancelado
 
 ---
 
@@ -203,6 +209,10 @@ src/
   components/
     layout/
       AppLayout.jsx
+
+    ui/
+      ConfirmModal.jsx
+      EmptyState.jsx
 
   features/
     collection-points/
@@ -236,10 +246,13 @@ src/
     CollectionPointsPage.jsx
     DisposalRequestPage.jsx
     HomePage.jsx
+    NotFoundPage.jsx
 
   styles/
     adminCollectionPoints.css
+    confirmModal.css
     dashboard.css
+    emptyState.css
     global.css
     home.css
 ```
@@ -256,7 +269,13 @@ Contém a configuração principal da aplicação, como o componente raiz e as r
 
 ### `components/`
 
-Contém componentes compartilhados ou estruturais da interface, como o layout principal.
+Contém componentes compartilhados ou estruturais da interface.
+
+Atualmente inclui:
+
+* `AppLayout.jsx`, responsável pelo layout principal;
+* `EmptyState.jsx`, responsável por estados vazios reutilizáveis;
+* `ConfirmModal.jsx`, responsável por confirmações de ações sensíveis.
 
 ### `features/`
 
@@ -270,7 +289,7 @@ Contém as telas completas acessadas pelas rotas.
 
 ### `styles/`
 
-Contém os estilos globais e arquivos de estilo específicos de áreas mais complexas, como Home, dashboard e gerenciamento administrativo.
+Contém os estilos globais e arquivos de estilo específicos de áreas mais complexas, como Home, dashboard, estados vazios, modal de confirmação e gerenciamento administrativo.
 
 ---
 
@@ -282,11 +301,19 @@ Componente principal da aplicação. Ele configura o `BrowserRouter`, registra a
 
 ### `src/app/routes.jsx`
 
-Centraliza as rotas públicas e administrativas do projeto.
+Centraliza as rotas públicas, administrativas e a rota de fallback para página 404.
 
 ### `src/components/layout/AppLayout.jsx`
 
 Define a estrutura visual principal da aplicação, incluindo cabeçalho, navegação e área de conteúdo.
+
+### `src/components/ui/EmptyState.jsx`
+
+Componente reutilizável para exibir estados vazios, buscas sem resultado, rotas inválidas e ausência de registros.
+
+### `src/components/ui/ConfirmModal.jsx`
+
+Componente reutilizável para confirmar ações sensíveis. Atualmente é usado na exclusão de pontos de coleta.
 
 ### `src/pages/HomePage.jsx`
 
@@ -322,11 +349,11 @@ Componente reutilizável para exibir gráficos de barras no dashboard administra
 
 ### `src/pages/CollectionPointsPage.jsx`
 
-Tela de listagem dos pontos de coleta, com filtros combinados e renderização dinâmica dos cards.
+Tela de listagem dos pontos de coleta, com filtros combinados, renderização dinâmica dos cards e estado vazio para buscas sem resultado.
 
 ### `src/pages/CollectionPointDetailsPage.jsx`
 
-Tela de detalhes de um ponto de coleta, usando parâmetro dinâmico da URL.
+Tela de detalhes de um ponto de coleta, usando parâmetro dinâmico da URL. Também exibe estado vazio quando o ponto não é encontrado.
 
 ### `src/pages/DisposalRequestPage.jsx`
 
@@ -338,11 +365,15 @@ Tela administrativa principal, com indicadores dinâmicos e gráficos de barras 
 
 ### `src/pages/AdminCollectionPointsPage.jsx`
 
-Tela administrativa de gerenciamento de pontos de coleta, com cadastro, edição, remoção e persistência local.
+Tela administrativa de gerenciamento de pontos de coleta, com cadastro, edição, remoção, modal de confirmação e persistência local.
 
 ### `src/pages/AdminRequestsPage.jsx`
 
 Tela administrativa que lê e exibe as solicitações salvas pelo usuário.
+
+### `src/pages/NotFoundPage.jsx`
+
+Página exibida quando o usuário acessa uma rota inexistente.
 
 ---
 
@@ -352,12 +383,12 @@ A Home foi redesenhada para funcionar como vitrine do produto.
 
 Ela apresenta:
 
-- proposta principal do EcoPonto SP;
-- botões de acesso para pontos de coleta e dashboard;
-- ilustração visual criada com CSS e ícones;
-- card de impacto com métricas simuladas;
-- cards de funcionalidades;
-- chamada final para incentivar o descarte correto.
+* proposta principal do EcoPonto SP;
+* botões de acesso para pontos de coleta e dashboard;
+* ilustração visual criada com CSS e ícones;
+* card de impacto com métricas simuladas;
+* cards de funcionalidades;
+* chamada final para incentivar o descarte correto.
 
 A identidade visual foi refinada para transmitir uma sensação mais moderna, sustentável e próxima de um produto real de portfólio.
 
@@ -369,13 +400,13 @@ O dashboard administrativo foi desenvolvido para oferecer uma visão geral da op
 
 Ele exibe:
 
-- quantidade de pontos ativos;
-- quantidade de solicitações pendentes;
-- volume estimado registrado em kg;
-- quantidade de bairros atendidos;
-- gráfico de barras com pontos por status;
-- gráfico de barras com resíduos registrados por tipo;
-- gráfico de barras com pontos cadastrados por bairro.
+* quantidade de pontos ativos;
+* quantidade de solicitações pendentes;
+* volume estimado registrado em kg;
+* quantidade de bairros atendidos;
+* gráfico de barras com pontos por status;
+* gráfico de barras com resíduos registrados por tipo;
+* gráfico de barras com pontos cadastrados por bairro.
 
 Por preferência visual e clareza de leitura, o projeto não utiliza gráfico de pizza. As informações categóricas são apresentadas com gráficos de barras, facilitando comparação direta entre valores.
 
@@ -387,10 +418,45 @@ O projeto utiliza LocalStorage para simular persistência de dados sem backend.
 
 Atualmente são persistidos:
 
-- pontos de coleta cadastrados ou editados pelo administrador;
-- solicitações de descarte registradas pelos usuários.
+* pontos de coleta cadastrados ou editados pelo administrador;
+* solicitações de descarte registradas pelos usuários.
 
 Essa abordagem permite demonstrar fluxo de dados, CRUD e atualização do dashboard sem depender de banco de dados ou API externa nesta etapa do projeto.
+
+---
+
+## Estados vazios
+
+O projeto possui estados vazios reutilizáveis para melhorar a experiência quando não há dados disponíveis ou quando uma busca não retorna resultados.
+
+Atualmente os estados vazios aparecem em situações como:
+
+* busca sem resultado na página de pontos;
+* ponto de coleta não encontrado;
+* ausência de solicitações administrativas;
+* ausência de pontos cadastrados;
+* rota inexistente.
+
+---
+
+## Modal de confirmação
+
+A exclusão de pontos de coleta utiliza um modal customizado de confirmação.
+
+Esse modal substitui o `window.confirm` nativo do navegador, deixando a experiência mais consistente com a identidade visual do projeto.
+
+O modal informa claramente a ação que será executada e oferece botões para cancelar ou confirmar a remoção.
+
+---
+
+## Página 404
+
+O projeto possui uma página 404 para rotas inexistentes.
+
+Ela evita tela em branco e oferece caminhos seguros para o usuário retornar para:
+
+* Home;
+* pontos de coleta.
 
 ---
 
@@ -398,16 +464,18 @@ Essa abordagem permite demonstrar fluxo de dados, CRUD e atualização do dashbo
 
 O projeto passou por uma revisão de responsividade nas principais áreas:
 
-- layout global;
-- cabeçalho;
-- Home;
-- filtros;
-- cards;
-- formulários;
-- dashboard;
-- gerenciamento administrativo de pontos;
-- gráficos;
-- botões de ação.
+* layout global;
+* cabeçalho;
+* Home;
+* filtros;
+* cards;
+* formulários;
+* dashboard;
+* gerenciamento administrativo de pontos;
+* gráficos;
+* botões de ação;
+* estados vazios;
+* modal de confirmação.
 
 A aplicação foi ajustada para funcionar melhor em desktop, tablet e telas menores, com grids adaptáveis, botões mais confortáveis para toque e redução de riscos de vazamento visual em cards e formulários.
 
@@ -417,41 +485,43 @@ A aplicação foi ajustada para funcionar melhor em desktop, tablet e telas meno
 
 Com este projeto, foram praticados:
 
-- criação de projeto com React e Vite;
-- estruturação de rotas com React Router;
-- componentização;
-- organização por domínio de funcionalidade;
-- uso de dados mockados;
-- persistência com LocalStorage;
-- filtros combinados;
-- renderização dinâmica com `map`;
-- rotas dinâmicas com `useParams`;
-- leitura de parâmetros de URL com `useSearchParams`;
-- formulários controlados;
-- validação simples;
-- CRUD no front-end;
-- criação, edição e remoção de registros;
-- criação de estado vazio;
-- separação entre área pública e área administrativa;
-- criação de dashboard;
-- cálculo de métricas derivadas;
-- gráficos de barras com Recharts;
-- responsividade com CSS;
-- criação de identidade visual para Home;
-- uso de Git e GitHub para versionamento.
+* criação de projeto com React e Vite;
+* estruturação de rotas com React Router;
+* componentização;
+* organização por domínio de funcionalidade;
+* uso de dados mockados;
+* persistência com LocalStorage;
+* filtros combinados;
+* renderização dinâmica com `map`;
+* rotas dinâmicas com `useParams`;
+* leitura de parâmetros de URL com `useSearchParams`;
+* formulários controlados;
+* validação simples;
+* CRUD no front-end;
+* criação, edição e remoção de registros;
+* criação de estado vazio;
+* criação de modal reutilizável;
+* separação entre área pública e área administrativa;
+* criação de dashboard;
+* cálculo de métricas derivadas;
+* gráficos de barras com Recharts;
+* responsividade com CSS;
+* criação de identidade visual para Home;
+* tratamento de rotas inexistentes;
+* uso de Git e GitHub para versionamento.
 
 ---
 
 ## Stack utilizada
 
-- React
-- Vite
-- React Router
-- JavaScript
-- CSS
-- LocalStorage
-- Recharts
-- Lucide React
+* React
+* Vite
+* React Router
+* JavaScript
+* CSS
+* LocalStorage
+* Recharts
+* Lucide React
 
 ---
 
@@ -461,20 +531,23 @@ O EcoPonto SP foi planejado para mostrar habilidades diferentes de um sistema pu
 
 Entre os diferenciais estão:
 
-- fluxo público e administrativo;
-- filtros funcionais;
-- uso de dados estruturados;
-- registro de solicitações;
-- CRUD administrativo;
-- persistência local;
-- dashboard com indicadores dinâmicos;
-- gráficos de barras;
-- navegação por rotas;
-- visual responsivo;
-- Home com identidade visual própria;
-- tema voltado a sustentabilidade;
-- proposta de impacto social e ambiental;
-- organização por domínios de funcionalidade.
+* fluxo público e administrativo;
+* filtros funcionais;
+* uso de dados estruturados;
+* registro de solicitações;
+* CRUD administrativo;
+* persistência local;
+* dashboard com indicadores dinâmicos;
+* gráficos de barras;
+* navegação por rotas;
+* estados vazios reutilizáveis;
+* modal customizado de confirmação;
+* página 404;
+* visual responsivo;
+* Home com identidade visual própria;
+* tema voltado a sustentabilidade;
+* proposta de impacto social e ambiental;
+* organização por domínios de funcionalidade.
 
 ---
 
@@ -482,51 +555,51 @@ Entre os diferenciais estão:
 
 ### Concluído
 
-- Criar base React com Vite.
-- Configurar rotas.
-- Criar layout principal.
-- Criar Home.
-- Criar página de pontos de coleta.
-- Criar filtros.
-- Criar detalhes do ponto.
-- Criar registro de descarte.
-- Salvar solicitações no LocalStorage.
-- Criar dashboard administrativo inicial.
-- Criar página administrativa de solicitações.
-- Criar gerenciamento administrativo de pontos.
-- Implementar cadastro de pontos.
-- Implementar edição de pontos.
-- Implementar remoção de pontos.
-- Persistir pontos no LocalStorage.
-- Integrar pontos persistidos à área pública.
-- Corrigir e consolidar estilos globais.
-- Criar dashboard com gráficos de barras.
-- Atualizar dashboard com métricas derivadas dos dados salvos.
-- Refinar responsividade global.
-- Refinar responsividade do dashboard.
-- Refinar responsividade do gerenciamento administrativo.
-- Redesenhar a Home.
-- Compactar e ajustar composição visual do hero da Home.
+* Criar base React com Vite.
+* Configurar rotas.
+* Criar layout principal.
+* Criar Home.
+* Criar página de pontos de coleta.
+* Criar filtros.
+* Criar detalhes do ponto.
+* Criar registro de descarte.
+* Salvar solicitações no LocalStorage.
+* Criar dashboard administrativo inicial.
+* Criar página administrativa de solicitações.
+* Criar gerenciamento administrativo de pontos.
+* Implementar cadastro de pontos.
+* Implementar edição de pontos.
+* Implementar remoção de pontos.
+* Persistir pontos no LocalStorage.
+* Integrar pontos persistidos à área pública.
+* Corrigir e consolidar estilos globais.
+* Criar dashboard com gráficos de barras.
+* Atualizar dashboard com métricas derivadas dos dados salvos.
+* Refinar responsividade global.
+* Refinar responsividade do dashboard.
+* Refinar responsividade do gerenciamento administrativo.
+* Redesenhar a Home.
+* Compactar e ajustar composição visual do hero da Home.
+* Criar estados vazios reutilizáveis.
+* Criar página 404.
+* Criar modal customizado de confirmação.
 
 ### Próximas etapas
 
-- Melhorar estados vazios.
-- Criar página 404.
-- Melhorar feedback visual após criar, editar ou remover pontos.
-- Criar confirmação visual customizada no lugar de `window.confirm`.
-- Adicionar prints ao README.
-- Publicar deploy.
+* Melhorar feedback visual após criar, editar ou remover pontos.
+* Permitir alteração de status das solicitações.
+* Adicionar prints ao README.
+* Publicar deploy.
 
 ### Evoluções futuras
 
-- Adicionar mapa real com Leaflet.
-- Criar autenticação.
-- Integrar banco de dados real.
-- Criar API própria.
-- Adicionar perfis de usuário.
-- Adicionar painel de métricas ambientais mais completo.
-- Permitir alteração de status das solicitações.
-- Criar histórico de descarte por ponto de coleta.
+* Adicionar mapa real com Leaflet.
+* Criar autenticação.
+* Integrar banco de dados real.
+* Criar API própria.
+* Adicionar perfis de usuário.
+* Adicionar painel de métricas ambientais mais completo.
+* Criar histórico de descarte por ponto de coleta.
 
 ---
 
@@ -568,7 +641,7 @@ http://localhost:5173/
 
 Projeto em desenvolvimento.
 
-A versão atual já possui um fluxo público de consulta e registro de descarte, uma área administrativa com gerenciamento de pontos de coleta, listagem de solicitações, dashboard com indicadores e gráficos de barras, além de uma Home redesenhada e responsiva.
+A versão atual já possui um fluxo público de consulta e registro de descarte, uma área administrativa com gerenciamento de pontos de coleta, listagem de solicitações, dashboard com indicadores e gráficos de barras, estados vazios, página 404, modal de confirmação e uma Home redesenhada e responsiva.
 
 ---
 
