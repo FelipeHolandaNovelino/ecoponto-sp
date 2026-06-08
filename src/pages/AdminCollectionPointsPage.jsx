@@ -30,7 +30,6 @@ const emptyFormData = {
   status: "Ativo",
   acceptedWasteTypes: [],
   openingHours: "",
-  instructions: "",
   estimatedVolumeKg: 0,
 };
 
@@ -57,10 +56,6 @@ function validateCollectionPointForm(formData) {
 
   if (!formData.openingHours.trim()) {
     errors.openingHours = "Informe o horário de funcionamento.";
-  }
-
-  if (!formData.instructions.trim()) {
-    errors.instructions = "Informe as instruções de descarte.";
   }
 
   if (formData.acceptedWasteTypes.length === 0) {
@@ -222,7 +217,6 @@ export function AdminCollectionPointsPage() {
       status: point.status,
       acceptedWasteTypes: point.acceptedWasteTypes,
       openingHours: point.openingHours,
-      instructions: point.instructions,
       estimatedVolumeKg: point.estimatedVolumeKg,
     });
 
@@ -436,21 +430,6 @@ export function AdminCollectionPointsPage() {
               ) : null}
             </div>
 
-            <label className="form-field">
-              <span>Instruções de descarte</span>
-              <textarea
-                rows="4"
-                placeholder="Ex: Separe os resíduos por tipo e entregue no balcão identificado."
-                value={formData.instructions}
-                onChange={(event) =>
-                  updateField("instructions", event.target.value)
-                }
-              />
-
-              {formErrors.instructions ? (
-                <small className="form-error">{formErrors.instructions}</small>
-              ) : null}
-            </label>
 
             <div className="admin-card-actions">
               <button type="submit" className="primary-button">

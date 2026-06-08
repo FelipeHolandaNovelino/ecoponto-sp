@@ -19,7 +19,7 @@ export function HomePage() {
    * A Home funciona como vitrine do produto.
    *
    * Ela apresenta a proposta do EcoPonto SP, direciona o usuário para a busca
-   * de pontos e também oferece acesso rápido ao dashboard administrativo.
+   * de pontos, para as orientações de descarte e para o dashboard administrativo.
    */
   return (
     <section className="home-page">
@@ -180,7 +180,7 @@ export function HomePage() {
               </p>
             </div>
 
-            <Link to="/pontos">
+            <Link to="/orientacoes-descarte">
               Ver orientações
               <ArrowRight size={17} />
             </Link>

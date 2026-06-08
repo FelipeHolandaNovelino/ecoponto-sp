@@ -155,18 +155,27 @@ svg {
   padding: 3rem 0;
 }
 
-/* 
-  Tipografia base.
-  O clamp evita títulos gigantes em telas pequenas e mantém impacto visual no desktop.
-*/
 
+
+/**
+ * Espaçamento vertical padrão das páginas.
+ *
+ * O gap menor reduz a sensação de cabeçalho grande demais sem apertar
+ * os conteúdos principais.
+ */
 .page-section {
   display: grid;
-  gap: 2rem;
+  gap: 1.5rem;
 }
 
+/**
+ * Cabeçalho textual das páginas internas.
+ *
+ * Limitamos a largura e reduzimos a presença visual para que o conteúdo
+ * operacional apareça mais cedo na tela.
+ */
 .page-header {
-  max-width: 760px;
+  max-width: 720px;
 }
 
 .eyebrow {
@@ -189,12 +198,18 @@ p {
   margin-top: 0;
 }
 
+/**
+ * Títulos internos da aplicação.
+ *
+ * O tamanho global do h1 foi reduzido para páginas operacionais, como admin,
+ * listagens e formulários. A Home recebe um tamanho próprio no bloco do hero.
+ */
 h1 {
   max-width: 760px;
-  margin-bottom: 1rem;
-  font-size: clamp(2.25rem, 5.5vw, 4.6rem);
-  line-height: 0.98;
-  letter-spacing: -0.06em;
+  margin-bottom: 0.85rem;
+  font-size: clamp(1.9rem, 3.6vw, 3.25rem);
+  line-height: 1.04;
+  letter-spacing: -0.045em;
 }
 
 h2 {
@@ -241,6 +256,17 @@ p {
 .hero-content p {
   max-width: 680px;
   font-size: 1.08rem;
+}
+/**
+ * Título principal da Home.
+ *
+ * Mantemos o impacto visual apenas na página inicial, sem deixar os títulos
+ * das telas administrativas grandes demais.
+ */
+.hero-content h1 {
+  font-size: clamp(2.25rem, 5.5vw, 4.6rem);
+  line-height: 0.98;
+  letter-spacing: -0.06em;
 }
 
 .hero-actions {

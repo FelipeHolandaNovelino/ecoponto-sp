@@ -17,15 +17,37 @@ function createCollectionPointId(points) {
 }
 
 /**
- * Normaliza os dados de formulário antes de salvar.
+ * Normaliza um ponto de coleta.
  *
- * Essa camada evita que a interface precise se preocupar com conversões
- * de tipo, como transformar volume estimado em número.
+ * As instruções de descarte deixaram de pertencer ao ponto e passaram para
+ * uma página centralizada de orientações. Por isso, este normalizador mantém
+ * apenas os dados operacionais necessários para listagem, detalhe, filtros
+ * e dashboard.
  */
 function normalizeCollectionPointData(pointData) {
   return {
-    ...pointData,
+    name: pointData.name || "",
+    address: pointData.address || "",
+    district: pointData.district || "",
+    status: pointData.status || "Ativo",
+    acceptedWasteTypes: Array.isArray(pointData.acceptedWasteTypes)
+      ? pointData.acceptedWasteTypes
+      : [],
+    openingHours: pointData.openingHours || "",
     estimatedVolumeKg: Number(pointData.estimatedVolumeKg) || 0,
+  };
+}
+
+/**
+ * Normaliza pontos já existentes no LocalStorage ou nos dados mockados.
+ *
+ * Isso permite que versões antigas do objeto, ainda com instructions, sejam
+ * usadas sem quebrar a aplicação, mas sem continuar propagando esse campo.
+ */
+function normalizeStoredCollectionPoint(point) {
+  return {
+    id: Number(point.id),
+    ...normalizeCollectionPointData(point),
   };
 }
 
@@ -39,15 +61,17 @@ export function getStoredCollectionPoints() {
   const storedPoints = localStorage.getItem(COLLECTION_POINTS_STORAGE_KEY);
 
   if (!storedPoints) {
-    return initialCollectionPoints;
+    return initialCollectionPoints.map(normalizeStoredCollectionPoint);
   }
 
   try {
     const parsedPoints = JSON.parse(storedPoints);
 
-    return Array.isArray(parsedPoints) ? parsedPoints : initialCollectionPoints;
+    return Array.isArray(parsedPoints)
+      ? parsedPoints.map(normalizeStoredCollectionPoint)
+      : initialCollectionPoints.map(normalizeStoredCollectionPoint);
   } catch {
-    return initialCollectionPoints;
+    return initialCollectionPoints.map(normalizeStoredCollectionPoint);
   }
 }
 
@@ -58,7 +82,12 @@ export function getStoredCollectionPoints() {
  * e suficiente para persistência local em projetos front-end sem backend.
  */
 export function saveCollectionPoints(points) {
-  localStorage.setItem(COLLECTION_POINTS_STORAGE_KEY, JSON.stringify(points));
+  const normalizedPoints = points.map(normalizeStoredCollectionPoint);
+
+  localStorage.setItem(
+    COLLECTION_POINTS_STORAGE_KEY,
+    JSON.stringify(normalizedPoints)
+  );
 }
 
 /**
@@ -91,9 +120,8 @@ export function updateCollectionPoint(pointId, pointData) {
     }
 
     return {
-      ...point,
-      ...normalizeCollectionPointData(pointData),
       id: point.id,
+      ...normalizeCollectionPointData(pointData),
     };
   });
 

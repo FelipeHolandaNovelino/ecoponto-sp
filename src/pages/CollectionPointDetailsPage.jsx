@@ -58,8 +58,8 @@ export function CollectionPointDetailsPage() {
         <span className="eyebrow">Detalhes do ponto</span>
         <h1>{point.name}</h1>
         <p>
-          Consulte endereço, horário, status operacional e orientações para
-          realizar o descarte corretamente.
+          Consulte endereço, horário, status operacional e tipos de resíduos
+          aceitos por este ponto de coleta.
         </p>
       </div>
 
@@ -91,16 +91,15 @@ export function CollectionPointDetailsPage() {
             {point.acceptedWasteTypes.join(", ")}.
           </p>
 
-          <h2>Instruções de descarte</h2>
-
-          <p>
-            <Info size={16} /> {point.instructions}
-          </p>
 
           <div className="hero-actions">
             <Link to="/pontos" className="secondary-button">
               <ArrowLeft size={18} />
               Voltar
+            </Link>
+
+            <Link to="/orientacoes-descarte" className="secondary-button">
+              Ver orientações
             </Link>
 
             <Link

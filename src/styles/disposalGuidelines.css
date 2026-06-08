@@ -1,0 +1,140 @@
+/**
+ * Estilos da página de orientações de descarte.
+ *
+ * Esta página funciona como uma base central de regras gerais, separada dos
+ * pontos de coleta. Isso evita duplicação de instruções em cada ponto.
+ */
+
+.guidelines-alert-card,
+.guideline-card,
+.guidelines-footer-card {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-soft);
+}
+
+.guidelines-alert-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.2rem;
+  border-radius: var(--radius-lg);
+}
+
+.guidelines-alert-icon {
+  display: grid;
+  flex: 0 0 auto;
+  width: 54px;
+  height: 54px;
+  place-items: center;
+  color: var(--color-warning);
+  background: var(--color-warning-bg);
+  border-radius: 18px;
+}
+
+.guidelines-alert-card h2,
+.guidelines-footer-card h2 {
+  margin-bottom: 0.35rem;
+}
+
+.guidelines-alert-card p,
+.guidelines-footer-card p {
+  margin-bottom: 0;
+}
+
+.guidelines-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.guideline-card {
+  display: grid;
+  gap: 1rem;
+  padding: 1.2rem;
+  border-radius: var(--radius-md);
+}
+
+.guideline-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+}
+
+.guideline-card-header > span {
+  display: grid;
+  flex: 0 0 auto;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+  color: var(--color-primary-dark);
+  background: var(--color-surface-soft);
+  border-radius: 16px;
+}
+
+.guideline-card-header h2 {
+  margin-bottom: 0.25rem;
+}
+
+.guideline-card-header p {
+  margin-bottom: 0;
+}
+
+.guideline-card ul {
+  display: grid;
+  gap: 0.65rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.guideline-card li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  color: var(--color-muted);
+  line-height: 1.55;
+}
+
+.guideline-card li svg {
+  flex: 0 0 auto;
+  margin-top: 0.22rem;
+  color: var(--color-primary);
+}
+
+.guidelines-footer-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.2rem;
+  border-radius: var(--radius-lg);
+}
+
+.guidelines-footer-card > svg {
+  color: var(--color-primary);
+}
+
+@media (max-width: 900px) {
+  .guidelines-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .guidelines-footer-card {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .guidelines-alert-card,
+  .guideline-card,
+  .guidelines-footer-card {
+    padding: 1rem;
+    border-radius: 22px;
+  }
+
+  .guidelines-alert-card,
+  .guideline-card-header {
+    flex-direction: column;
+  }
+}

@@ -1,6 +1,12 @@
 import { Clock, MapPin, PackageCheck, Recycle } from "lucide-react";
 import { Link } from "react-router-dom";
 
+/**
+ * Define a classe visual do status operacional do ponto.
+ *
+ * Essa regra fica no card porque é apenas uma decisão de apresentação:
+ * cada status recebe uma aparência diferente na interface.
+ */
 function getStatusClassName(status) {
   const statusClasses = {
     Ativo: "status-active",
@@ -11,11 +17,19 @@ function getStatusClassName(status) {
   return statusClasses[status] || "status-warning";
 }
 
+/**
+ * Card público de ponto de coleta.
+ *
+ * Exibe as informações principais usadas na listagem de pontos. As orientações
+ * gerais de descarte ficam centralizadas em uma página própria, por isso este
+ * card mantém apenas o acesso aos detalhes do ponto.
+ */
 export function CollectionPointCard({ point }) {
   return (
     <article className="collection-card">
       <div>
         <h2>{point.name}</h2>
+
         <p>
           <MapPin size={16} /> {point.address} • {point.district}
         </p>
@@ -39,11 +53,11 @@ export function CollectionPointCard({ point }) {
         {point.estimatedVolumeKg}kg.
       </p>
 
-      <p>{point.instructions}</p>
-
-      <Link to={`/pontos/${point.id}`} className="secondary-button">
-        Ver detalhes do ponto
-      </Link>
+      <div className="hero-actions">
+        <Link to={`/pontos/${point.id}`} className="secondary-button">
+          Ver detalhes do ponto
+        </Link>
+      </div>
     </article>
   );
 }
