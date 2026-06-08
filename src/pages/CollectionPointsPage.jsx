@@ -1,13 +1,14 @@
 import { useMemo, useState } from "react";
-import { MapPin, Search, SearchX } from "lucide-react";
+import { Search, SearchX } from "lucide-react";
 
 import { EmptyState } from "../components/ui/EmptyState.jsx";
 import { CollectionPointCard } from "../features/collection-points/components/CollectionPointCard.jsx";
-import { getStoredCollectionPoints } from "../features/collection-points/utils/collectionPointsStorage.js";
+import { CollectionPointsMap } from "../features/collection-points/components/CollectionPointsMap.jsx";
 import {
   filterCollectionPoints,
   getUniqueDistricts,
 } from "../features/collection-points/utils/collectionPointFilters.js";
+import { getStoredCollectionPoints } from "../features/collection-points/utils/collectionPointsStorage.js";
 import { wasteTypes } from "../features/waste-types/data/wasteTypes.js";
 
 export function CollectionPointsPage() {
@@ -91,23 +92,7 @@ export function CollectionPointsPage() {
       </div>
 
       <div className="content-grid">
-        <div className="map-preview">
-          <MapPin size={36} />
-          <strong>Mapa simulado</strong>
-
-          <p>
-            {filteredCollectionPoints.length} ponto
-            {filteredCollectionPoints.length === 1 ? "" : "s"} encontrado
-            {filteredCollectionPoints.length === 1 ? "" : "s"} com os filtros
-            atuais.
-          </p>
-
-          <p>
-            Nesta versão inicial, o mapa será representado de forma visual e
-            simulada. Depois podemos evoluir para Leaflet ou outra solução de
-            mapas.
-          </p>
-        </div>
+        <CollectionPointsMap points={filteredCollectionPoints} />
 
         <div className="cards-column">
           {filteredCollectionPoints.length > 0 ? (

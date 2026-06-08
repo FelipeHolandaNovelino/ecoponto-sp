@@ -1,0 +1,109 @@
+/**
+ * Estilos do mapa de pontos de coleta.
+ *
+ * O mapa substitui o bloco simulado da página pública de pontos e mantém o
+ * visual integrado aos cards do EcoPonto SP.
+ */
+
+.collection-map-card {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+}
+
+.collection-map-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.collection-map-header strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--color-text);
+  font-size: 1.05rem;
+}
+
+.collection-map-header p {
+  margin-bottom: 0;
+  font-size: 0.95rem;
+}
+
+.collection-map-wrapper {
+  width: 100%;
+  min-width: 0;
+  height: 390px;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: 24px;
+}
+
+.collection-map {
+  width: 100%;
+  height: 100%;
+}
+
+.collection-map-marker {
+  display: grid;
+  place-items: center;
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  border: 3px solid #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 12px 28px rgba(20, 92, 57, 0.28);
+}
+
+.collection-map-marker span {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.collection-map-popup {
+  display: grid;
+  gap: 0.25rem;
+  min-width: 160px;
+}
+
+.collection-map-popup strong {
+  color: var(--color-text);
+}
+
+.collection-map-popup span,
+.collection-map-popup small {
+  color: var(--color-muted);
+}
+
+.collection-map-popup a {
+  width: fit-content;
+  margin-top: 0.35rem;
+  color: var(--color-primary-dark);
+  font-weight: 800;
+}
+
+@media (max-width: 920px) {
+  .collection-map-wrapper {
+    height: 340px;
+  }
+}
+
+@media (max-width: 640px) {
+  .collection-map-card {
+    padding: 1rem;
+    border-radius: 22px;
+  }
+
+  .collection-map-wrapper {
+    height: 320px;
+    border-radius: 18px;
+  }
+}

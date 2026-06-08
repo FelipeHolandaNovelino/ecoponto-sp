@@ -2,6 +2,46 @@ import { collectionPoints as initialCollectionPoints } from "../data/collectionP
 
 const COLLECTION_POINTS_STORAGE_KEY = "ecoponto-sp:collection-points";
 
+const DEFAULT_COORDINATES_BY_DISTRICT = {
+  Sé: {
+    latitude: -23.55052,
+    longitude: -46.633308,
+  },
+  Pinheiros: {
+    latitude: -23.561414,
+    longitude: -46.701883,
+  },
+  Moema: {
+    latitude: -23.603889,
+    longitude: -46.665278,
+  },
+  Tatuapé: {
+    latitude: -23.540556,
+    longitude: -46.576389,
+  },
+  Santana: {
+    latitude: -23.501667,
+    longitude: -46.624722,
+  },
+  "Vila Mariana": {
+    latitude: -23.589167,
+    longitude: -46.634167,
+  },
+  Lapa: {
+    latitude: -23.5275,
+    longitude: -46.703056,
+  },
+  "Santo Amaro": {
+    latitude: -23.654444,
+    longitude: -46.710833,
+  },
+};
+
+const FALLBACK_COORDINATES = {
+  latitude: -23.55052,
+  longitude: -46.633308,
+};
+
 /**
  * Gera um ID incremental simples para os pontos de coleta.
  *
@@ -17,14 +57,38 @@ function createCollectionPointId(points) {
 }
 
 /**
+ * Retorna coordenadas para um ponto.
+ *
+ * Quando o ponto já possui latitude e longitude, mantemos esses valores. Quando
+ * não possui, usamos uma coordenada padrão baseada no bairro. Isso preserva
+ * pontos antigos salvos no LocalStorage e também permite que novos pontos
+ * criados pelo CRUD apareçam no mapa mesmo sem formulário de coordenadas.
+ */
+function getCoordinatesForPoint(pointData) {
+  const latitude = Number(pointData.latitude);
+  const longitude = Number(pointData.longitude);
+
+  if (Number.isFinite(latitude) && Number.isFinite(longitude)) {
+    return {
+      latitude,
+      longitude,
+    };
+  }
+
+  return DEFAULT_COORDINATES_BY_DISTRICT[pointData.district] || FALLBACK_COORDINATES;
+}
+
+/**
  * Normaliza um ponto de coleta.
  *
  * As instruções de descarte deixaram de pertencer ao ponto e passaram para
  * uma página centralizada de orientações. Por isso, este normalizador mantém
- * apenas os dados operacionais necessários para listagem, detalhe, filtros
- * e dashboard.
+ * apenas os dados operacionais necessários para listagem, detalhe, filtros,
+ * mapa e dashboard.
  */
 function normalizeCollectionPointData(pointData) {
+  const coordinates = getCoordinatesForPoint(pointData);
+
   return {
     name: pointData.name || "",
     address: pointData.address || "",
@@ -35,14 +99,16 @@ function normalizeCollectionPointData(pointData) {
       : [],
     openingHours: pointData.openingHours || "",
     estimatedVolumeKg: Number(pointData.estimatedVolumeKg) || 0,
+    latitude: coordinates.latitude,
+    longitude: coordinates.longitude,
   };
 }
 
 /**
  * Normaliza pontos já existentes no LocalStorage ou nos dados mockados.
  *
- * Isso permite que versões antigas do objeto, ainda com instructions, sejam
- * usadas sem quebrar a aplicação, mas sem continuar propagando esse campo.
+ * Isso permite que versões antigas do objeto, ainda sem coordenadas, sejam
+ * usadas sem quebrar a aplicação e apareçam no mapa com uma posição padrão.
  */
 function normalizeStoredCollectionPoint(point) {
   return {
