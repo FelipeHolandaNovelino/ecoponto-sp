@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
+import { EmptyState } from "../components/ui/EmptyState.jsx";
 import { wasteTypes } from "../features/waste-types/data/wasteTypes.js";
 import {
   createCollectionPoint,
@@ -435,16 +436,12 @@ export function AdminCollectionPointsPage() {
               </article>
             ))
           ) : (
-            <article className="collection-card">
-              <span className="status-pill status-warning">Sem pontos</span>
-
-              <h2>Nenhum ponto cadastrado</h2>
-
-              <p>
-                Cadastre um novo ponto usando o formulário ao lado. Depois ele
-                também aparecerá na área pública de pontos de coleta.
-              </p>
-            </article>
+            <EmptyState
+              icon={MapPin}
+              eyebrow="Sem pontos"
+              title="Nenhum ponto cadastrado"
+              description="Cadastre um novo ponto usando o formulário. Depois ele também aparecerá na área pública de pontos de coleta e poderá receber solicitações de descarte."
+            />
           )}
         </div>
       </div>

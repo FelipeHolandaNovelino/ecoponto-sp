@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
-import { MapPin, Search } from "lucide-react";
+import { MapPin, Search, SearchX } from "lucide-react";
 
+import { EmptyState } from "../components/ui/EmptyState.jsx";
 import { CollectionPointCard } from "../features/collection-points/components/CollectionPointCard.jsx";
 import { getStoredCollectionPoints } from "../features/collection-points/utils/collectionPointsStorage.js";
 import {
@@ -114,13 +115,16 @@ export function CollectionPointsPage() {
               <CollectionPointCard key={point.id} point={point} />
             ))
           ) : (
-            <article className="collection-card">
-              <h2>Nenhum ponto encontrado</h2>
-              <p>
-                Tente remover algum filtro ou buscar por outro bairro, status ou
-                tipo de resíduo.
-              </p>
-            </article>
+            <EmptyState
+              icon={SearchX}
+              eyebrow="Busca sem resultado"
+              title="Nenhum ponto encontrado"
+              description="Tente remover algum filtro ou buscar por outro bairro, status ou tipo de resíduo. Os filtros combinados podem restringir bastante os resultados."
+              actionLabel="Limpar busca"
+              actionTo="/pontos"
+              secondaryActionLabel="Cadastrar ponto"
+              secondaryActionTo="/admin/pontos"
+            />
           )}
         </div>
       </div>

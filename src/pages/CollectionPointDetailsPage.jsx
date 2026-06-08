@@ -5,9 +5,11 @@ import {
   MapPin,
   PackageCheck,
   Recycle,
+  SearchX,
 } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 
+import { EmptyState } from "../components/ui/EmptyState.jsx";
 import { getStoredCollectionPoints } from "../features/collection-points/utils/collectionPointsStorage.js";
 
 function getStatusClassName(status) {
@@ -36,19 +38,16 @@ export function CollectionPointDetailsPage() {
   if (!point) {
     return (
       <section className="page-section">
-        <div className="page-header">
-          <span className="eyebrow">Ponto não encontrado</span>
-          <h1>Não encontramos esse ponto de coleta.</h1>
-          <p>
-            O ponto solicitado não existe na base atual do EcoPonto SP. Volte
-            para a listagem e escolha outro local.
-          </p>
-
-          <Link to="/pontos" className="secondary-button">
-            <ArrowLeft size={18} />
-            Voltar para pontos
-          </Link>
-        </div>
+        <EmptyState
+          icon={SearchX}
+          eyebrow="Ponto não encontrado"
+          title="Não encontramos esse ponto de coleta"
+          description="O ponto solicitado não existe na base atual do EcoPonto SP. Ele pode ter sido removido pelo administrador ou a rota pode estar incorreta."
+          actionLabel="Voltar para pontos"
+          actionTo="/pontos"
+          secondaryActionLabel="Gerenciar pontos"
+          secondaryActionTo="/admin/pontos"
+        />
       </section>
     );
   }

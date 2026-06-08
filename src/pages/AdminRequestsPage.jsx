@@ -1,6 +1,13 @@
-import { ArrowLeft, CalendarDays, ClipboardList, PackageCheck } from "lucide-react";
+import {
+  ArrowLeft,
+  CalendarDays,
+  ClipboardList,
+  Inbox,
+  PackageCheck,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 
+import { EmptyState } from "../components/ui/EmptyState.jsx";
 import { getStoredDisposalRequests } from "../features/disposal-requests/utils/disposalRequestsStorage.js";
 
 function formatDate(dateValue) {
@@ -26,6 +33,10 @@ function getRequestStatusClassName(status) {
 }
 
 export function AdminRequestsPage() {
+  /**
+   * A página administrativa lê as solicitações do LocalStorage para simular
+   * uma operação interna sem depender de backend nesta etapa do projeto.
+   */
   const requests = getStoredDisposalRequests();
 
   return (
@@ -79,21 +90,16 @@ export function AdminRequestsPage() {
           ))}
         </div>
       ) : (
-        <article className="collection-card">
-          <span className="status-pill status-warning">Sem registros</span>
-
-          <h2>Nenhuma solicitação encontrada</h2>
-
-          <p>
-            Para testar este fluxo, vá até um ponto de coleta, clique em
-            “Registrar descarte” e envie uma solicitação. Depois volte para esta
-            página administrativa.
-          </p>
-
-          <Link to="/pontos" className="primary-button">
-            Ir para pontos de coleta
-          </Link>
-        </article>
+        <EmptyState
+          icon={Inbox}
+          eyebrow="Sem solicitações"
+          title="Nenhuma solicitação encontrada"
+          description="Para testar este fluxo, acesse um ponto de coleta pela área pública, clique em Registrar descarte e envie uma solicitação. Depois volte para esta página administrativa."
+          actionLabel="Ir para pontos de coleta"
+          actionTo="/pontos"
+          secondaryActionLabel="Voltar para dashboard"
+          secondaryActionTo="/admin"
+        />
       )}
     </section>
   );
