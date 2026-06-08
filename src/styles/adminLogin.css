@@ -1,0 +1,116 @@
+/**
+ * Estilos da página de login administrativo.
+ *
+ * Esta tela cria uma transição clara entre a área pública e a área privada
+ * simulada do EcoPonto SP.
+ */
+
+.admin-login-page {
+  display: grid;
+  min-height: min(680px, calc(100vh - 9rem));
+  place-items: center;
+}
+
+.admin-login-card {
+  display: grid;
+  width: min(100%, 560px);
+  gap: 1.2rem;
+  padding: clamp(1.2rem, 4vw, 2rem);
+  background:
+    radial-gradient(circle at top left, rgba(31, 122, 77, 0.12), transparent 15rem),
+    rgba(255, 255, 255, 0.92);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+}
+
+.admin-login-icon {
+  display: grid;
+  width: 68px;
+  height: 68px;
+  place-items: center;
+  color: var(--color-primary);
+  background: var(--color-surface-soft);
+  border-radius: 22px;
+}
+
+.admin-login-card h1 {
+  margin-bottom: 0.8rem;
+}
+
+.admin-login-card p {
+  margin-bottom: 0;
+}
+
+.admin-login-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.admin-login-password-field {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0 1rem;
+  background: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.admin-login-password-field:focus-within {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(31, 122, 77, 0.12);
+}
+
+.admin-login-password-field svg {
+  flex: 0 0 auto;
+  color: var(--color-muted);
+}
+
+.admin-login-password-field input {
+  width: 100%;
+  min-width: 0;
+  padding: 0.9rem 0;
+  color: var(--color-text);
+  background: transparent;
+  border: 0;
+  outline: 0;
+}
+
+.admin-login-demo-box {
+  display: grid;
+  gap: 0.45rem;
+  padding: 1rem;
+  background: #f7fbf8;
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.admin-login-demo-box strong {
+  color: var(--color-text);
+}
+
+.admin-login-demo-box code {
+  width: fit-content;
+  padding: 0.35rem 0.55rem;
+  color: var(--color-primary-dark);
+  background: var(--color-surface-soft);
+  border-radius: 8px;
+  font-weight: 800;
+}
+
+.admin-login-demo-box p {
+  font-size: 0.92rem;
+}
+
+@media (max-width: 640px) {
+  .admin-login-page {
+    min-height: auto;
+    place-items: stretch;
+  }
+
+  .admin-login-card {
+    border-radius: 22px;
+  }
+}

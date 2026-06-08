@@ -1,7 +1,13 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
+import { ProtectedAdminRoute } from "../components/auth/ProtectedAdminRoute.jsx";
 import { AppLayout } from "../components/layout/AppLayout.jsx";
-import { adminRoutes, fallbackRoutes, publicRoutes } from "./routes.jsx";
+import {
+  adminAuthRoutes,
+  adminRoutes,
+  fallbackRoutes,
+  publicRoutes,
+} from "./routes.jsx";
 
 export default function App() {
   return (
@@ -12,8 +18,18 @@ export default function App() {
             <Route key={route.path} path={route.path} element={route.element} />
           ))}
 
-          {adminRoutes.map((route) => (
+          {adminAuthRoutes.map((route) => (
             <Route key={route.path} path={route.path} element={route.element} />
+          ))}
+
+          {adminRoutes.map((route) => (
+            <Route
+              key={route.path}
+              path={route.path}
+              element={
+                <ProtectedAdminRoute>{route.element}</ProtectedAdminRoute>
+              }
+            />
           ))}
 
           {fallbackRoutes.map((route) => (

@@ -1,5 +1,6 @@
 import { AdminCollectionPointsPage } from "../pages/AdminCollectionPointsPage.jsx";
 import { AdminDashboardPage } from "../pages/AdminDashboardPage.jsx";
+import { AdminLoginPage } from "../pages/AdminLoginPage.jsx";
 import { AdminRequestsPage } from "../pages/AdminRequestsPage.jsx";
 import { CollectionPointDetailsPage } from "../pages/CollectionPointDetailsPage.jsx";
 import { CollectionPointsPage } from "../pages/CollectionPointsPage.jsx";
@@ -38,10 +39,23 @@ export const publicRoutes = [
 ];
 
 /**
- * Rotas administrativas.
+ * Rotas de autenticação administrativa.
  *
- * Elas simulam a operação interna da plataforma, separando visualização
- * de solicitações e gerenciamento dos pontos de coleta.
+ * O login fica fora das rotas protegidas para que o usuário consiga acessar
+ * a página de entrada antes de ter uma sessão administrativa.
+ */
+export const adminAuthRoutes = [
+  {
+    path: "/admin/login",
+    element: <AdminLoginPage />,
+  },
+];
+
+/**
+ * Rotas administrativas protegidas.
+ *
+ * Elas simulam a operação interna da plataforma, separando dashboard,
+ * solicitações e gerenciamento dos pontos de coleta.
  */
 export const adminRoutes = [
   {
@@ -62,7 +76,7 @@ export const adminRoutes = [
  * Rota de fallback.
  *
  * O React Router usa "*" para capturar qualquer caminho que não corresponda
- * às rotas públicas ou administrativas registradas acima.
+ * às rotas públicas, de autenticação ou administrativas registradas acima.
  */
 export const fallbackRoutes = [
   {
