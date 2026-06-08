@@ -1,15 +1,24 @@
 /**
- * Estilos específicos do CRUD administrativo de pontos.
+ * Estilos específicos do gerenciamento administrativo de pontos.
  *
- * O objetivo é complementar o global.css sem misturar regras muito específicas
- * da tela administrativa no arquivo global.
+ * Este arquivo complementa o global.css com regras focadas no CRUD:
+ * cabeçalhos de cards, ações administrativas, checkboxes e botões destrutivos.
  */
 
 .admin-card-header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+  min-width: 0;
   gap: 1rem;
+}
+
+.admin-card-header > div {
+  min-width: 0;
+}
+
+.admin-card-header h2 {
+  overflow-wrap: anywhere;
 }
 
 .admin-card-actions {
@@ -18,6 +27,12 @@
   gap: 0.7rem;
 }
 
+/**
+ * Grid dos resíduos aceitos.
+ *
+ * No desktop, duas colunas deixam a seleção mais compacta.
+ * No mobile, o grid passa para uma coluna para melhorar leitura e toque.
+ */
 .admin-checkbox-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -27,6 +42,7 @@
 .admin-checkbox-item {
   display: flex;
   align-items: center;
+  min-width: 0;
   gap: 0.55rem;
   padding: 0.75rem;
   color: var(--color-text);
@@ -35,13 +51,21 @@
   border-radius: var(--radius-sm);
   font-size: 0.92rem;
   font-weight: 700;
+  line-height: 1.35;
 }
 
 .admin-checkbox-item input {
+  flex: 0 0 auto;
   width: auto;
   accent-color: var(--color-primary);
 }
 
+/**
+ * Botão de ação destrutiva.
+ *
+ * Mantemos uma classe própria para remoção porque ela comunica uma ação
+ * diferente das ações principais e secundárias do sistema.
+ */
 .danger-button {
   display: inline-flex;
   align-items: center;
@@ -54,12 +78,41 @@
   background: var(--color-danger);
   border-radius: 999px;
   font-weight: 700;
+  line-height: 1.2;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .danger-button:hover {
   background: #843232;
+  transform: translateY(-1px);
 }
 
+/**
+ * Ajuste intermediário para tablets.
+ *
+ * Os botões continuam lado a lado quando há espaço, mas sem forçar largura
+ * mínima que possa quebrar o layout.
+ */
+@media (max-width: 920px) {
+  .admin-card-actions {
+    align-items: stretch;
+  }
+
+  .admin-card-actions .primary-button,
+  .admin-card-actions .secondary-button,
+  .admin-card-actions .danger-button {
+    flex: 1 1 180px;
+  }
+}
+
+/**
+ * Ajustes mobile.
+ *
+ * Em telas pequenas, cabeçalho e ações viram coluna para evitar cards apertados
+ * e botões pequenos demais para toque.
+ */
 @media (max-width: 640px) {
   .admin-card-header {
     flex-direction: column;
@@ -69,8 +122,31 @@
     grid-template-columns: 1fr;
   }
 
-  .admin-card-actions,
+  .admin-card-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .admin-card-actions .primary-button,
+  .admin-card-actions .secondary-button,
+  .admin-card-actions .danger-button,
   .danger-button {
     width: 100%;
+  }
+
+  .admin-checkbox-item {
+    padding: 0.85rem;
+  }
+}
+
+/**
+ * Ajuste extra para celulares estreitos.
+ *
+ * Reduzimos levemente o peso visual dos itens selecionáveis sem prejudicar
+ * a área de toque.
+ */
+@media (max-width: 420px) {
+  .admin-checkbox-item {
+    font-size: 0.9rem;
   }
 }

@@ -1,64 +1,185 @@
 /**
- * Estilos específicos dos gráficos do dashboard.
+ * Estilos específicos do gerenciamento administrativo de pontos.
  *
- * Mantemos essas regras separadas do global.css para evitar que o arquivo
- * global cresça demais com estilos muito específicos de uma única área.
+ * Este arquivo complementa o global.css com regras focadas no CRUD:
+ * cabeçalhos de cards, ações administrativas, checkboxes e botões destrutivos.
  */
 
-.dashboard-chart-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+.admin-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  min-width: 0;
   gap: 1rem;
 }
 
-.dashboard-chart-card {
+.admin-card-header > div {
+  min-width: 0;
+}
+
+.admin-card-header h2 {
+  overflow-wrap: anywhere;
+}
+
+.admin-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+
+/**
+ * Grid dos resíduos aceitos.
+ *
+ * Usamos auto-fit para deixar os itens se reorganizarem melhor conforme
+ * o espaço disponível, sem forçar duas colunas apertadas em larguras menores.
+ */
+.admin-checkbox-grid {
   display: grid;
-  gap: 1rem;
-  min-height: 360px;
-  padding: 1.3rem;
-  background: rgba(255, 255, 255, 0.86);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-soft);
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 0.7rem;
 }
 
-.dashboard-chart-header h2 {
-  margin-bottom: 0.35rem;
-}
-
-.dashboard-chart-header p {
-  margin-bottom: 0;
-}
-
-.dashboard-chart-wrapper {
-  width: 100%;
-  height: 260px;
-}
-
-.dashboard-chart-empty {
-  display: grid;
-  min-height: 220px;
-  place-items: center;
-  align-content: center;
-  gap: 0.4rem;
-  padding: 1.5rem;
-  text-align: center;
-  background: #f7fbf8;
-  border: 1px dashed var(--color-border);
-  border-radius: var(--radius-md);
-}
-
-.dashboard-chart-empty strong {
+/**
+ * Item individual de seleção.
+ *
+ * Cada opção funciona como um pequeno card clicável, melhorando a área de toque
+ * e deixando a seleção mais confortável no desktop e no mobile.
+ */
+.admin-checkbox-item {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 0.65rem;
+  padding: 0.85rem;
   color: var(--color-text);
+  background: #f7fbf8;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 0.92rem;
+  font-weight: 700;
+  line-height: 1.35;
+  cursor: pointer;
 }
 
-.dashboard-chart-empty p {
-  max-width: 420px;
-  margin-bottom: 0;
+/**
+ * Correção importante do checkbox.
+ *
+ * O global.css estiliza inputs de formulário de forma ampla.
+ * Como checkbox também é input, precisamos neutralizar aqui os estilos de
+ * campo de texto para que ele volte a se comportar como checkbox nativo.
+ */
+.form-field .admin-checkbox-item input[type="checkbox"] {
+  flex: 0 0 auto;
+  width: 18px;
+  min-width: 18px;
+  height: 18px;
+  margin: 0;
+  padding: 0;
+  background: initial;
+  border: initial;
+  border-radius: initial;
+  box-shadow: none;
+  accent-color: var(--color-primary);
+  cursor: pointer;
 }
 
-@media (max-width: 880px) {
-  .dashboard-chart-grid {
+.form-field .admin-checkbox-item input[type="checkbox"]:focus {
+  box-shadow: 0 0 0 3px rgba(31, 122, 77, 0.14);
+}
+
+/**
+ * Botão de ação destrutiva.
+ *
+ * Mantemos uma classe própria para remoção porque ela comunica uma ação
+ * diferente das ações principais e secundárias do sistema.
+ */
+.danger-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  min-height: 46px;
+  width: fit-content;
+  padding: 0.8rem 1.1rem;
+  color: #ffffff;
+  background: var(--color-danger);
+  border-radius: 999px;
+  font-weight: 700;
+  line-height: 1.2;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.danger-button:hover {
+  background: #843232;
+  transform: translateY(-1px);
+}
+
+/**
+ * Ajuste intermediário para tablets.
+ *
+ * Os botões continuam lado a lado quando há espaço, mas sem forçar largura
+ * mínima que possa quebrar o layout.
+ */
+@media (max-width: 920px) {
+  .admin-card-actions {
+    align-items: stretch;
+  }
+
+  .admin-card-actions .primary-button,
+  .admin-card-actions .secondary-button,
+  .admin-card-actions .danger-button {
+    flex: 1 1 180px;
+  }
+}
+
+/**
+ * Ajustes mobile.
+ *
+ * Em telas pequenas, cabeçalho e ações viram coluna para evitar cards apertados
+ * e botões pequenos demais para toque.
+ */
+@media (max-width: 640px) {
+  .admin-card-header {
+    flex-direction: column;
+  }
+
+  .admin-checkbox-grid {
     grid-template-columns: 1fr;
+  }
+
+  .admin-card-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .admin-card-actions .primary-button,
+  .admin-card-actions .secondary-button,
+  .admin-card-actions .danger-button,
+  .danger-button {
+    width: 100%;
+  }
+
+  .admin-checkbox-item {
+    padding: 0.85rem;
+  }
+}
+
+/**
+ * Ajuste extra para celulares estreitos.
+ *
+ * Reduzimos levemente o peso visual dos itens selecionáveis sem prejudicar
+ * a área de toque.
+ */
+@media (max-width: 420px) {
+  .admin-checkbox-item {
+    font-size: 0.9rem;
+  }
+
+  .form-field .admin-checkbox-item input[type="checkbox"] {
+    width: 17px;
+    min-width: 17px;
+    height: 17px;
   }
 }
