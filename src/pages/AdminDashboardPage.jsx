@@ -8,26 +8,30 @@ import {
 import { Link } from "react-router-dom";
 
 import { getStoredCollectionPoints } from "../features/collection-points/utils/collectionPointsStorage.js";
+import { DashboardBarChart } from "../features/dashboard/components/DashboardBarChart.jsx";
+import {
+  buildDistrictPointData,
+  buildPointStatusData,
+  buildRequestWasteTypeData,
+  getDashboardSummary,
+} from "../features/dashboard/utils/dashboardMetrics.js";
 import { getStoredDisposalRequests } from "../features/disposal-requests/utils/disposalRequestsStorage.js";
+import "../styles/dashboard.css";
 
 export function AdminDashboardPage() {
   /**
-   * O dashboard lê dados persistidos localmente para refletir o estado real
-   * do MVP, em vez de exibir apenas números fixos.
+   * O dashboard lê diretamente os dados persistidos no LocalStorage.
+   *
+   * Isso mantém os indicadores sincronizados com o CRUD de pontos e com os
+   * registros de descarte feitos pela área pública.
    */
   const points = getStoredCollectionPoints();
   const requests = getStoredDisposalRequests();
 
-  const activePoints = points.filter((point) => point.status === "Ativo");
-  const pendingRequests = requests.filter(
-    (request) => request.status === "Pendente"
-  );
-
-  const estimatedVolumeKg = points.reduce((total, point) => {
-    return total + Number(point.estimatedVolumeKg || 0);
-  }, 0);
-
-  const servedDistricts = new Set(points.map((point) => point.district));
+  const summary = getDashboardSummary(points, requests);
+  const pointStatusData = buildPointStatusData(points);
+  const requestWasteTypeData = buildRequestWasteTypeData(requests);
+  const districtPointData = buildDistrictPointData(points);
 
   return (
     <section className="page-section">
@@ -44,25 +48,25 @@ export function AdminDashboardPage() {
         <article className="stat-card">
           <MapPin size={24} />
           <span>Pontos ativos</span>
-          <strong>{activePoints.length}</strong>
+          <strong>{summary.activePointsCount}</strong>
         </article>
 
         <article className="stat-card">
           <ClipboardList size={24} />
           <span>Solicitações pendentes</span>
-          <strong>{pendingRequests.length}</strong>
+          <strong>{summary.pendingRequestsCount}</strong>
         </article>
 
         <article className="stat-card">
           <Recycle size={24} />
           <span>Volume estimado</span>
-          <strong>{estimatedVolumeKg}kg</strong>
+          <strong>{summary.estimatedVolumeKg}kg</strong>
         </article>
 
         <article className="stat-card">
           <BarChart3 size={24} />
           <span>Bairros atendidos</span>
-          <strong>{servedDistricts.size}</strong>
+          <strong>{summary.servedDistrictsCount}</strong>
         </article>
       </div>
 
@@ -92,6 +96,40 @@ export function AdminDashboardPage() {
             <ArrowRight size={18} />
           </Link>
         </article>
+      </div>
+
+      <div className="dashboard-chart-grid">
+        <DashboardBarChart
+          title="Pontos por status"
+          description="Distribuição operacional dos pontos cadastrados."
+          data={pointStatusData}
+          labelKey="label"
+          dataKey="total"
+          valueLabel="Pontos"
+          emptyMessage="Cadastre pontos de coleta para visualizar a distribuição por status."
+        />
+
+        <DashboardBarChart
+          title="Resíduos registrados"
+          description="Quantidade de itens registrados nas solicitações de descarte."
+          data={requestWasteTypeData}
+          labelKey="label"
+          dataKey="total"
+          valueLabel="Itens"
+          layout="vertical"
+          emptyMessage="Registre descartes pela área pública para visualizar os resíduos mais recorrentes."
+        />
+
+        <DashboardBarChart
+          title="Pontos por bairro"
+          description="Cobertura territorial simulada da rede de coleta."
+          data={districtPointData}
+          labelKey="label"
+          dataKey="total"
+          valueLabel="Pontos"
+          layout="vertical"
+          emptyMessage="Cadastre pontos com bairros informados para visualizar a cobertura territorial."
+        />
       </div>
     </section>
   );

@@ -1,0 +1,64 @@
+/**
+ * Estilos específicos dos gráficos do dashboard.
+ *
+ * Mantemos essas regras separadas do global.css para evitar que o arquivo
+ * global cresça demais com estilos muito específicos de uma única área.
+ */
+
+.dashboard-chart-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.dashboard-chart-card {
+  display: grid;
+  gap: 1rem;
+  min-height: 360px;
+  padding: 1.3rem;
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+}
+
+.dashboard-chart-header h2 {
+  margin-bottom: 0.35rem;
+}
+
+.dashboard-chart-header p {
+  margin-bottom: 0;
+}
+
+.dashboard-chart-wrapper {
+  width: 100%;
+  height: 260px;
+}
+
+.dashboard-chart-empty {
+  display: grid;
+  min-height: 220px;
+  place-items: center;
+  align-content: center;
+  gap: 0.4rem;
+  padding: 1.5rem;
+  text-align: center;
+  background: #f7fbf8;
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.dashboard-chart-empty strong {
+  color: var(--color-text);
+}
+
+.dashboard-chart-empty p {
+  max-width: 420px;
+  margin-bottom: 0;
+}
+
+@media (max-width: 880px) {
+  .dashboard-chart-grid {
+    grid-template-columns: 1fr;
+  }
+}
