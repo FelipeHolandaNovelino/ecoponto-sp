@@ -24,40 +24,75 @@
 .admin-card-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.7rem;
+  align-items: center;
+  gap: 0.65rem;
 }
 
 /**
  * Grid dos resíduos aceitos.
  *
- * No desktop, duas colunas deixam a seleção mais compacta.
- * No mobile, o grid passa para uma coluna para melhorar leitura e toque.
+ * O auto-fit cria uma grade adaptável no desktop e no tablet. No mobile,
+ * o grid é ajustado para duas colunas quando houver espaço suficiente,
+ * evitando uma lista vertical longa e visualmente pesada.
  */
 .admin-checkbox-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.7rem;
+  grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+  gap: 0.65rem;
 }
 
+/**
+ * Item individual de seleção.
+ *
+ * Cada opção funciona como um pequeno card clicável. O tamanho foi reduzido
+ * para melhorar o encaixe no mobile sem prejudicar a área de toque.
+ */
 .admin-checkbox-item {
   display: flex;
   align-items: center;
   min-width: 0;
   gap: 0.55rem;
-  padding: 0.75rem;
+  padding: 0.68rem 0.75rem;
   color: var(--color-text);
   background: #f7fbf8;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
-  font-size: 0.92rem;
+  font-size: 0.88rem;
   font-weight: 700;
-  line-height: 1.35;
+  line-height: 1.3;
+  cursor: pointer;
+  overflow-wrap: anywhere;
 }
 
-.admin-checkbox-item input {
-  flex: 0 0 auto;
-  width: auto;
+/**
+ * Correção importante do checkbox.
+ *
+ * O global.css estiliza inputs de formulário de forma ampla.
+ * Como checkbox também é input, neutralizamos aqui os estilos de campo de texto
+ * para que ele volte a se comportar como checkbox nativo.
+ */
+.admin-checkbox-item input[type="checkbox"] {
+  appearance: auto;
+  flex: 0 0 17px;
+  width: 17px !important;
+  min-width: 17px !important;
+  max-width: 17px;
+  height: 17px !important;
+  min-height: 17px;
+  margin: 0;
+  padding: 0 !important;
+  background: transparent;
+  border: 0;
+  border-radius: 4px;
+  box-shadow: none;
   accent-color: var(--color-primary);
+  cursor: pointer;
+}
+
+.admin-checkbox-item input[type="checkbox"]:focus {
+  outline: 2px solid rgba(31, 122, 77, 0.22);
+  outline-offset: 2px;
+  box-shadow: none;
 }
 
 /**
@@ -92,26 +127,28 @@
 /**
  * Ajuste intermediário para tablets.
  *
- * Os botões continuam lado a lado quando há espaço, mas sem forçar largura
- * mínima que possa quebrar o layout.
+ * Os botões continuam flexíveis, mas sem assumir largura total. Isso evita
+ * botões grandes demais em telas médias e mantém o CRUD visualmente compacto.
  */
 @media (max-width: 920px) {
   .admin-card-actions {
-    align-items: stretch;
+    align-items: center;
   }
 
   .admin-card-actions .primary-button,
   .admin-card-actions .secondary-button,
   .admin-card-actions .danger-button {
-    flex: 1 1 180px;
+    flex: 0 1 auto;
+    width: fit-content;
   }
 }
 
 /**
  * Ajustes mobile.
  *
- * Em telas pequenas, cabeçalho e ações viram coluna para evitar cards apertados
- * e botões pequenos demais para toque.
+ * Aqui sobrescrevemos o comportamento global que deixa botões com largura 100%.
+ * No CRUD administrativo, os botões de cadastrar, editar e remover ficam mais
+ * compactos para não dominar a tela.
  */
 @media (max-width: 640px) {
   .admin-card-header {
@@ -119,34 +156,74 @@
   }
 
   .admin-checkbox-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.55rem;
+  }
+
+  .admin-checkbox-item {
+    gap: 0.45rem;
+    padding: 0.62rem;
+    font-size: 0.82rem;
+  }
+
+  .admin-checkbox-item input[type="checkbox"] {
+    flex-basis: 16px;
+    width: 16px !important;
+    min-width: 16px !important;
+    max-width: 16px;
+    height: 16px !important;
+    min-height: 16px;
   }
 
   .admin-card-actions {
     width: 100%;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.55rem;
   }
 
   .admin-card-actions .primary-button,
   .admin-card-actions .secondary-button,
   .admin-card-actions .danger-button,
   .danger-button {
-    width: 100%;
+    width: auto;
+    min-height: 40px;
+    padding: 0.62rem 0.82rem;
+    font-size: 0.88rem;
   }
 
-  .admin-checkbox-item {
-    padding: 0.85rem;
+  .admin-card-actions .primary-button svg,
+  .admin-card-actions .secondary-button svg,
+  .admin-card-actions .danger-button svg {
+    width: 16px;
+    height: 16px;
   }
 }
 
 /**
- * Ajuste extra para celulares estreitos.
+ * Celulares estreitos.
  *
- * Reduzimos levemente o peso visual dos itens selecionáveis sem prejudicar
- * a área de toque.
+ * Em telas muito pequenas, os resíduos aceitos passam para uma coluna para
+ * evitar texto espremido. Os botões continuam compactos e podem quebrar linha
+ * se não houver espaço horizontal.
  */
 @media (max-width: 420px) {
+  .admin-checkbox-grid {
+    grid-template-columns: 1fr;
+  }
+
   .admin-checkbox-item {
-    font-size: 0.9rem;
+    padding: 0.64rem 0.7rem;
+    font-size: 0.86rem;
+  }
+
+  .admin-card-actions .primary-button,
+  .admin-card-actions .secondary-button,
+  .admin-card-actions .danger-button,
+  .danger-button {
+    min-height: 38px;
+    padding: 0.58rem 0.76rem;
+    font-size: 0.84rem;
   }
 }
