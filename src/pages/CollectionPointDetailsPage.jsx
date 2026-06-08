@@ -98,7 +98,10 @@ export function CollectionPointDetailsPage() {
               Voltar
             </Link>
 
-            <Link to="/registrar-descarte" className="primary-button">
+            <Link
+              to={`/registrar-descarte?pointId=${point.id}`}
+              className="primary-button"
+            >
               Registrar descarte
             </Link>
           </div>

@@ -1,4 +1,4 @@
-import { LayoutDashboard, MapPin, Recycle, Home } from "lucide-react";
+import { Home, LayoutDashboard, MapPin, Recycle } from "lucide-react";
 import { NavLink, Outlet } from "react-router-dom";
 
 export function AppLayout() {

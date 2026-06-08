@@ -1,4 +1,10 @@
-import { ArrowRight, BarChart3, MapPin, Recycle, ShieldCheck } from "lucide-react";
+import {
+  ArrowRight,
+  BarChart3,
+  MapPin,
+  Recycle,
+  ShieldCheck,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 
 export function HomePage() {

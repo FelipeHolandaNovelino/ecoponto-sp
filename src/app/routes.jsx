@@ -1,6 +1,7 @@
 import { AdminDashboardPage } from "../pages/AdminDashboardPage.jsx";
 import { CollectionPointDetailsPage } from "../pages/CollectionPointDetailsPage.jsx";
 import { CollectionPointsPage } from "../pages/CollectionPointsPage.jsx";
+import { DisposalRequestPage } from "../pages/DisposalRequestPage.jsx";
 import { HomePage } from "../pages/HomePage.jsx";
 
 export const publicRoutes = [
@@ -15,6 +16,10 @@ export const publicRoutes = [
   {
     path: "/pontos/:id",
     element: <CollectionPointDetailsPage />,
+  },
+  {
+    path: "/registrar-descarte",
+    element: <DisposalRequestPage />,
   },
 ];
 
