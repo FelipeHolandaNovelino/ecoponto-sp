@@ -1,458 +1,249 @@
 /**
- * Estilos específicos da Home.
+ * Home do EcoPonto SP.
  *
- * A Home tem um visual mais editorial e comercial do que as páginas internas.
- * Por isso, os estilos ficam separados do global.css para evitar afetar
- * formulários, CRUD e telas administrativas.
+ * Visual de landing page com hero dividido em duas áreas:
+ * conteúdo textual à esquerda e ilustração ocupando 50% do lado direito.
  */
 
 .home-page {
   display: grid;
-  gap: 1.15rem;
-  margin-top: -1.25rem;
+  gap: 1.35rem;
+  width: min(calc(100vw - 2rem), 1480px);
+  margin-top: -1rem;
+  margin-left: 50%;
+  transform: translateX(-50%);
 }
 
 /**
  * Hero principal.
  *
- * O hero concentra a mensagem principal, a ilustração e um card de impacto
- * compacto. O dashboard fica acessível pelo card inferior de gestão para evitar
- * excesso de CTAs no topo.
+ * A grade 1fr 1fr garante que a imagem ocupe metade do hero no desktop.
  */
 .home-hero {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 0.95fr) minmax(320px, 1.05fr);
-  min-height: 410px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  min-height: 560px;
   overflow: hidden;
   background:
-    radial-gradient(circle at 62% 24%, rgba(248, 207, 113, 0.2), transparent 11rem),
-    linear-gradient(135deg, #fffdf6 0%, #f4fbf5 48%, #e9f6ef 100%);
-  border: 1px solid var(--color-border);
-  border-radius: 30px;
+    radial-gradient(circle at 42% 18%, rgba(246, 199, 84, 0.24), transparent 9rem),
+    linear-gradient(135deg, #fffdf7 0%, #fbfcf5 48%, #edf8ef 100%);
+  border: 1px solid rgba(215, 229, 220, 0.95);
+  border-radius: 0 0 34px 34px;
   box-shadow: var(--shadow-soft);
 }
 
+/**
+ * Conteúdo textual do hero.
+ */
 .home-hero-content {
   position: relative;
   z-index: 3;
   display: grid;
   align-content: center;
-  padding: clamp(1.45rem, 3.5vw, 2.6rem);
+  padding: clamp(2.6rem, 5vw, 4.2rem);
 }
 
-.home-badge {
-  display: inline-flex;
-  align-items: center;
-  width: fit-content;
-  gap: 0.45rem;
-  margin-bottom: 0.95rem;
-  padding: 0.46rem 0.78rem;
-  color: var(--color-primary-dark);
-  background: rgba(232, 244, 237, 0.92);
-  border: 1px solid rgba(31, 122, 77, 0.12);
-  border-radius: 999px;
-  font-size: 0.8rem;
-  font-weight: 800;
-}
-
-/**
- * Título da Home.
- *
- * Mantém impacto visual, mas em uma escala controlada para que o conteúdo
- * abaixo apareça mais cedo na primeira dobra.
- */
 .home-hero h1 {
-  max-width: 610px;
-  margin-bottom: 0.95rem;
+  max-width: 690px;
+  margin-bottom: 1.3rem;
   color: #073b27;
-  font-size: clamp(2.15rem, 4vw, 3.55rem);
-  line-height: 1;
-  letter-spacing: -0.06em;
+  font-size: clamp(3.25rem, 4.7vw, 5rem);
+  line-height: 0.98;
+  letter-spacing: -0.075em;
+  text-shadow: 0 2px 0 rgba(255, 255, 255, 0.45);
 }
 
 .home-hero p {
-  max-width: 570px;
+  max-width: 620px;
   margin-bottom: 0;
-  color: #53665b;
-  font-size: 0.98rem;
+  color: #43564d;
+  font-size: 1.06rem;
+  line-height: 1.65;
 }
 
 .home-hero-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.85rem;
-  margin-top: 1.45rem;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.home-primary-button,
+.home-outline-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 58px;
+  gap: 0.65rem;
+  padding: 0.98rem 1.55rem;
+  border-radius: 14px;
+  font-weight: 900;
+  line-height: 1;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.home-primary-button {
+  color: #ffffff;
+  background: linear-gradient(135deg, #11813f, #056127);
+  box-shadow: 0 18px 36px rgba(17, 129, 63, 0.22);
+}
+
+.home-outline-button {
+  color: var(--color-primary-dark);
+  background: rgba(255, 255, 255, 0.82);
+  border: 2px solid rgba(17, 129, 63, 0.82);
+}
+
+.home-primary-button:hover,
+.home-outline-button:hover {
+  transform: translateY(-1px);
 }
 
 .home-context-line {
   display: inline-flex;
   align-items: center;
   width: fit-content;
+  max-width: 520px;
   gap: 0.45rem;
-  margin-top: 0.95rem;
+  margin-top: 1.15rem;
   color: var(--color-primary-dark);
-  font-size: 0.84rem;
-  font-weight: 700;
+  font-size: 0.88rem;
+  font-weight: 800;
 }
 
 /**
- * Painel visual da Home.
+ * Área visual do hero.
  *
- * A ilustração é feita com CSS e ícones para evitar dependência de imagens
- * externas nesta etapa do projeto.
+ * A imagem preenche todo o lado direito do hero. O object-fit cover permite
+ * que ela ocupe a área completa sem distorcer.
  */
-.home-visual-panel {
+.home-hero-visual {
   position: relative;
-  min-height: 410px;
+  min-width: 0;
+  min-height: 560px;
   overflow: hidden;
+  background: #edf8ef;
+}
+
+.home-hero-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center bottom;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  user-select: none;
 }
 
 /**
- * Fundo urbano/ambiental.
+ * Cards inferiores.
  *
- * O shape reforça o contexto de cidade sustentável sem depender de uma imagem
- * externa ou asset pesado.
+ * Mantém apenas os dois cards complementares: orientação e gestão.
  */
-.home-city-shape {
-  position: absolute;
-  inset: 1.4rem 0.75rem 1.4rem -0.5rem;
-  z-index: 1;
-  background:
-    linear-gradient(90deg, rgba(255, 255, 255, 0.72), transparent 24%),
-    radial-gradient(circle at 58% 28%, rgba(255, 255, 255, 0.92), transparent 7rem),
-    linear-gradient(135deg, rgba(31, 122, 77, 0.1), rgba(37, 111, 143, 0.16)),
-    url("data:image/svg+xml,%3Csvg width='760' height='520' viewBox='0 0 760 520' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23145c39' stroke-opacity='.22' stroke-width='3'%3E%3Cpath d='M430 460V140l70 320V120l80 340'/%3E%3Cpath d='M430 210h150M430 255h150M430 300h150M430 345h150M430 390h150'/%3E%3Cpath d='M80 445h600'/%3E%3Cpath d='M115 445V325h40v120M180 445V290h55v155M260 445V350h42v95M625 445V315h50v130'/%3E%3Cpath d='M0 470c110-58 210-58 320-10s220 42 440-24'/%3E%3C/g%3E%3Cg fill='%231f7a4d' fill-opacity='.18'%3E%3Ccircle cx='120' cy='390' r='46'/%3E%3Ccircle cx='690' cy='378' r='70'/%3E%3Ccircle cx='520' cy='410' r='54'/%3E%3C/g%3E%3C/svg%3E");
-  background-size: cover;
-  background-position: center;
-  border-radius: 42% 0 0 42%;
-}
-
-/**
- * Lixeira ilustrativa.
- *
- * Ela fica mais ao centro-esquerda do painel visual para abrir espaço ao card
- * compacto de impacto no canto direito.
- */
-.home-bin {
-  position: absolute;
-  right: 39%;
-  bottom: 2.35rem;
-  z-index: 2;
-  display: grid;
-  width: 155px;
-  height: 134px;
-  place-items: center;
-  color: rgba(255, 255, 255, 0.92);
-  background: linear-gradient(135deg, #2e9b55, #17643f);
-  border: 6px solid rgba(255, 255, 255, 0.58);
-  border-radius: 20px 20px 30px 30px;
-  box-shadow: 0 24px 42px rgba(20, 92, 57, 0.22);
-}
-
-.home-bin::before {
-  content: "";
-  position: absolute;
-  top: -16px;
-  left: 15px;
-  width: 125px;
-  height: 30px;
-  background: linear-gradient(135deg, #64b96c, #2c8b4b);
-  border-radius: 16px;
-  box-shadow: 0 10px 24px rgba(20, 92, 57, 0.18);
-}
-
-.home-device {
-  position: absolute;
-  display: grid;
-  place-items: center;
-  color: #1d2b24;
-  background: #dbe7e0;
-  border: 4px solid #26392f;
-  border-radius: 12px;
-  box-shadow: 0 14px 26px rgba(29, 43, 36, 0.16);
-}
-
-.home-device-phone {
-  top: -46px;
-  left: 28px;
-  width: 46px;
-  height: 74px;
-  transform: rotate(-13deg);
-}
-
-.home-device-monitor {
-  top: -58px;
-  right: 20px;
-  width: 74px;
-  height: 62px;
-  transform: rotate(9deg);
-}
-
-.home-device-battery {
-  top: -8px;
-  left: 70px;
-  width: 42px;
-  height: 42px;
-  border-radius: 14px;
-  transform: rotate(-8deg);
-}
-
-.home-leaf {
-  position: absolute;
-  z-index: 2;
-  background: #77b95f;
-  border-radius: 100% 0;
-  opacity: 0.88;
-}
-
-.home-leaf-one {
-  top: 6.5rem;
-  left: 6rem;
-  width: 36px;
-  height: 18px;
-  transform: rotate(-32deg);
-}
-
-.home-leaf-two {
-  right: 2.5rem;
-  top: 7.5rem;
-  width: 42px;
-  height: 20px;
-  transform: rotate(-16deg);
-}
-
-.home-leaf-three {
-  right: 7rem;
-  bottom: 3rem;
-  width: 50px;
-  height: 24px;
-  transform: rotate(28deg);
-}
-
-/**
- * Card de impacto compacto.
- *
- * O card voltou para dentro do hero, mas menor e posicionado no canto direito.
- * Ele informa métricas rápidas sem cobrir a ilustração principal.
- */
-.home-impact-card {
-  position: absolute;
-  right: 1rem;
-  top: 1.2rem;
-  z-index: 3;
-  display: grid;
-  gap: 0.6rem;
-  width: min(230px, calc(100% - 2rem));
-  padding: 0.72rem;
-  background: rgba(255, 255, 255, 0.86);
-  border: 1px solid rgba(215, 229, 220, 0.95);
-  border-radius: 20px;
-  box-shadow: 0 18px 38px rgba(30, 83, 57, 0.14);
-  backdrop-filter: blur(12px);
-}
-
-.home-impact-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 0.75rem;
-}
-
-.home-impact-header span,
-.home-impact-header strong {
-  display: block;
-}
-
-.home-impact-header span {
-  color: var(--color-text);
-  font-size: 0.82rem;
-  font-weight: 900;
-}
-
-.home-impact-header strong {
-  margin-top: 0.12rem;
-  color: var(--color-muted);
-  font-size: 0.68rem;
-}
-
-.home-impact-header svg {
-  flex: 0 0 auto;
-  color: var(--color-primary);
-}
-
-.home-impact-list {
-  display: grid;
-  gap: 0.42rem;
-}
-
-.home-impact-item {
-  display: flex;
-  align-items: center;
-  gap: 0.55rem;
-  padding: 0.52rem;
-  background: rgba(247, 251, 248, 0.92);
-  border: 1px solid rgba(215, 229, 220, 0.9);
-  border-radius: 13px;
-}
-
-.home-impact-item > span {
-  display: grid;
-  flex: 0 0 auto;
-  width: 32px;
-  height: 32px;
-  place-items: center;
-  color: var(--color-primary-dark);
-  background: var(--color-success-bg);
-  border-radius: 50%;
-}
-
-.home-impact-item strong,
-.home-impact-item small {
-  display: block;
-}
-
-.home-impact-item strong {
-  color: #073b27;
-  font-size: 1.02rem;
-  line-height: 1;
-}
-
-.home-impact-item small {
-  margin-top: 0.1rem;
-  color: var(--color-muted);
-  font-size: 0.66rem;
-  font-weight: 700;
-}
-
-/**
- * Cards de benefícios.
- */
-.home-features {
-  padding: 0.15rem 0 0;
-}
-
-/**
- * Grid de funcionalidades da Home.
- *
- * A Home mantém apenas os cards que complementam o hero. O acesso aos pontos
- * de coleta já aparece no topo da página, então esta seção fica focada em
- * orientação e gestão administrativa.
- */
-.home-feature-grid {
+.home-feature-area {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
+  gap: 1.1rem;
+  padding: 1.25rem;
+  background: linear-gradient(
+    180deg,
+    rgba(232, 244, 237, 0.82),
+    rgba(248, 251, 246, 0.5)
+  );
+  border-radius: 32px;
 }
 
 .home-feature-card {
   display: grid;
-  grid-template-rows: auto 1fr auto;
-  gap: 0.85rem;
-  min-height: 215px;
-  padding: 1.2rem;
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid var(--color-border);
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: 1fr auto;
+  column-gap: 1.2rem;
+  row-gap: 1rem;
+  min-height: 210px;
+  padding: 1.35rem;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(215, 229, 220, 0.96);
   border-radius: 24px;
-  box-shadow: var(--shadow-soft);
+  box-shadow: 0 18px 44px rgba(13, 32, 23, 0.08);
 }
 
-.home-feature-illustration {
+.home-feature-image {
   display: grid;
-  width: 72px;
-  height: 72px;
+  width: 118px;
+  height: 118px;
   place-items: center;
+  align-self: start;
+  overflow: hidden;
+  background: #eef7e9;
   border-radius: 50%;
 }
 
-.home-feature-card h3 {
-  margin: 0 0 0.35rem;
+.home-feature-image img {
+  display: block;
+  width: 118px;
+  height: 118px;
+  object-fit: cover;
+}
+
+.home-feature-card h2 {
+  margin-bottom: 0.55rem;
   color: #0b3b29;
-  font-size: 1.1rem;
+  font-size: 1.18rem;
 }
 
 .home-feature-card p {
-  margin-bottom: 0;
+  margin: 0;
+  color: #4f5f57;
   font-size: 0.96rem;
+  line-height: 1.58;
 }
 
 .home-feature-card a {
   display: inline-flex;
+  grid-column: 2;
   align-items: center;
-  width: fit-content;
+  justify-self: end;
   gap: 0.45rem;
   color: var(--color-primary-dark);
   font-weight: 900;
 }
 
-.home-feature-green .home-feature-illustration {
-  color: #0f7a3d;
-  background: #e4f6e7;
-}
-
-.home-feature-blue .home-feature-illustration {
-  color: #1d65a6;
-  background: #e4f0fb;
-}
-
-.home-feature-purple .home-feature-illustration {
-  color: #6941b7;
-  background: #eee7fb;
-}
-
-.home-impact-strip {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem 1.15rem;
-  background:
-    linear-gradient(90deg, rgba(232, 244, 237, 0.95), rgba(255, 255, 255, 0.9)),
-    var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: 24px;
-  box-shadow: var(--shadow-soft);
-}
-
-.home-impact-strip-icon {
-  display: grid;
-  width: 54px;
-  height: 54px;
-  place-items: center;
-  color: var(--color-primary);
-  background: #ffffff;
-  border-radius: 50%;
-}
-
-.home-impact-strip h2 {
-  margin-bottom: 0.15rem;
-  color: #0b3b29;
-  font-size: 1.1rem;
-}
-
-.home-impact-strip p {
-  margin-bottom: 0;
-  font-size: 0.95rem;
-}
-
 /**
- * Responsividade da Home.
+ * Responsividade.
  */
-@media (max-width: 1080px) {
+@media (max-width: 1120px) {
+  .home-page {
+    width: 100%;
+    margin-left: 0;
+    transform: none;
+  }
+
   .home-hero {
     grid-template-columns: 1fr;
   }
 
-  .home-visual-panel {
-    min-height: 390px;
+  .home-hero-content {
+    padding-bottom: 1.5rem;
   }
 
-  .home-bin {
-    right: 42%;
+  .home-hero-visual {
+    min-height: 480px;
   }
+}
 
-  .home-feature-grid {
+@media (max-width: 900px) {
+  .home-feature-area {
     grid-template-columns: 1fr;
+  }
+
+  .home-feature-card {
+    grid-template-columns: auto minmax(0, 1fr);
   }
 }
 
@@ -467,77 +258,64 @@
   }
 
   .home-hero-content {
-    padding: 1.4rem;
+    padding: 1.35rem;
   }
 
   .home-hero h1 {
-    font-size: clamp(2rem, 10vw, 3rem);
+    font-size: clamp(2.25rem, 10.5vw, 3.25rem);
+    line-height: 1.02;
   }
 
   .home-hero-actions {
     flex-direction: column;
   }
 
-  .home-visual-panel {
-    min-height: 500px;
+  .home-primary-button,
+  .home-outline-button {
+    width: 100%;
   }
 
-  .home-city-shape {
-    inset: 0.5rem;
-    border-radius: 32px;
+  .home-hero-visual {
+    min-height: 420px;
   }
 
-  .home-impact-card {
-    top: 1rem;
-    right: 1rem;
-    left: 1rem;
-    width: auto;
+  .home-feature-area {
+    padding: 0.8rem;
+    border-radius: 24px;
   }
 
-  .home-bin {
-    right: 50%;
-    bottom: 2rem;
-    transform: translateX(50%);
-  }
-
-  .home-impact-strip {
+  .home-feature-card {
     grid-template-columns: 1fr;
-    text-align: center;
+    min-height: auto;
   }
 
-  .home-impact-strip-icon {
-    margin: 0 auto;
+  .home-feature-image {
+    width: 102px;
+    height: 102px;
+  }
+
+  .home-feature-image img {
+    width: 102px;
+    height: 102px;
+  }
+
+  .home-feature-card a {
+    grid-column: auto;
+    justify-self: start;
   }
 }
 
 @media (max-width: 480px) {
-  .home-badge {
-    font-size: 0.74rem;
-  }
-
   .home-hero-content {
     padding: 1.1rem;
   }
 
-  .home-visual-panel {
-    min-height: 520px;
-  }
-
-  .home-impact-card {
-    padding: 0.7rem;
-  }
-
-  .home-impact-item {
-    padding: 0.5rem;
-  }
-
-  .home-bin {
-    width: 150px;
-    height: 132px;
+  .home-hero-visual {
+    min-height: 360px;
   }
 
   .home-feature-card {
     padding: 1rem;
-    border-radius: 22px;
+    border-radius: 20px;
   }
 }

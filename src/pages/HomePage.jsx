@@ -1,172 +1,105 @@
-import {
-  ArrowRight,
-  BarChart3,
-  BatteryCharging,
-  ClipboardList,
-  Leaf,
-  MapPin,
-  Monitor,
-  Recycle,
-  Smartphone,
-} from "lucide-react";
+import { ArrowRight, BarChart3, Leaf, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import "../styles/home.css";
 
+/**
+ * Home principal do EcoPonto SP.
+ *
+ * A página funciona como uma landing page de apresentação do produto.
+ * O hero divide a tela em duas áreas: conteúdo textual à esquerda e imagem
+ * institucional à direita, mantendo o acesso principal aos pontos de coleta.
+ */
 export function HomePage() {
-  /**
-   * A Home funciona como vitrine do produto.
-   *
-   * O hero concentra a mensagem principal, o acesso aos pontos de coleta e uma
-   * prévia compacta de impacto. Os demais acessos ficam nos cards inferiores
-   * para evitar excesso de botões no topo da página.
-   */
   return (
     <section className="home-page">
       <section className="home-hero">
         <div className="home-hero-content">
-          <span className="home-badge">
-            <Leaf size={16} />
-            GreenTech • GovTech • Portfólio
-          </span>
-
           <h1>Encontre pontos de descarte eletrônico em São Paulo</h1>
 
           <p>
             Localize pontos de coleta, saiba como descartar corretamente seus
-            eletrônicos e acompanhe o impacto positivo gerado por uma cidade
-            mais limpa, consciente e sustentável.
+            eletrônicos e ajude a construir uma cidade mais limpa, consciente e
+            sustentável.
           </p>
 
           <div className="home-hero-actions">
-            <Link to="/pontos" className="primary-button">
-              <MapPin size={18} />
+            <Link to="/pontos" className="home-primary-button">
+              <MapPin size={20} />
               Ver pontos de coleta
+            </Link>
+
+            <Link to="/admin" className="home-outline-button">
+              <BarChart3 size={20} />
+              Ver dashboard
             </Link>
           </div>
 
           <small className="home-context-line">
-            <Leaf size={15} />
-            Protótipo funcional para descarte eletrônico responsável.
+            <Leaf size={16} />
+            Plataforma demonstrativa para descarte eletrônico responsável.
           </small>
         </div>
 
-        <div className="home-visual-panel" aria-label="Ilustração do EcoPonto SP">
-          <div className="home-city-shape" />
+        <div className="home-hero-visual" aria-label="Ilustração do EcoPonto SP">
+          <img
+            src="/images/ecoponto-hero-illustration.png"
+            alt="Caixa de reciclagem com eletrônicos em uma paisagem urbana sustentável"
+            className="home-hero-image"
+          />
+        </div>
+      </section>
 
-          <div className="home-bin">
-            <Recycle size={54} />
-
-            <div className="home-device home-device-phone">
-              <Smartphone size={28} />
-            </div>
-
-            <div className="home-device home-device-monitor">
-              <Monitor size={34} />
-            </div>
-
-            <div className="home-device home-device-battery">
-              <BatteryCharging size={28} />
-            </div>
+      <section
+        className="home-feature-area"
+        aria-label="Funcionalidades principais"
+      >
+        <article className="home-feature-card">
+          <div className="home-feature-image">
+            <img
+              src="/images/ecoponto-feature-guidelines.png"
+              alt="Lixeira verde com resíduos eletrônicos para orientação de descarte"
+            />
           </div>
 
-          <div className="home-leaf home-leaf-one" />
-          <div className="home-leaf home-leaf-two" />
-          <div className="home-leaf home-leaf-three" />
+          <div>
+            <h2>Orientação de descarte</h2>
 
-          <aside className="home-impact-card" aria-label="Impacto simulado">
-            <div className="home-impact-header">
-              <div>
-                <span>Impacto em São Paulo</span>
-                <strong>Dados simulados</strong>
-              </div>
+            <p>
+              Aprenda como separar e preparar seus resíduos eletrônicos para um
+              descarte seguro e correto.
+            </p>
+          </div>
 
-              <Leaf size={18} />
-            </div>
+          <Link to="/orientacoes-descarte">
+            Ver orientações
+            <ArrowRight size={18} />
+          </Link>
+        </article>
 
-            <div className="home-impact-list">
-              <div className="home-impact-item">
-                <span>
-                  <MapPin size={18} />
-                </span>
+        <article className="home-feature-card">
+          <div className="home-feature-image">
+            <img
+              src="/images/ecoponto-feature-admin.png"
+              alt="Monitor com gráficos representando gestão administrativa"
+            />
+          </div>
 
-                <div>
-                  <strong>24</strong>
-                  <small>Pontos</small>
-                </div>
-              </div>
+          <div>
+            <h2>Gestão administrativa</h2>
 
-              <div className="home-impact-item">
-                <span>
-                  <Recycle size={18} />
-                </span>
+            <p>
+              Acesse indicadores, solicitações e dados operacionais em um
+              dashboard completo.
+            </p>
+          </div>
 
-                <div>
-                  <strong>186 kg</strong>
-                  <small>Volume</small>
-                </div>
-              </div>
-
-              <div className="home-impact-item">
-                <span>
-                  <ClipboardList size={18} />
-                </span>
-
-                <div>
-                  <strong>12</strong>
-                  <small>Solicitações</small>
-                </div>
-              </div>
-            </div>
-          </aside>
-        </div>
+          <Link to="/admin">
+            Acessar dashboard
+            <ArrowRight size={18} />
+          </Link>
+        </article>
       </section>
-
-      <section className="home-features">
-        <div className="home-feature-grid">
-          <article className="home-feature-card home-feature-blue">
-            <div className="home-feature-illustration">
-              <Recycle size={44} />
-            </div>
-
-            <div>
-              <h3>Orientação de descarte</h3>
-
-              <p>
-                Aprenda como separar e preparar resíduos eletrônicos para um
-                descarte seguro e correto.
-              </p>
-            </div>
-
-            <Link to="/orientacoes-descarte">
-              Ver orientações
-              <ArrowRight size={17} />
-            </Link>
-          </article>
-
-          <article className="home-feature-card home-feature-purple">
-            <div className="home-feature-illustration">
-              <BarChart3 size={44} />
-            </div>
-
-            <div>
-              <h3>Gestão administrativa</h3>
-
-              <p>
-                Acesse indicadores, solicitações e dados operacionais em um
-                dashboard administrativo.
-              </p>
-            </div>
-
-            <Link to="/admin">
-              Acessar dashboard
-              <ArrowRight size={17} />
-            </Link>
-          </article>
-        </div>
-      </section>
-
-     
     </section>
   );
 }
