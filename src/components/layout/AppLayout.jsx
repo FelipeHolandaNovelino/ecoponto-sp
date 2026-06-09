@@ -3,7 +3,6 @@ import {
   LayoutDashboard,
   LogOut,
   MapPin,
-  Sun,
   User,
 } from "lucide-react";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
@@ -79,13 +78,7 @@ export function AppLayout() {
         </nav>
 
         <div className="header-actions">
-          <button
-            type="button"
-            className="theme-button"
-            aria-label="Alternar tema visual"
-          >
-            <Sun size={20} />
-          </button>
+
 
           {isAdminArea && isAuthenticated ? (
             <button type="button" className="login-button" onClick={handleLogout}>
