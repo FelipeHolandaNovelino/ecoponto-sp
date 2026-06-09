@@ -3,8 +3,8 @@ import {
   LayoutDashboard,
   LogOut,
   MapPin,
-  Recycle,
-  ShieldCheck,
+  Sun,
+  User,
 } from "lucide-react";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 
@@ -16,8 +16,9 @@ import {
 /**
  * Layout principal da aplicação.
  *
- * Centraliza cabeçalho, navegação e área de conteúdo. O botão de sair aparece
- * apenas em rotas administrativas quando existe uma sessão simulada ativa.
+ * Centraliza cabeçalho, navegação e área de conteúdo. A identidade visual usa
+ * a marca do EcoPonto SP com ícone próprio e navegação principal consistente
+ * entre área pública e administrativa.
  */
 export function AppLayout() {
   const navigate = useNavigate();
@@ -26,8 +27,15 @@ export function AppLayout() {
   const isAdminArea = location.pathname.startsWith("/admin");
   const isAuthenticated = isAdminAuthenticated();
 
+  /**
+   * Encerra a sessão administrativa simulada.
+   *
+   * Como a autenticação atual usa LocalStorage, basta limpar a sessão local e
+   * redirecionar o usuário para a tela de login.
+   */
   function handleLogout() {
     clearAdminSession();
+
     navigate("/admin/login", {
       replace: true,
     });
@@ -36,14 +44,20 @@ export function AppLayout() {
   return (
     <div className="app-shell">
       <header className="app-header">
-        <NavLink to="/" className="brand">
-          <span className="brand-icon">
-            <Recycle size={24} />
+        <NavLink to="/" className="brand" aria-label="Ir para a Home">
+          <span className="brand-logo">
+            <img
+              src="/images/ecoponto-logo-icon.png"
+              alt=""
+              aria-hidden="true"
+            />
           </span>
 
-          <span>
-            <strong>EcoPonto SP</strong>
-            <small>Descarte eletrônico consciente</small>
+          <span className="brand-copy">
+            <strong className="brand-title">EcoPonto SP</strong>
+            <small className="brand-subtitle">
+              Descarte eletrônico consciente
+            </small>
           </span>
         </NavLink>
 
@@ -58,23 +72,33 @@ export function AppLayout() {
             Pontos
           </NavLink>
 
-          <NavLink to="/orientacoes-descarte" className="nav-link">
-            <ShieldCheck size={18} />
-            Orientações
-          </NavLink>
-
           <NavLink to="/admin" className="nav-link">
             <LayoutDashboard size={18} />
             Admin
           </NavLink>
+        </nav>
+
+        <div className="header-actions">
+          <button
+            type="button"
+            className="theme-button"
+            aria-label="Alternar tema visual"
+          >
+            <Sun size={20} />
+          </button>
 
           {isAdminArea && isAuthenticated ? (
-            <button type="button" className="nav-link" onClick={handleLogout}>
+            <button type="button" className="login-button" onClick={handleLogout}>
               <LogOut size={18} />
               Sair
             </button>
-          ) : null}
-        </nav>
+          ) : (
+            <NavLink to="/admin/login" className="login-button">
+              <User size={18} />
+              Entrar
+            </NavLink>
+          )}
+        </div>
       </header>
 
       <main className="app-main">
