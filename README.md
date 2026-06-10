@@ -1,143 +1,91 @@
 # EcoPonto SP
 
-EcoPonto SP é um protótipo funcional de uma plataforma GreenTech/GovTech para apoiar o descarte correto de resíduos eletrônicos em São Paulo.
+Aplicação web fictícia para localização de pontos de descarte eletrônico em São Paulo, orientação de descarte responsável e acompanhamento administrativo de solicitações.
 
-O projeto permite consultar pontos de coleta, filtrar locais por bairro, tipo de resíduo e status, acessar orientações gerais de descarte, registrar intenções de descarte e gerenciar dados por meio de uma área administrativa protegida por login simulado.
-
----
+O projeto foi desenvolvido como parte do meu portfólio, com foco em React, organização de código, experiência do usuário e simulação de fluxos reais de uma plataforma GreenTech/GovTech.
 
 ## Projeto online
 
-Acesse a versão publicada:
-
-[Ver EcoPonto SP online](https://ecoponto-sp.vercel.app/)
-
----
+* Deploy: https://ecoponto-sp.vercel.app/
+* Repositório: https://github.com/FelipeHolandaNovelino/ecoponto-sp
 
 ## Acesso administrativo
 
-Para acessar a área administrativa de demonstração:
+A área administrativa utiliza autenticação simulada para fins de demonstração.
 
-**Rota:** `/admin/login`  
-**Senha:** `ecoponto123`
+```txt
+Senha: ecoponto123
+```
 
-A autenticação é simulada no front-end com LocalStorage. Em uma aplicação real, essa camada deveria ser substituída por autenticação com backend, sessão segura e validação no servidor.
+## Objetivo do projeto
 
----
+O EcoPonto SP simula uma plataforma pública para ajudar cidadãos a encontrarem locais adequados para descarte de resíduos eletrônicos, além de oferecer uma área administrativa para acompanhamento de pontos de coleta, solicitações e indicadores operacionais.
 
-## Objetivo
+## Problema abordado
 
-O objetivo do EcoPonto SP é demonstrar uma aplicação web completa, com fluxo público e administrativo, usando React, rotas, formulários, filtros, persistência local, dashboard, gráficos, login simulado e deploy.
+O descarte incorreto de eletrônicos pode gerar impactos ambientais e dificultar o reaproveitamento de materiais. Muitas pessoas não sabem onde descartar celulares, cabos, pilhas, baterias, carregadores e outros dispositivos.
 
-O projeto foi desenvolvido como parte do meu portfólio, com foco em praticar organização de projeto, componentização, experiência de usuário e evolução incremental de funcionalidades.
+## Solução proposta
 
----
-
-## Problema
-
-Muitas pessoas possuem celulares, cabos, pilhas, baterias, notebooks e outros eletrônicos antigos, mas não sabem onde descartá-los corretamente.
-
-Além disso, informações sobre pontos de coleta costumam estar espalhadas, pouco acessíveis ou desatualizadas, dificultando o descarte responsável.
-
----
-
-## Solução
-
-O EcoPonto SP propõe uma plataforma web onde o cidadão pode:
-
-- encontrar pontos de coleta;
-- filtrar pontos por bairro, resíduo e status;
-- visualizar detalhes de cada ponto;
-- consultar orientações de descarte;
-- registrar uma intenção de descarte.
-
-A área administrativa permite:
-
-- acessar o painel com login simulado;
-- visualizar indicadores operacionais;
-- gerenciar pontos de coleta;
-- acompanhar solicitações registradas;
-- analisar dados em gráficos de barras.
-
----
+A aplicação centraliza informações sobre pontos de coleta, orientações de descarte e registro de intenções de descarte. Na área administrativa, o responsável pode gerenciar pontos, visualizar indicadores e acompanhar o andamento das solicitações.
 
 ## Funcionalidades
 
 ### Área pública
 
-- Home com identidade visual própria.
-- Página de pontos de coleta.
-- Filtros por busca, bairro, tipo de resíduo e status.
-- Cards dinâmicos de pontos de coleta.
-- Página de detalhes do ponto.
-- Página de orientações gerais de descarte.
-- Registro de descarte com formulário.
-- Estados vazios para buscas sem resultado.
-- Página 404 para rotas inexistentes.
+* Página inicial com apresentação do projeto.
+* Listagem de pontos de descarte.
+* Filtros por busca, bairro, tipo de resíduo e status.
+* Página de detalhes de cada ponto.
+* Página com orientações gerais de descarte.
+* Formulário para registrar uma solicitação de descarte.
+* Página 404 para rotas inexistentes.
 
 ### Área administrativa
 
-- Login administrativo simulado.
-- Rotas administrativas protegidas.
-- Sessão administrativa salva no LocalStorage.
-- Dashboard com indicadores dinâmicos.
-- Gráficos de barras com Recharts.
-- Gerenciamento de pontos de coleta.
-- Cadastro, edição e remoção de pontos.
-- Modal de confirmação para exclusão.
-- Feedback visual com toast.
-- Listagem de solicitações de descarte.
+* Login administrativo simulado.
+* Rotas protegidas para páginas administrativas.
+* Dashboard com indicadores e gráficos.
+* Cadastro, edição e exclusão de pontos de coleta.
+* Confirmação antes de remover registros.
+* Feedback visual com mensagens de sucesso.
+* Listagem de solicitações de descarte.
+* Alteração de status das solicitações:
 
----
+  * Pendente
+  * Recebido
+  * Processado
+  * Cancelado
 
-## Rotas principais
+## Principais rotas
 
-| Rota | Descrição |
-|---|---|
-| `/` | Home |
-| `/pontos` | Listagem de pontos de coleta |
-| `/pontos/:id` | Detalhes de um ponto |
-| `/orientacoes-descarte` | Orientações gerais de descarte |
-| `/registrar-descarte` | Registro de descarte |
-| `/admin/login` | Login administrativo simulado |
-| `/admin` | Dashboard administrativo |
-| `/admin/pontos` | Gerenciamento de pontos |
-| `/admin/solicitacoes` | Solicitações registradas |
-| `*` | Página 404 |
-
----
-
-## Fluxo principal
-
-1. O cidadão acessa a Home.
-2. Consulta pontos de coleta.
-3. Filtra por bairro, tipo de resíduo ou status.
-4. Abre os detalhes de um ponto.
-5. Consulta orientações gerais de descarte, se necessário.
-6. Registra uma intenção de descarte.
-7. A solicitação fica salva no LocalStorage.
-8. O administrador acessa a área protegida.
-9. O dashboard atualiza indicadores e gráficos com base nos dados salvos.
-
----
+```txt
+/                       Página inicial
+/pontos                 Pontos de descarte
+/pontos/:id             Detalhes do ponto
+/orientacoes-descarte   Orientações de descarte
+/registrar-descarte     Registro de solicitação
+/admin/login            Login administrativo
+/admin                  Dashboard administrativo
+/admin/pontos           Gestão de pontos
+/admin/solicitacoes     Gestão de solicitações
+```
 
 ## Tecnologias utilizadas
 
-- React
-- Vite
-- React Router
-- JavaScript
-- CSS
-- LocalStorage
-- Recharts
-- Lucide React
-- Vercel
-
----
+* React
+* Vite
+* JavaScript
+* CSS
+* React Router
+* Recharts
+* Lucide React
+* LocalStorage
+* Vercel
 
 ## Organização do projeto
 
-```text
+```txt
 src/
   app/
     App.jsx
@@ -161,40 +109,34 @@ src/
   styles/
 ```
 
-A estrutura foi organizada por domínio de funcionalidade, separando páginas, componentes reutilizáveis, regras de armazenamento local, dados simulados e estilos específicos.
-
----
-
 ## Destaques técnicos
 
-- Rotas públicas e administrativas com React Router.
-- Proteção de rotas administrativas com login simulado.
-- Persistência de dados usando LocalStorage.
-- CRUD completo de pontos de coleta.
-- Dashboard com métricas derivadas dos dados salvos.
-- Gráficos de barras usando Recharts.
-- Componentes reutilizáveis para modal, toast e estados vazios.
-- Página 404 para rotas inexistentes.
-- Deploy na Vercel com configuração para rotas internas.
-- Layout responsivo para desktop, tablet e mobile.
+* Estrutura separada por responsabilidades.
+* Rotas públicas e administrativas.
+* Proteção de rotas administrativas.
+* Persistência local com LocalStorage.
+* CRUD completo de pontos de coleta.
+* Fluxo administrativo para solicitações.
+* Componentes reutilizáveis de UI.
+* Dashboard com gráficos usando Recharts.
+* Layout responsivo.
+* Deploy configurado para SPA na Vercel.
 
----
+## Fluxo principal
 
-## Observações sobre autenticação
-
-A autenticação administrativa é uma simulação feita no front-end para fins de demonstração.
-
-Ela permite mostrar o fluxo de:
-
-- login;
-- sessão local;
-- rotas protegidas;
-- redirecionamento automático;
-- logout.
-
-Em uma versão futura com backend, essa camada pode evoluir para autenticação real com API, banco de dados, tokens e controle de usuários.
-
----
+```txt
+Usuário acessa a Home
+↓
+Consulta pontos de descarte
+↓
+Visualiza orientações
+↓
+Registra uma solicitação de descarte
+↓
+Admin acessa a área administrativa
+↓
+Admin acompanha a solicitação e altera o status
+```
 
 ## Como executar localmente
 
@@ -204,7 +146,7 @@ Clone o repositório:
 git clone https://github.com/FelipeHolandaNovelino/ecoponto-sp.git
 ```
 
-Acesse a pasta:
+Acesse a pasta do projeto:
 
 ```bash
 cd ecoponto-sp
@@ -224,31 +166,27 @@ npm run dev
 
 Acesse no navegador:
 
-```text
-http://localhost:5173/
+```txt
+http://localhost:5173
 ```
-
----
 
 ## Status do projeto
 
-Projeto em desenvolvimento.
+Projeto em versão de portfólio, com fluxo público e administrativo funcional usando dados simulados e persistência local.
 
-A versão atual já possui fluxo público, área administrativa protegida por login simulado, CRUD de pontos de coleta, registro de solicitações, dashboard com gráficos, página de orientações, estados vazios, página 404, feedback visual, modal de confirmação, responsividade e deploy publicado.
+## Possíveis melhorias futuras
 
----
-
-## Próximas melhorias
-
-- Permitir alteração de status das solicitações.
-- Evoluir o painel administrativo com histórico por ponto.
-- Adicionar mapa real aos pontos de coleta.
-- Criar backend para autenticação e persistência real.
-- Integrar banco de dados.
-- Adicionar prints ao README.
-
----
+* Integração com backend real.
+* Autenticação real de administradores.
+* Banco de dados para pontos e solicitações.
+* Mapa interativo com geolocalização.
+* Upload de imagens para pontos de coleta.
+* Relatórios administrativos exportáveis.
+* Histórico detalhado de alterações de status.
 
 ## Autor
 
-Desenvolvido por Felipe Holanda como projeto de portfólio.
+Desenvolvido por Felipe Holanda.
+
+* GitHub: https://github.com/FelipeHolandaNovelino
+* LinkedIn: https://www.linkedin.com/
