@@ -1,4 +1,10 @@
-import { ArrowRight, BarChart3, Leaf, MapPin } from "lucide-react";
+import {
+  ArrowRight,
+  BarChart3,
+  ClipboardList,
+  Leaf,
+  MapPin,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 
 import "../styles/home.css";
@@ -29,9 +35,9 @@ export function HomePage() {
               Ver pontos de coleta
             </Link>
 
-            <Link to="/admin" className="home-outline-button">
-              <BarChart3 size={20} />
-              Ver dashboard
+            <Link to="/acompanhar-solicitacao" className="home-outline-button">
+              <ClipboardList size={20} />
+              Verificar solicitação
             </Link>
           </div>
 
@@ -96,6 +102,29 @@ export function HomePage() {
 
           <Link to="/admin">
             Acessar dashboard
+            <ArrowRight size={18} />
+          </Link>
+        </article>
+
+        <article className="home-feature-card">
+          <div className="home-feature-image">
+            <img
+              src="/images/ecoponto-feature-points.png"
+              alt="Ilustração de ponto de coleta para consulta de solicitação"
+            />
+          </div>
+
+          <div>
+            <h2>Verificar solicitação</h2>
+
+            <p>
+              Consulte o andamento do descarte usando o CPF ou e-mail informado
+              no registro.
+            </p>
+          </div>
+
+          <Link to="/acompanhar-solicitacao">
+            Consultar status
             <ArrowRight size={18} />
           </Link>
         </article>

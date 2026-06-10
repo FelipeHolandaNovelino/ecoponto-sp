@@ -144,11 +144,12 @@
 /**
  * Cards inferiores.
  *
- * Mantém apenas os dois cards complementares: orientação e gestão.
+ * Mantém três acessos principais lado a lado em desktop:
+ * orientação de descarte, gestão administrativa e consulta de solicitação.
  */
 .home-feature-area {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1.1rem;
   padding: 1.25rem;
   background: linear-gradient(
@@ -161,12 +162,11 @@
 
 .home-feature-card {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  grid-template-rows: 1fr auto;
-  column-gap: 1.2rem;
-  row-gap: 1rem;
-  min-height: 210px;
-  padding: 1.35rem;
+  grid-template-rows: auto 1fr auto;
+  gap: 1rem;
+  min-width: 0;
+  min-height: 285px;
+  padding: 1.25rem;
   background: rgba(255, 255, 255, 0.94);
   border: 1px solid rgba(215, 229, 220, 0.96);
   border-radius: 24px;
@@ -175,10 +175,9 @@
 
 .home-feature-image {
   display: grid;
-  width: 118px;
-  height: 118px;
+  width: 108px;
+  height: 108px;
   place-items: center;
-  align-self: start;
   overflow: hidden;
   background: #eef7e9;
   border-radius: 50%;
@@ -186,29 +185,28 @@
 
 .home-feature-image img {
   display: block;
-  width: 118px;
-  height: 118px;
+  width: 108px;
+  height: 108px;
   object-fit: cover;
 }
 
 .home-feature-card h2 {
   margin-bottom: 0.55rem;
   color: #0b3b29;
-  font-size: 1.18rem;
+  font-size: 1.14rem;
 }
 
 .home-feature-card p {
   margin: 0;
   color: #4f5f57;
-  font-size: 0.96rem;
+  font-size: 0.94rem;
   line-height: 1.58;
 }
 
 .home-feature-card a {
   display: inline-flex;
-  grid-column: 2;
   align-items: center;
-  justify-self: end;
+  justify-self: start;
   gap: 0.45rem;
   color: var(--color-primary-dark);
   font-weight: 900;
@@ -216,6 +214,9 @@
 
 /**
  * Responsividade.
+ *
+ * A Home mantém os 3 cards lado a lado em telas médias. Só empilha quando a
+ * largura fica pequena demais para preservar boa leitura.
  */
 @media (max-width: 1120px) {
   .home-page {
@@ -235,15 +236,34 @@
   .home-hero-visual {
     min-height: 480px;
   }
+
+  .home-feature-area {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .home-feature-card {
+    min-height: 300px;
+    padding: 1.1rem;
+  }
+
+  .home-feature-image {
+    width: 96px;
+    height: 96px;
+  }
+
+  .home-feature-image img {
+    width: 96px;
+    height: 96px;
+  }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 860px) {
   .home-feature-area {
     grid-template-columns: 1fr;
   }
 
   .home-feature-card {
-    grid-template-columns: auto minmax(0, 1fr);
+    min-height: auto;
   }
 }
 
@@ -284,11 +304,6 @@
     border-radius: 24px;
   }
 
-  .home-feature-card {
-    grid-template-columns: 1fr;
-    min-height: auto;
-  }
-
   .home-feature-image {
     width: 102px;
     height: 102px;
@@ -297,11 +312,6 @@
   .home-feature-image img {
     width: 102px;
     height: 102px;
-  }
-
-  .home-feature-card a {
-    grid-column: auto;
-    justify-self: start;
   }
 }
 
