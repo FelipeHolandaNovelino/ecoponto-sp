@@ -1,42 +1,14 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { RouterProvider } from "react-router-dom";
 
-import { ProtectedAdminRoute } from "../components/auth/ProtectedAdminRoute.jsx";
-import { AppLayout } from "../components/layout/AppLayout.jsx";
-import {
-  adminAuthRoutes,
-  adminRoutes,
-  fallbackRoutes,
-  publicRoutes,
-} from "./routes.jsx";
+import { router } from "./routes.jsx";
 
+/**
+ * Componente raiz da aplicação.
+ *
+ * Mantém o App simples e delega toda a árvore de rotas para routes.jsx.
+ * As rotas públicas, administrativas e protegidas ficam centralizadas no
+ * roteador principal da aplicação.
+ */
 export default function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route element={<AppLayout />}>
-          {publicRoutes.map((route) => (
-            <Route key={route.path} path={route.path} element={route.element} />
-          ))}
-
-          {adminAuthRoutes.map((route) => (
-            <Route key={route.path} path={route.path} element={route.element} />
-          ))}
-
-          {adminRoutes.map((route) => (
-            <Route
-              key={route.path}
-              path={route.path}
-              element={
-                <ProtectedAdminRoute>{route.element}</ProtectedAdminRoute>
-              }
-            />
-          ))}
-
-          {fallbackRoutes.map((route) => (
-            <Route key={route.path} path={route.path} element={route.element} />
-          ))}
-        </Route>
-      </Routes>
-    </BrowserRouter>
-  );
+  return <RouterProvider router={router} />;
 }
