@@ -1,263 +1,319 @@
 import { useMemo, useState } from "react";
 import {
-  ArrowLeft,
   CheckCircle2,
   ClipboardList,
-  Info,
+  Fingerprint,
+  Leaf,
+  Mail,
+  MapPin,
   PackageCheck,
-  Send,
+  User,
 } from "lucide-react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { getStoredCollectionPoints } from "../features/collection-points/utils/collectionPointsStorage.js";
-import { createDisposalRequest } from "../features/disposal-requests/utils/disposalRequestsStorage.js";
-import { wasteTypes } from "../features/waste-types/data/wasteTypes.js";
+import {
+  createDisposalRequest,
+  formatCpf,
+  isCpfComplete,
+  isValidEmail,
+  normalizeCpf,
+  normalizeEmail,
+} from "../features/disposal-requests/utils/disposalRequestsStorage.js";
 
-function getInitialFormData(pointIdFromUrl, points) {
-  const pointExists = points.some((point) => point.id === Number(pointIdFromUrl));
+const initialFormData = {
+  name: "",
+  cpf: "",
+  email: "",
+  wasteType: "",
+  quantityKg: "",
+  collectionPointId: "",
+  notes: "",
+};
 
-  return {
-    userName: "",
-    wasteType: "Celulares",
-    quantity: 1,
-    collectionPointId: pointExists ? String(pointIdFromUrl) : "",
-    notes: "",
-  };
-}
+const wasteTypeOptions = [
+  "Celulares e smartphones",
+  "Computadores e notebooks",
+  "Cabos e carregadores",
+  "Pilhas e baterias",
+  "Pequenos eletrônicos",
+  "Outros resíduos eletrônicos",
+];
 
-function validateForm(formData) {
-  const errors = {};
-
-  if (!formData.wasteType) {
-    errors.wasteType = "Selecione o tipo de resíduo.";
-  }
-
-  if (!formData.collectionPointId) {
-    errors.collectionPointId = "Selecione um ponto de coleta.";
-  }
-
-  if (!formData.quantity || Number(formData.quantity) < 1) {
-    errors.quantity = "Informe uma quantidade válida.";
-  }
-
-  return errors;
-}
-
-export function DisposalRequestPage() {
-  const [searchParams] = useSearchParams();
-  const pointIdFromUrl = searchParams.get("pointId");
-
-  /**
-   * O formulário usa os pontos persistidos para permitir descarte em pontos
-   * criados ou editados pelo administrador.
-   */
-  const points = useMemo(() => getStoredCollectionPoints(), []);
-
-  const [formData, setFormData] = useState(() =>
-    getInitialFormData(pointIdFromUrl, points)
+/**
+ * Retorna o nome de um ponto de coleta de forma segura.
+ *
+ * Alguns registros podem vir de seeds ou do CRUD administrativo. Por isso,
+ * mantemos fallback para variações simples de nomenclatura.
+ */
+function getCollectionPointName(collectionPoint) {
+  return (
+    collectionPoint?.name ||
+    collectionPoint?.title ||
+    collectionPoint?.locationName ||
+    "Ponto não informado"
   );
-  const [formErrors, setFormErrors] = useState({});
-  const [createdRequest, setCreatedRequest] = useState(null);
+}
 
-  const selectedPoint = useMemo(() => {
-    return points.find(
-      (point) => point.id === Number(formData.collectionPointId)
-    );
-  }, [points, formData.collectionPointId]);
+/**
+ * Página pública de registro de descarte.
+ *
+ * O cidadão informa dados básicos obrigatórios para que depois consiga
+ * acompanhar a solicitação pelo CPF ou e-mail.
+ */
+export function DisposalRequestPage() {
+  const [formData, setFormData] = useState(initialFormData);
+  const [formError, setFormError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
-  function updateField(fieldName, value) {
-    setFormData((currentData) => ({
-      ...currentData,
+  const collectionPoints = useMemo(() => getStoredCollectionPoints(), []);
+
+  function updateFormField(fieldName, value) {
+    setFormData((currentFormData) => ({
+      ...currentFormData,
       [fieldName]: value,
     }));
 
-    setFormErrors((currentErrors) => ({
-      ...currentErrors,
-      [fieldName]: undefined,
-    }));
+    setFormError("");
+    setSuccessMessage("");
+  }
+
+  function validateForm() {
+    if (!formData.name.trim()) {
+      return "Informe o nome completo.";
+    }
+
+    if (!isCpfComplete(formData.cpf)) {
+      return "Informe um CPF com 11 dígitos.";
+    }
+
+    if (!isValidEmail(formData.email)) {
+      return "Informe um e-mail válido.";
+    }
+
+    if (!formData.wasteType) {
+      return "Selecione o tipo de resíduo eletrônico.";
+    }
+
+    if (!formData.quantityKg || Number(formData.quantityKg) <= 0) {
+      return "Informe uma quantidade estimada válida.";
+    }
+
+    return "";
   }
 
   function handleSubmit(event) {
     event.preventDefault();
 
-    const errors = validateForm(formData);
-    setFormErrors(errors);
+    const validationMessage = validateForm();
 
-    if (Object.keys(errors).length > 0) {
+    if (validationMessage) {
+      setFormError(validationMessage);
       return;
     }
 
-    const request = createDisposalRequest({
-      userName: formData.userName.trim() || "Usuário visitante",
+    const selectedCollectionPoint = collectionPoints.find(
+      (collectionPoint) =>
+        String(collectionPoint.id) === String(formData.collectionPointId)
+    );
+
+    createDisposalRequest({
+      name: formData.name.trim(),
+      cpf: normalizeCpf(formData.cpf),
+      email: normalizeEmail(formData.email),
       wasteType: formData.wasteType,
-      quantity: Number(formData.quantity),
-      collectionPointId: Number(formData.collectionPointId),
-      collectionPointName: selectedPoint?.name || "Ponto não identificado",
+      quantityKg: Number(formData.quantityKg),
+      collectionPointId: formData.collectionPointId,
+      collectionPointName: selectedCollectionPoint
+        ? getCollectionPointName(selectedCollectionPoint)
+        : "Não informado",
       notes: formData.notes.trim(),
     });
 
-    setCreatedRequest(request);
+    setFormData(initialFormData);
+    setSuccessMessage(
+      "Solicitação registrada com sucesso. Você poderá acompanhar o andamento pelo CPF ou e-mail informado."
+    );
   }
 
   return (
     <section className="page-section">
       <div className="page-header">
-        <span className="eyebrow">Área pública</span>
-        <h1>Registrar descarte</h1>
+        <span className="eyebrow">Registro de descarte</span>
+
+        <h1>Registrar descarte eletrônico</h1>
+
         <p>
-          Informe o tipo de resíduo eletrônico, a quantidade e o ponto de coleta
-          desejado. Nesta versão, a solicitação é salva no navegador com
-          LocalStorage.
+          Informe seus dados e os resíduos que deseja descartar. Depois, você
+          poderá consultar o andamento da solicitação pelo CPF ou e-mail.
         </p>
+
+        <Link to="/acompanhar-solicitacao" className="secondary-button">
+          <ClipboardList size={18} />
+          Acompanhar solicitação
+        </Link>
       </div>
 
       <div className="content-grid">
         <form className="form-card" onSubmit={handleSubmit}>
           <div className="form-header">
-            <ClipboardList size={24} />
+            <PackageCheck size={28} />
+
             <div>
               <h2>Dados da solicitação</h2>
-              <p>Campos simples para simular o fluxo de descarte.</p>
+              <p>
+                Campos com nome, CPF e e-mail são obrigatórios para permitir a
+                consulta posterior do status.
+              </p>
             </div>
           </div>
 
           <label className="form-field">
-            <span>Nome opcional</span>
+            <span>Nome completo *</span>
             <input
               type="text"
-              placeholder="Ex: Felipe"
-              value={formData.userName}
-              onChange={(event) => updateField("userName", event.target.value)}
+              value={formData.name}
+              onChange={(event) => updateFormField("name", event.target.value)}
+              placeholder="Ex: Ana Souza"
+              autoComplete="name"
             />
           </label>
 
           <label className="form-field">
-            <span>Tipo de resíduo</span>
+            <span>CPF *</span>
+            <input
+              type="text"
+              value={formData.cpf}
+              onChange={(event) =>
+                updateFormField("cpf", formatCpf(event.target.value))
+              }
+              placeholder="000.000.000-00"
+              inputMode="numeric"
+              autoComplete="off"
+              maxLength={14}
+            />
+          </label>
+
+          <label className="form-field">
+            <span>E-mail *</span>
+            <input
+              type="email"
+              value={formData.email}
+              onChange={(event) => updateFormField("email", event.target.value)}
+              placeholder="exemplo@email.com"
+              autoComplete="email"
+            />
+          </label>
+
+          <label className="form-field">
+            <span>Tipo de resíduo *</span>
             <select
               value={formData.wasteType}
-              onChange={(event) => updateField("wasteType", event.target.value)}
-            >
-              {wasteTypes.map((wasteType) => (
-                <option key={wasteType}>{wasteType}</option>
-              ))}
-            </select>
-
-            {formErrors.wasteType && (
-              <small className="form-error">{formErrors.wasteType}</small>
-            )}
-          </label>
-
-          <label className="form-field">
-            <span>Quantidade</span>
-            <input
-              type="number"
-              min="1"
-              value={formData.quantity}
-              onChange={(event) => updateField("quantity", event.target.value)}
-            />
-
-            {formErrors.quantity && (
-              <small className="form-error">{formErrors.quantity}</small>
-            )}
-          </label>
-
-          <label className="form-field">
-            <span>Ponto de coleta</span>
-            <select
-              value={formData.collectionPointId}
               onChange={(event) =>
-                updateField("collectionPointId", event.target.value)
+                updateFormField("wasteType", event.target.value)
               }
             >
-              <option value="">Selecione um ponto</option>
+              <option value="">Selecione uma opção</option>
 
-              {points.map((point) => (
-                <option key={point.id} value={point.id}>
-                  {point.name} — {point.district}
+              {wasteTypeOptions.map((wasteType) => (
+                <option key={wasteType} value={wasteType}>
+                  {wasteType}
                 </option>
               ))}
             </select>
-
-            {formErrors.collectionPointId && (
-              <small className="form-error">
-                {formErrors.collectionPointId}
-              </small>
-            )}
           </label>
 
           <label className="form-field">
-            <span>Observação opcional</span>
-            <textarea
-              rows="4"
-              placeholder="Ex: Dois celulares antigos sem carregador."
-              value={formData.notes}
-              onChange={(event) => updateField("notes", event.target.value)}
+            <span>Quantidade estimada em kg *</span>
+            <input
+              type="number"
+              min="0.1"
+              step="0.1"
+              value={formData.quantityKg}
+              onChange={(event) =>
+                updateFormField("quantityKg", event.target.value)
+              }
+              placeholder="Ex: 2.5"
             />
           </label>
 
+          <label className="form-field">
+            <span>Ponto de coleta preferencial</span>
+            <select
+              value={formData.collectionPointId}
+              onChange={(event) =>
+                updateFormField("collectionPointId", event.target.value)
+              }
+            >
+              <option value="">Não selecionar agora</option>
+
+              {collectionPoints.map((collectionPoint) => (
+                <option key={collectionPoint.id} value={collectionPoint.id}>
+                  {getCollectionPointName(collectionPoint)}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label className="form-field">
+            <span>Observações</span>
+            <textarea
+              rows={4}
+              value={formData.notes}
+              onChange={(event) => updateFormField("notes", event.target.value)}
+              placeholder="Descreva os itens, condição dos aparelhos ou alguma informação importante."
+            />
+          </label>
+
+          {formError ? <p className="form-error">{formError}</p> : null}
+
+          {successMessage ? (
+            <p className="status-pill status-active">{successMessage}</p>
+          ) : null}
+
           <button type="submit" className="primary-button">
-            <Send size={18} />
-            Enviar solicitação
+            <CheckCircle2 size={18} />
+            Registrar solicitação
           </button>
         </form>
 
         <aside className="request-summary">
-          {createdRequest ? (
-            <>
-              <CheckCircle2 size={38} />
-              <span className="eyebrow">Solicitação registrada</span>
+          <Leaf size={28} />
 
-              <h2>Descarte salvo com sucesso.</h2>
+          <h2>Por que informar CPF e e-mail?</h2>
 
-              <p>
-                Sua solicitação foi registrada com status{" "}
-                <strong>{createdRequest.status}</strong>.
-              </p>
+          <p>
+            Esses dados permitem localizar a solicitação posteriormente, sem
+            depender de login. No projeto real, esse fluxo exigiria backend,
+            autenticação, criptografia e cuidados de LGPD.
+          </p>
 
-              <div className="summary-list">
-                <p>
-                  <PackageCheck size={16} />
-                  {createdRequest.quantity}x {createdRequest.wasteType}
-                </p>
+          <div className="summary-list">
+            <p>
+              <User size={18} />
+              Nome identifica o solicitante.
+            </p>
 
-                <p>
-                  <ClipboardList size={16} />
-                  {createdRequest.collectionPointName}
-                </p>
-              </div>
+            <p>
+              <Fingerprint size={18} />
+              CPF permite consulta individual.
+            </p>
 
-              <Link to="/pontos" className="secondary-button">
-                <ArrowLeft size={18} />
-                Voltar para pontos
-              </Link>
-            </>
-          ) : (
-            <>
-              <Info size={38} />
-              <span className="eyebrow">Resumo</span>
+            <p>
+              <Mail size={18} />
+              E-mail permite acompanhar solicitações registradas.
+            </p>
 
-              <h2>Revise antes de enviar.</h2>
+            <p>
+              <MapPin size={18} />
+              O ponto escolhido ajuda a organizar a operação.
+            </p>
+          </div>
 
-              <p>
-                Ao enviar, a solicitação será criada com status{" "}
-                <strong>Pendente</strong>.
-              </p>
-
-              <div className="summary-list">
-                <p>
-                  <PackageCheck size={16} />
-                  {formData.quantity || 0}x {formData.wasteType}
-                </p>
-
-                <p>
-                  <ClipboardList size={16} />
-                  {selectedPoint
-                    ? selectedPoint.name
-                    : "Nenhum ponto selecionado"}
-                </p>
-              </div>
-            </>
-          )}
+          <Link to="/acompanhar-solicitacao" className="secondary-button">
+            <ClipboardList size={18} />
+            Consultar status
+          </Link>
         </aside>
       </div>
     </section>

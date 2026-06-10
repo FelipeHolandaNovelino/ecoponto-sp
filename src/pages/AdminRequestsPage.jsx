@@ -3,6 +3,7 @@ import {
   ArrowLeft,
   CalendarClock,
   ClipboardList,
+  Fingerprint,
   Mail,
   MapPin,
   PackageCheck,
@@ -14,6 +15,7 @@ import { EmptyState } from "../components/ui/EmptyState.jsx";
 import { ToastMessage } from "../components/ui/ToastMessage.jsx";
 import {
   disposalRequestStatusOptions,
+  formatCpf,
   getStoredDisposalRequests,
   updateDisposalRequestStatus,
 } from "../features/disposal-requests/utils/disposalRequestsStorage.js";
@@ -34,9 +36,6 @@ function formatRequestDate(dateValue) {
 
 /**
  * Retorna uma classe visual para cada status da solicitação.
- *
- * As classes reutilizam o padrão de status do projeto quando possível e
- * adicionam classes específicas para estados administrativos.
  */
 function getRequestStatusClassName(status) {
   const statusClasses = {
@@ -82,12 +81,6 @@ export function AdminRequestsPage() {
     setFeedback(null);
   }
 
-  /**
-   * Atualiza o status da solicitação selecionada.
-   *
-   * Depois da alteração, a lista local é atualizada com o retorno da função de
-   * persistência para garantir que tela e LocalStorage continuem sincronizados.
-   */
   function handleStatusChange(requestId, nextStatus) {
     const updatedRequests = updateDisposalRequestStatus(requestId, nextStatus);
 
@@ -154,6 +147,11 @@ export function AdminRequestsPage() {
                 <p>
                   <User size={16} />
                   {request.name || "Nome não informado"}
+                </p>
+
+                <p>
+                  <Fingerprint size={16} />
+                  CPF: {request.cpf ? formatCpf(request.cpf) : "Não informado"}
                 </p>
 
                 <p>

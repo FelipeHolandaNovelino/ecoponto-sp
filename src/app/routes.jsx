@@ -1,3 +1,7 @@
+import { createBrowserRouter } from "react-router-dom";
+
+import { ProtectedAdminRoute } from "../components/auth/ProtectedAdminRoute.jsx";
+import { AppLayout } from "../components/layout/AppLayout.jsx";
 import { AdminCollectionPointsPage } from "../pages/AdminCollectionPointsPage.jsx";
 import { AdminDashboardPage } from "../pages/AdminDashboardPage.jsx";
 import { AdminLoginPage } from "../pages/AdminLoginPage.jsx";
@@ -8,79 +12,71 @@ import { DisposalGuidelinesPage } from "../pages/DisposalGuidelinesPage.jsx";
 import { DisposalRequestPage } from "../pages/DisposalRequestPage.jsx";
 import { HomePage } from "../pages/HomePage.jsx";
 import { NotFoundPage } from "../pages/NotFoundPage.jsx";
+import { RequestStatusPage } from "../pages/RequestStatusPage.jsx";
 
 /**
- * Rotas públicas da aplicação.
+ * Rotas principais do EcoPonto SP.
  *
- * Essas páginas representam a experiência do cidadão que procura pontos,
- * aprende a preparar resíduos e registra uma intenção de descarte.
+ * A aplicação separa rotas públicas, rota de login administrativo e rotas
+ * administrativas protegidas. A rota /admin usa index route para carregar o
+ * dashboard quando o usuário autenticado acessa diretamente /admin.
  */
-export const publicRoutes = [
+export const router = createBrowserRouter([
   {
     path: "/",
-    element: <HomePage />,
+    element: <AppLayout />,
+    errorElement: <NotFoundPage />,
+    children: [
+      {
+        index: true,
+        element: <HomePage />,
+      },
+      {
+        path: "pontos",
+        element: <CollectionPointsPage />,
+      },
+      {
+        path: "pontos/:id",
+        element: <CollectionPointDetailsPage />,
+      },
+      {
+        path: "orientacoes-descarte",
+        element: <DisposalGuidelinesPage />,
+      },
+      {
+        path: "registrar-descarte",
+        element: <DisposalRequestPage />,
+      },
+      {
+        path: "acompanhar-solicitacao",
+        element: <RequestStatusPage />,
+      },
+      {
+        path: "admin/login",
+        element: <AdminLoginPage />,
+      },
+      {
+        path: "admin",
+        element: <ProtectedAdminRoute />,
+        children: [
+          {
+            index: true,
+            element: <AdminDashboardPage />,
+          },
+          {
+            path: "pontos",
+            element: <AdminCollectionPointsPage />,
+          },
+          {
+            path: "solicitacoes",
+            element: <AdminRequestsPage />,
+          },
+        ],
+      },
+      {
+        path: "*",
+        element: <NotFoundPage />,
+      },
+    ],
   },
-  {
-    path: "/pontos",
-    element: <CollectionPointsPage />,
-  },
-  {
-    path: "/pontos/:id",
-    element: <CollectionPointDetailsPage />,
-  },
-  {
-    path: "/orientacoes-descarte",
-    element: <DisposalGuidelinesPage />,
-  },
-  {
-    path: "/registrar-descarte",
-    element: <DisposalRequestPage />,
-  },
-];
-
-/**
- * Rotas de autenticação administrativa.
- *
- * O login fica fora das rotas protegidas para que o usuário consiga acessar
- * a página de entrada antes de ter uma sessão administrativa.
- */
-export const adminAuthRoutes = [
-  {
-    path: "/admin/login",
-    element: <AdminLoginPage />,
-  },
-];
-
-/**
- * Rotas administrativas protegidas.
- *
- * Elas simulam a operação interna da plataforma, separando dashboard,
- * solicitações e gerenciamento dos pontos de coleta.
- */
-export const adminRoutes = [
-  {
-    path: "/admin",
-    element: <AdminDashboardPage />,
-  },
-  {
-    path: "/admin/pontos",
-    element: <AdminCollectionPointsPage />,
-  },
-  {
-    path: "/admin/solicitacoes",
-    element: <AdminRequestsPage />,
-  },
-];
-
-/**
- * Rota de fallback.
- *
- * O React Router usa "*" para capturar qualquer caminho que não corresponda
- * às rotas públicas, de autenticação ou administrativas registradas acima.
- */
-export const fallbackRoutes = [
-  {
-    path: "*",
-    element: <NotFoundPage />,
-  },
-];
+]);

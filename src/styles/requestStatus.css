@@ -1,0 +1,61 @@
+/**
+ * Página pública de acompanhamento de solicitações.
+ *
+ * Centraliza os ajustes visuais específicos da consulta por CPF ou e-mail,
+ * reaproveitando os cards, formulários e botões globais do projeto.
+ */
+
+.request-status-grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(260px, 0.8fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.request-status-results {
+  display: grid;
+  gap: 1rem;
+}
+
+.request-status-results > h2 {
+  margin-bottom: 0;
+  color: var(--color-primary-dark);
+  font-size: 1.35rem;
+}
+
+.request-status-empty {
+  display: grid;
+  justify-items: center;
+  gap: 0.65rem;
+  padding: 2rem;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+}
+
+.request-status-empty svg {
+  color: var(--color-primary);
+}
+
+.request-status-empty h2,
+.request-status-empty p {
+  margin: 0;
+}
+
+.request-status-received {
+  color: #1f6a9f;
+  background: #e5f3fb;
+}
+
+.request-status-canceled {
+  color: var(--color-danger);
+  background: #fde8e8;
+}
+
+@media (max-width: 860px) {
+  .request-status-grid {
+    grid-template-columns: 1fr;
+  }
+}
