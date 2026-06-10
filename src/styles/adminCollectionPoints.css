@@ -227,3 +227,28 @@
     font-size: 0.84rem;
   }
 }
+
+/**
+ * Ajustes administrativos compartilhados.
+ *
+ * Estes estilos são usados também na página de solicitações para indicar
+ * visualmente o andamento do descarte.
+ */
+
+.request-status-received {
+  color: #1f6a9f;
+  background: #e5f3fb;
+}
+
+.request-status-canceled {
+  color: var(--color-danger);
+  background: #fde8e8;
+}
+
+.request-status-field {
+  max-width: 260px;
+}
+
+.request-status-field select {
+  cursor: pointer;
+}

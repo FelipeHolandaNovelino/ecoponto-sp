@@ -1,16 +1,27 @@
+import { useMemo, useState } from "react";
 import {
   ArrowLeft,
-  CalendarDays,
+  CalendarClock,
   ClipboardList,
-  Inbox,
+  Mail,
+  MapPin,
   PackageCheck,
+  User,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import { EmptyState } from "../components/ui/EmptyState.jsx";
-import { getStoredDisposalRequests } from "../features/disposal-requests/utils/disposalRequestsStorage.js";
+import { ToastMessage } from "../components/ui/ToastMessage.jsx";
+import {
+  disposalRequestStatusOptions,
+  getStoredDisposalRequests,
+  updateDisposalRequestStatus,
+} from "../features/disposal-requests/utils/disposalRequestsStorage.js";
 
-function formatDate(dateValue) {
+/**
+ * Formata datas salvas em ISO para uma leitura mais amigável.
+ */
+function formatRequestDate(dateValue) {
   if (!dateValue) {
     return "Data não informada";
   }
@@ -21,86 +32,181 @@ function formatDate(dateValue) {
   }).format(new Date(dateValue));
 }
 
+/**
+ * Retorna uma classe visual para cada status da solicitação.
+ *
+ * As classes reutilizam o padrão de status do projeto quando possível e
+ * adicionam classes específicas para estados administrativos.
+ */
 function getRequestStatusClassName(status) {
   const statusClasses = {
     Pendente: "status-warning",
-    Recebido: "status-active",
+    Recebido: "request-status-received",
     Processado: "status-active",
-    Cancelado: "status-warning",
+    Cancelado: "request-status-canceled",
   };
 
   return statusClasses[status] || "status-warning";
 }
 
+/**
+ * Página administrativa de solicitações.
+ *
+ * Permite visualizar solicitações registradas no fluxo público e alterar o
+ * status administrativo de cada uma. A persistência é feita no LocalStorage
+ * enquanto o projeto não possui backend.
+ */
 export function AdminRequestsPage() {
+  const [requests, setRequests] = useState(() => getStoredDisposalRequests());
+  const [feedback, setFeedback] = useState(null);
+
+  const requestStats = useMemo(() => {
+    return disposalRequestStatusOptions.map((status) => {
+      const total = requests.filter((request) => request.status === status).length;
+
+      return {
+        status,
+        total,
+      };
+    });
+  }, [requests]);
+
+  function showFeedback(message) {
+    setFeedback({
+      message,
+      tone: "success",
+    });
+  }
+
+  function closeFeedback() {
+    setFeedback(null);
+  }
+
   /**
-   * A página administrativa lê as solicitações do LocalStorage para simular
-   * uma operação interna sem depender de backend nesta etapa do projeto.
+   * Atualiza o status da solicitação selecionada.
+   *
+   * Depois da alteração, a lista local é atualizada com o retorno da função de
+   * persistência para garantir que tela e LocalStorage continuem sincronizados.
    */
-  const requests = getStoredDisposalRequests();
+  function handleStatusChange(requestId, nextStatus) {
+    const updatedRequests = updateDisposalRequestStatus(requestId, nextStatus);
+
+    setRequests(updatedRequests);
+    showFeedback(`Status atualizado para "${nextStatus}".`);
+  }
 
   return (
-    <section className="page-section">
-      <div className="page-header">
-        <span className="eyebrow">Área administrativa</span>
-        <h1>Solicitações de descarte</h1>
-        <p>
-          Lista de solicitações registradas pelos usuários. Os dados desta etapa
-          são carregados do LocalStorage, simulando uma área administrativa
-          simples.
-        </p>
+    <>
+      <ToastMessage
+        message={feedback?.message}
+        tone={feedback?.tone}
+        onClose={closeFeedback}
+      />
 
-        <Link to="/admin" className="secondary-button">
-          <ArrowLeft size={18} />
-          Voltar para dashboard
-        </Link>
-      </div>
+      <section className="page-section">
+        <div className="page-header">
+          <span className="eyebrow">Área administrativa</span>
+          <h1>Solicitações de descarte</h1>
+          <p>
+            Acompanhe as intenções de descarte registradas pela área pública e
+            atualize o andamento de cada solicitação.
+          </p>
 
-      {requests.length > 0 ? (
-        <div className="cards-column">
-          {requests.map((request) => (
-            <article key={request.id} className="collection-card">
-              <span
-                className={`status-pill ${getRequestStatusClassName(
-                  request.status
-                )}`}
-              >
-                {request.status}
-              </span>
+          <Link to="/admin" className="secondary-button">
+            <ArrowLeft size={18} />
+            Voltar para dashboard
+          </Link>
+        </div>
 
-              <h2>{request.userName}</h2>
-
-              <p>
-                <PackageCheck size={16} />
-                {request.quantity}x {request.wasteType}
-              </p>
-
-              <p>
-                <ClipboardList size={16} />
-                {request.collectionPointName}
-              </p>
-
-              <p>
-                <CalendarDays size={16} />
-                Registrado em {formatDate(request.createdAt)}
-              </p>
-
-              {request.notes ? <p>{request.notes}</p> : null}
+        <div className="stats-grid">
+          {requestStats.map((item) => (
+            <article key={item.status} className="stat-card">
+              <ClipboardList size={24} />
+              <span>{item.status}</span>
+              <strong>{item.total}</strong>
             </article>
           ))}
         </div>
-      ) : (
-        <EmptyState
-          icon={Inbox}
-          eyebrow="Sem solicitações"
-          title="Nenhuma solicitação encontrada"
-          description="Para testar este fluxo, acesse um ponto de coleta pela área pública, clique em Registrar descarte e envie uma solicitação. Depois volte para esta página administrativa."
-          actionLabel="Ir para pontos de coleta"
-          actionTo="/pontos"
-          secondaryActionLabel="Voltar para dashboard"
-          secondaryActionTo="/admin"
-        />
-      )}
-    </section>
+
+        <div className="cards-column">
+          {requests.length > 0 ? (
+            requests.map((request) => (
+              <article key={request.id} className="collection-card">
+                <div className="admin-card-header">
+                  <div>
+                    <h2>{request.wasteType || "Resíduo não informado"}</h2>
+
+                    <p>
+                      <CalendarClock size={16} />
+                      Registrada em {formatRequestDate(request.createdAt)}
+                    </p>
+                  </div>
+
+                  <span
+                    className={`status-pill ${getRequestStatusClassName(
+                      request.status
+                    )}`}
+                  >
+                    {request.status}
+                  </span>
+                </div>
+
+                <p>
+                  <User size={16} />
+                  {request.name || "Nome não informado"}
+                </p>
+
+                <p>
+                  <Mail size={16} />
+                  {request.email || "E-mail não informado"}
+                </p>
+
+                <p>
+                  <PackageCheck size={16} />
+                  Quantidade estimada: {request.quantityKg || 0}kg
+                </p>
+
+                <p>
+                  <MapPin size={16} />
+                  Ponto escolhido:{" "}
+                  {request.collectionPointName ||
+                    request.selectedCollectionPoint ||
+                    request.collectionPoint ||
+                    "Não informado"}
+                </p>
+
+                {request.notes ? <p>{request.notes}</p> : null}
+
+                <label className="form-field request-status-field">
+                  <span>Status da solicitação</span>
+
+                  <select
+                    value={request.status}
+                    onChange={(event) =>
+                      handleStatusChange(request.id, event.target.value)
+                    }
+                  >
+                    {disposalRequestStatusOptions.map((status) => (
+                      <option key={status}>{status}</option>
+                    ))}
+                  </select>
+                </label>
+              </article>
+            ))
+          ) : (
+            <EmptyState
+              icon={ClipboardList}
+              eyebrow="Sem solicitações"
+              title="Nenhuma solicitação registrada"
+              description="Quando um cidadão registrar uma intenção de descarte pela área pública, ela aparecerá aqui para acompanhamento administrativo."
+              actionLabel="Ir para registro"
+              actionTo="/registrar-descarte"
+              secondaryActionLabel="Ver pontos"
+              secondaryActionTo="/pontos"
+            />
+          )}
+        </div>
+      </section>
+    </>
   );
 }
