@@ -1,28 +1,20 @@
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 
 import { isAdminAuthenticated } from "../../features/auth/utils/authStorage.js";
 
 /**
  * Protege as rotas administrativas.
  *
- * Quando o usuário não está autenticado, redirecionamos para a página de login
- * e preservamos a rota original no state. Isso facilita evoluir o fluxo depois,
- * caso seja necessário voltar para a página solicitada após autenticar.
+ * Quando o usuário ainda não está autenticado, ele é redirecionado para o login.
+ * Quando está autenticado, o Outlet renderiza a rota filha solicitada:
+ * /admin, /admin/pontos ou /admin/solicitacoes.
  */
-export function ProtectedAdminRoute({ children }) {
+export function ProtectedAdminRoute() {
   const location = useLocation();
 
   if (!isAdminAuthenticated()) {
-    return (
-      <Navigate
-        to="/admin/login"
-        replace
-        state={{
-          from: location.pathname,
-        }}
-      />
-    );
+    return <Navigate to="/admin/login" replace state={{ from: location }} />;
   }
 
-  return children;
+  return <Outlet />;
 }
